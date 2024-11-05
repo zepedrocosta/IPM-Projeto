@@ -1,23 +1,25 @@
 # Welcome to your IShowCar app 👋
 
-Antes de tudo fazer:
-
-npm install
-
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## Get started (Tested on Windows)
 
-1. Install expo
+1. Install packages
 
    ```bash
-      npx expo install react-native-web
+   npm install
    ```
 
-2. Start the app
+2. Install expo
 
    ```bash
-      npx expo start --web
+   npx expo install react-native-web
+   ```
+
+3. Start the app
+
+   ```bash
+   npx expo start --web
    ```
 
 In the output, you'll find options to open the app in a
