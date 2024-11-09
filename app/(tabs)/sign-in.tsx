@@ -4,6 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 
 type RootStackParamList = {
     Home: undefined;
@@ -33,6 +34,12 @@ export default function SignIn() {
         }
     }
 
+    const router = useRouter(); // Use the router hook for navigation
+  
+    const navigateToMain = () => {
+      router.push('/main'); // Navigate to the register page
+    };
+
     return (
         <View style={styles.container}>
             <h1>Sign In</h1>
@@ -58,7 +65,7 @@ export default function SignIn() {
             />
 
             <Text>Forgot Password?</Text>
-            <Button title="Sign In" onPress={() => handleSignIn()} />
+            <Button title="Sign In" onPress={() => navigateToMain()} /> {/** TODO: switch to account verification */}
 
         </View>
     );
