@@ -1,4 +1,6 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
+import { Button, Text, StyleSheet } from 'react-native';
 
 type Car = {
     url: string;
@@ -57,6 +59,12 @@ const CarList: React.FC = () => {
         setNewCar({ url: '', brand: '', model: '', year: new Date().getFullYear(), plate: '' });
     };
 
+    const router = useRouter();
+  
+    const navigateToCarPage = () => {
+      router.push('/car');
+    };
+
     return (
         <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: '60px' }}>
             <div style={{ 
@@ -68,16 +76,10 @@ const CarList: React.FC = () => {
                 paddingRight: '10px',
             }}>
                 {carList.map((car, index) => (
-                    <div
+                    <Text
                         key={index}
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            border: '1px solid #000',
-                            borderRadius: '3px',
-                            padding: '10px',
-                            width: '300px',
-                        }}
+                        style={styles.carContainer}
+                        onPress={navigateToCarPage}
                     >
                         <img
                             src={car.url}
@@ -94,7 +96,7 @@ const CarList: React.FC = () => {
                                 {car.plate}
                             </div>
                         </div>
-                    </div>
+                    </Text>
                 ))}
             </div>
 
@@ -120,72 +122,89 @@ const CarList: React.FC = () => {
                 +
             </button>
 
-            {showPopup && (
+            {
+        showPopup && (
+            <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+            }}>
                 <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    backgroundColor: '#fff',
+                    padding: '20px',
+                    borderRadius: '8px',
+                    width: '300px',
                 }}>
-                    <div style={{
-                        backgroundColor: '#fff',
-                        padding: '20px',
-                        borderRadius: '8px',
-                        width: '300px',
-                    }}>
-                        <h3>Add New Car</h3>
-                        <input
-                            type="text"
-                            name="url"
-                            placeholder="Image URL"
-                            value={newCar.url}
-                            onChange={handleInputChange}
-                            style={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <input
-                            type="text"
-                            name="brand"
-                            placeholder="Brand"
-                            value={newCar.brand}
-                            onChange={handleInputChange}
-                            style={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <input
-                            type="text"
-                            name="model"
-                            placeholder="Model"
-                            value={newCar.model}
-                            onChange={handleInputChange}
-                            style={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <input
-                            type="number"
-                            name="year"
-                            placeholder="Year"
-                            value={newCar.year}
-                            onChange={handleInputChange}
-                            style={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <input
-                            type="text"
-                            name="plate"
-                            placeholder="Plate"
-                            value={newCar.plate}
-                            onChange={handleInputChange}
-                            style={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <button onClick={handleAddCar} style={{ marginRight: '10px' }}>Add</button>
-                        <button onClick={() => setShowPopup(false)}>Cancel</button>
-                    </div>
+                    <h3>Add New Car</h3>
+                    <input
+                        type="text"
+                        name="url"
+                        placeholder="Image URL"
+                        value={newCar.url}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
+                    />
+                    <input
+                        type="text"
+                        name="brand"
+                        placeholder="Brand"
+                        value={newCar.brand}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
+                    />
+                    <input
+                        type="text"
+                        name="model"
+                        placeholder="Model"
+                        value={newCar.model}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
+                    />
+                    <input
+                        type="number"
+                        name="year"
+                        placeholder="Year"
+                        value={newCar.year}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
+                    />
+                    <input
+                        type="text"
+                        name="plate"
+                        placeholder="Plate"
+                        value={newCar.plate}
+                        onChange={handleInputChange}
+                        style={{ width: '100%', marginBottom: '10px' }}
+                    />
+                    <button onClick={handleAddCar} style={{ marginRight: '10px' }}>Add</button>
+                    <button onClick={() => setShowPopup(false)}>Cancel</button>
                 </div>
-            )}
-        </div>
+            </div>
+        )
+    }
+        </div >
     );
 };
 
 export default CarList;
+
+
+
+const styles = StyleSheet.create({
+    carContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderRadius: 2,
+        borderColor: '#000',
+        borderWidth: 1,
+        padding: 10,
+        width: 300,
+    },
+});
