@@ -23,7 +23,7 @@ export function DefaultTopBar({ children, body, leftComponent, rightComponent }:
       </View>
 
       <View style={styles.body}>
-        {<CarList />}
+        {body}
       </View>
     </View>
   );
