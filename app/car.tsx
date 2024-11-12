@@ -1,5 +1,6 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 
 type Car = {
     url: string;
@@ -18,6 +19,10 @@ const Car: React.FC = () => {
         plate: 'XX-01-XX',
     });
 
+    const navigateToDocuments = () => {
+        router.push('/documents'); // Navigate to the register page
+    };
+
     return (
         <div style={{ marginTop: '30px' }}> {/**TODO: fix scrolls */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -30,14 +35,24 @@ const Car: React.FC = () => {
             <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '30px' }}>
                 <div style={styles.carGroupingContainer}>
                     <p style={{ marginBottom: '0' }}>Info</p>
-                    <button style={styles.carButtonLess}>Location</button>
-                    <button style={styles.carButton}>Services</button>
-                    <button style={styles.carButton}>Documents</button>
+                    <View style={styles.carButtonLess}>
+                        <Button title="Location" />
+                    </View>
+                    <View style={styles.carButton}>
+                        <Button title="Services" />
+                    </View>
+                    <View style={styles.carButton}>
+                        <Button title="Documents" onPress={navigateToDocuments} />
+                    </View>
                 </div>
                 <div style={styles.carGroupingContainer}>
                     <p style={{ marginBottom: '0', marginTop: '23px' }}>Performance</p>
-                    <button style={styles.carButtonLess}>Stats</button>
-                    <button style={styles.carButton}>Track Records</button>
+                    <View style={styles.carButtonLess}>
+                        <Button title="Stats" />
+                    </View>
+                    <View style={styles.carButton}>
+                        <Button title="Track Records" />
+                    </View>
                 </div>
             </div>
         </div>
@@ -49,13 +64,12 @@ export default Car;
 
 const styles = StyleSheet.create({
     carButton: {
-        marginTop: 25,
         padding: 10,
         width: 190,
         fontSize: 15
     },
     carButtonLess: {
-        marginTop: 12,
+        marginTop: 5,
         padding: 10,
         width: 190,
         fontSize: 15

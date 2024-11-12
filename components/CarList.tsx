@@ -60,19 +60,19 @@ const CarList: React.FC = () => {
     };
 
     const router = useRouter();
-  
+
     const navigateToCarPage = () => {
-      router.push('/car');
+        router.push('/car');
     };
 
     return (
         <div style={{ position: 'relative', minHeight: '100vh', paddingBottom: '60px' }}>
-            <div style={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: '25px', 
-                maxHeight: '80vh', 
-                overflowY: 'auto', 
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '25px',
+                maxHeight: '80vh',
+                overflowY: 'auto',
                 paddingRight: '10px',
             }}>
                 {carList.map((car, index) => (
@@ -123,71 +123,158 @@ const CarList: React.FC = () => {
             </button>
 
             {
-        showPopup && (
-            <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-            }}>
-                <div style={{
-                    backgroundColor: '#fff',
-                    padding: '20px',
-                    borderRadius: '8px',
-                    width: '300px',
-                }}>
-                    <h3>Add New Car</h3>
-                    <input
-                        type="text"
-                        name="url"
-                        placeholder="Image URL"
-                        value={newCar.url}
-                        onChange={handleInputChange}
-                        style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <input
-                        type="text"
-                        name="brand"
-                        placeholder="Brand"
-                        value={newCar.brand}
-                        onChange={handleInputChange}
-                        style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <input
-                        type="text"
-                        name="model"
-                        placeholder="Model"
-                        value={newCar.model}
-                        onChange={handleInputChange}
-                        style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <input
-                        type="number"
-                        name="year"
-                        placeholder="Year"
-                        value={newCar.year}
-                        onChange={handleInputChange}
-                        style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <input
-                        type="text"
-                        name="plate"
-                        placeholder="Plate"
-                        value={newCar.plate}
-                        onChange={handleInputChange}
-                        style={{ width: '100%', marginBottom: '10px' }}
-                    />
-                    <button onClick={handleAddCar} style={{ marginRight: '10px' }}>Add</button>
-                    <button onClick={() => setShowPopup(false)}>Cancel</button>
-                </div>
-            </div>
-        )
-    }
+                showPopup && (
+                    <div
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <div
+                            style={{
+                                backgroundColor: '#f8f9fa',
+                                padding: 16,
+                                borderRadius: 12,
+                                width: 320,
+                                boxShadow: '#000',
+                            }}
+                        >
+                            <h3
+                                style={{
+                                    fontSize: 20,
+                                    fontWeight: 'bold',
+                                    marginBottom: 16,
+                                    color: '#333',
+                                    textAlign: 'center',
+                                }}
+                            >
+                                Add New Car
+                            </h3>
+                            <input
+                                type="text"
+                                name="url"
+                                placeholder="Image URL"
+                                value={newCar.url}
+                                onChange={handleInputChange}
+                                style={{
+                                    borderColor: '#ced4da',
+                                    borderWidth: 1,
+                                    borderRadius: 8,
+                                    padding: 10,
+                                    marginBottom: 10,
+                                    width: '-webkit-fill-available',
+                                    fontSize: 16,
+                                }}
+                            />
+                            <input
+                                type="text"
+                                name="brand"
+                                placeholder="Brand"
+                                value={newCar.brand}
+                                onChange={handleInputChange}
+                                style={{
+                                    borderColor: '#ced4da',
+                                    borderWidth: 1,
+                                    borderRadius: 8,
+                                    padding: 10,
+                                    marginBottom: 10,
+                                    width: '-webkit-fill-available',
+                                    fontSize: 16,
+                                }}
+                            />
+                            <input
+                                type="text"
+                                name="model"
+                                placeholder="Model"
+                                value={newCar.model}
+                                onChange={handleInputChange}
+                                style={{
+                                    borderColor: '#ced4da',
+                                    borderWidth: 1,
+                                    borderRadius: 8,
+                                    padding: 10,
+                                    marginBottom: 10,
+                                    width: '-webkit-fill-available',
+                                    fontSize: 16,
+                                }}
+                            />
+                            <input
+                                type="number"
+                                name="year"
+                                placeholder="Year"
+                                value={newCar.year}
+                                onChange={handleInputChange}
+                                style={{
+                                    borderColor: '#ced4da',
+                                    borderWidth: 1,
+                                    borderRadius: 8,
+                                    padding: 10,
+                                    marginBottom: 10,
+                                    width: '-webkit-fill-available',
+                                    fontSize: 16,
+                                }}
+                            />
+                            <input
+                                type="text"
+                                name="plate"
+                                placeholder="Plate"
+                                value={newCar.plate}
+                                onChange={handleInputChange}
+                                style={{
+                                    borderColor: '#ced4da',
+                                    borderWidth: 1,
+                                    borderRadius: 8,
+                                    padding: 10,
+                                    marginBottom: 10,
+                                    width: '-webkit-fill-available',
+                                    fontSize: 16,
+                                }}
+                            />
+                            <div style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 16 }}>
+                                <button
+                                    onClick={handleAddCar}
+                                    style={{
+                                        backgroundColor: '#28a745',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: 8,
+                                        padding: 10,
+                                        flex: 1,
+                                        fontSize: 16,
+                                        marginRight: 8,
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Add
+                                </button>
+                                <button
+                                    onClick={() => setShowPopup(false)}
+                                    style={{
+                                        backgroundColor: '#dc3545',
+                                        color: '#fff',
+                                        border: 'none',
+                                        borderRadius: 8,
+                                        padding: 10,
+                                        flex: 1,
+                                        fontSize: 16,
+                                        marginLeft: 8,
+                                        cursor: 'pointer',
+                                    }}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
         </div >
     );
 };
