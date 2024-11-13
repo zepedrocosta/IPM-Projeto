@@ -23,6 +23,10 @@ const Car: React.FC = () => {
         router.push('/documents'); // Navigate to the register page
     };
 
+    const navigateToServices = () => {
+        router.push('/services');
+    };
+
     return (
         <div style={{ marginTop: '30px' }}> {/**TODO: fix scrolls */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -53,7 +57,7 @@ const Car: React.FC = () => {
                         <Button title="Location" />
                     </View>
                     <View style={styles.carButton}>
-                        <Button title="Services" />
+                        <Button title="Services" onPress={navigateToServices}/>
                     </View>
                     <View style={styles.carButton}>
                         <Button title="Documents" onPress={navigateToDocuments} />
