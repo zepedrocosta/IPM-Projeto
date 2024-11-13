@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Modal, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import DocumentPicker from 'react-native-document-picker';
+//import DocumentPicker from 'react-native-document-picker';
 
 // MISSING:
 // DATE TIME PICKER NATIVE (CANNOT TEST CURRENT DATETIMEPICKER ON WEB)
