@@ -1,16 +1,16 @@
 import { Text, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router'; // Use the expo-router hook for navigation
-import SignIn from './(tabs)/sign-in';
+import { useRouter } from 'expo-router'; 
+import Register from './(tabs)/register';
 
 export default function HomePage() {
-  const router = useRouter(); // Use the router hook for navigation
+  const router = useRouter();
 
   const navigateToRegister = () => {
-    router.push('/'); // Navigate to the register page
+    router.push('/');
   };
 
   return (
-    SignIn()
+    Register()
   );
 }
 

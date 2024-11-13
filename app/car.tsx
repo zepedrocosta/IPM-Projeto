@@ -27,8 +27,22 @@ const Car: React.FC = () => {
         <div style={{ marginTop: '30px' }}> {/**TODO: fix scrolls */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <img src={car.url} height='160px' />
-                <div style={{ fontSize: '20px', marginTop: '15px' }}>{car.brand} {car.model}</div>
-                <div style={{ border: '1px solid #000', padding: '2px 4px', marginTop: '12px', width: 'fit-content' }}>
+                <div style={{
+                    marginBottom: '8px',
+                    fontSize: '25px',
+                    fontWeight: 'bold',
+                    color: '#333',
+                    marginTop: 5
+                }}>{car.brand} {car.model}</div>
+                <div style={{
+                    padding: '4px 8px',
+                    border: '1px solid #ddd',
+                    borderRadius: '4px',
+                    fontSize: '22px',
+                    backgroundColor: '#f9f9f9',
+                    width: 'fit-content',
+                    marginTop: 5
+                }}>
                     {car.plate}
                 </div>
             </div>
