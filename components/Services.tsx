@@ -1,5 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, Button, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 
 export default function ServicesPage() {
   return (
@@ -26,8 +33,8 @@ export default function ServicesPage() {
           <Text style={styles.itemTitle}>Inspection (IPO)</Text>
           <Text style={styles.itemDate}>September 2026</Text>
           <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Schedule Inspection</Text>
-        </TouchableOpacity>
+            <Text style={styles.buttonText}>Schedule Inspection</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.itemBox}>
@@ -35,8 +42,8 @@ export default function ServicesPage() {
           <Text style={styles.itemDate}>September 2026</Text>
           <Text style={styles.itemKm}>100,000 kms</Text>
           <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Tyre Service</Text>
-        </TouchableOpacity>
+            <Text style={styles.buttonText}>Tyre Service</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
@@ -64,9 +71,8 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10,
     padding: 10,
-    backgroundColor: "#f8f8f8",
     borderRadius: 5,
-    minWidth: 400, // Define uma altura mínima maior
+    minWidth: 400,
   },
   serviceTitle: {
     textAlign: "center",
@@ -75,7 +81,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   itemBox: {
-    marginBottom: 10,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    paddingHorizontal: 10,
   },
   itemTitle: {
     fontSize: 18,
@@ -84,21 +93,25 @@ const styles = StyleSheet.create({
   itemDate: {
     fontSize: 16,
     color: "gray",
+    alignSelf: "flex-end",
   },
   itemKm: {
     fontSize: 16,
     color: "gray",
+    textAlign: "right",
   },
   button: {
-    backgroundColor: '#007BFF',
-    paddingVertical: 8,
-    paddingHorizontal: 0,
+    backgroundColor: "#007BFF",
+    height: 35,
+    width: 250,
     borderRadius: 5,
     marginTop: 10,
+    alignSelf: "center",
+    justifyContent: 'center'
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 17,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
