@@ -40,6 +40,11 @@ public class Car extends DAO implements Serializable {
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "car")
+    private Set<CarServices> services;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToOne
     private User owner;
 }

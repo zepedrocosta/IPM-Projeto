@@ -1,25 +1,26 @@
 package unl.fct.ipm.dtos.responses;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import unl.fct.ipm.daos.enums.DocumentTypeEnum;
+import unl.fct.ipm.daos.enums.CarServiceTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(doNotUseGetters = true)
-public class DocumentResponse implements Serializable {
+public class CarServiceResponse implements Serializable {
 
-    private String filename;
+    private UUID id;
 
-    private DocumentTypeEnum type;
-
-    @NotNull
     private LocalDateTime dueDate;
+
+    private long dueKms;
+
+    private CarServiceTypeEnum type;
 
     private String plate;
 }

@@ -40,6 +40,10 @@ public class SecurityConfig {
     public static final RequestMatcher[] ALLOWED = new RequestMatcher[] {
             new AntPathRequestMatcher("/rest/security", HttpMethod.PUT.name()), // Login
             new AntPathRequestMatcher("/rest/users", HttpMethod.POST.name()), // Register
+            new AntPathRequestMatcher("/swagger-ui/**"), // Swagger UI
+            new AntPathRequestMatcher("/swagger-ui.html"), // Swagger UI (Alt)
+            new AntPathRequestMatcher("/v3/api-docs/**"), // OpenAPI
+            new AntPathRequestMatcher("/v3/**"), // OpenAPI (Alt)
             request -> !request.getRequestURI().contains("rest")
     };
 

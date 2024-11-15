@@ -2,6 +2,7 @@ package unl.fct.ipm.daos;
 
 import jakarta.persistence.*;
 import lombok.*;
+import unl.fct.ipm.daos.enums.DocumentTypeEnum;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
