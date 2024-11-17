@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 type Car = {
   url: string;
@@ -15,7 +15,31 @@ type CarListProps = {
 };
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
-  const [carList, setCarList] = useState<Car[]>([]);
+  const initialState: Car[] = [
+    {
+      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      brand: "FORD",
+      model: "MUSTANG MACH 1",
+      year: 1969,
+      plate: "XX-01-XX",
+    },
+    {
+      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      brand: "FORD",
+      model: "MUSTANG MACH 1",
+      year: 1969,
+      plate: "XX-01-XX",
+    },
+    {
+      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      brand: "FORD",
+      model: "MUSTANG MACH 1",
+      year: 1969,
+      plate: "XX-01-XX",
+    },
+  ];
+
+  const [carList, setCarList] = useState<Car[]>(initialState);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<Car>({
     url: "",
@@ -90,30 +114,24 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             style={styles.carObject}
             onPress={navigateToCarPage}
           >
-            <img
-              src={car.url}
-              alt={`${car.brand} ${car.model}`}
-              style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "8px",
-                marginRight: "16px",
-                objectFit: "cover",
-              }}
-            />
+            <Image source={{ uri: car.url }} style={styles.image} />
             <View style={{ flex: 1 }}>
               <View style={styles.carBrand}>
-                <span>{car.brand}</span>
-                <span style={{ color: "#555" }}>{car.year}</span>
+                <Text>{car.brand}</Text>
+                <Text style={{ color: "#555" }}>{car.year}</Text>
               </View>
-              <View style={styles.carModel}>{car.model}</View>
+              <View style={styles.carModel}>
+                <Text>{car.model}</Text>
+              </View>
               <View
                 style={{
                   display: "flex",
                   justifyContent: "center",
                 }}
               >
-                <View style={styles.carPlate}>{car.plate}</View>
+                <View style={styles.carPlate}>
+                  <Text>{car.plate}</Text>
+                </View>
               </View>
             </View>
           </TouchableOpacity>
@@ -403,6 +421,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 16,
+    objectFit: "cover",
   },
 });
 
