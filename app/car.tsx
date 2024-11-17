@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { Button, StyleSheet, View, Text, Image } from "react-native";
 
 type Car = {
   url: string;
@@ -38,7 +38,7 @@ const Car: React.FC = () => {
           alignItems: "center",
         }}
       >
-        <img src={car.url} height="160px" />
+        <Image source={{ uri: car.url }} style={{ height: 160, width: 160 }} />
         <View style={styles.carBrandModel}>
           {car.brand} {car.model}
         </View>
