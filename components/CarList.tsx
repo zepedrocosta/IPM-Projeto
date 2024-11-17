@@ -65,8 +65,17 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
     const router = useRouter();
 
-    const navigateToCarPage = () => {
-        router.push('/car');
+    const navigateToCarPage = (car: Car) => {
+        router.push({
+            pathname: '/car',
+            params: {
+                url: car.url,
+                brand: car.brand,
+                model: car.model,
+                year: car.year.toString(),
+                plate: car.plate,
+            },
+        });
     };
 
     const handleModelChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -87,7 +96,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     });
 
     return (
-        <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+        <div style={{ position: 'relative', minHeight: '100vh', backgroundColor: '#f5f5f5', width: '80%' }}>
             <div
                 style={{
                     display: 'flex',
@@ -134,13 +143,13 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                             cursor: 'pointer',
                             transition: 'transform 0.2s, box-shadow 0.2s',
                         }}
-                        onClick={navigateToCarPage}
+                        onClick={() => navigateToCarPage(car)}
                     >
                         <img
                             src={car.url}
                             alt={`${car.brand} ${car.model}`}
                             style={{
-                                width: '80px',
+                                width: '120px',
                                 height: '80px',
                                 borderRadius: '8px',
                                 marginRight: '16px',
