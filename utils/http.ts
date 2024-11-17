@@ -3,8 +3,8 @@ import store from "../store";
 import { logout, resetToken } from "../store/session";
 import { router } from "expo-router";
 
-axios.defaults.baseURL = "http://192.168.1.20:8080/rest"; // Local
-//axios.defaults.baseURL = "Azure link"; // Azure
+//axios.defaults.baseURL = "http://192.168.1.20:8080/rest"; // Local - Rodrigo
+axios.defaults.baseURL = "https://ipmprojeto.zepedrocosta.com/rest"; // Cloud
 
 axios.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -25,19 +25,6 @@ axios.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      // Erros com respostas HTTP
-      /* console.error(
-        "\nErro HTTP:\n",
-        error,
-        "\nresponse:\n",
-        error.response,
-        "\ndata:\n",
-        error.response.data,
-        "\nstatus:\n",
-        error.response.status,
-        "\nstatusText:\n",
-        error.response.statusText
-      ); */
       if (error.response.status === 418) {
         store.dispatch(logout());
         router.replace("/sign-in");
