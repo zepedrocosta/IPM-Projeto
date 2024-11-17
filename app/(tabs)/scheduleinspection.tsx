@@ -3,20 +3,20 @@ import { Text, StyleSheet } from 'react-native';
 import { DefaultTopBar } from '@/components/DefaultTopBar';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router'; // Use the expo-router hook for navigation
-import Services from '@/components/Services';
+import ScheduleInspection from '@/components/ScheduleInspection';
 
 export default function DocumentPage() {
   const router = useRouter(); // Use the router hook for navigation
 
-  const navigateToCar = () => {
-    router.push('/car'); // Navigate to the register page
+  const navigateToServices = () => {
+    router.push('/services'); // Navigate to the register page
   };
 
   return (
     <DefaultTopBar
-      leftComponent={<MaterialIcons name="arrow-left" size={24} onPress={navigateToCar}/>}
-      children={<Text style={styles.topText}>Services</Text>}
-      body={<Services />}
+      leftComponent={<MaterialIcons name="arrow-left" size={24} onPress={navigateToServices} />}
+      children={<Text style={styles.topText}>Schedule Inspection</Text>}
+      body={<ScheduleInspection />}
     />
   );
 }
