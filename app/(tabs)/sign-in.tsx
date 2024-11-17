@@ -68,7 +68,7 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <h1>Sign In</h1>
+      <Text>Sign In</Text>
       <View style={styles.iconContainer}>
         <MaterialIcons name="person" size={40} color="blue" />
       </View>

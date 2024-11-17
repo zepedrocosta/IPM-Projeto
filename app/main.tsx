@@ -1,18 +1,14 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, TextInput, View } from 'react-native';
-import { DefaultTopBar } from '../components/DefaultTopBar';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import CarList from '@/components/CarList';
+import React, { useState } from "react";
+import { Text, StyleSheet, TextInput, View } from "react-native";
+import { DefaultTopBar } from "../components/DefaultTopBar";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import CarList from "@/components/CarList";
 
 export default function HomePage() {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isSearchActive, setIsSearchActive] = useState<boolean>(false); 
-
-  const navigateToRegister = () => {
-    router.push('/main');
-  };
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const handleSearchChange = (text: string) => {
     setSearchQuery(text);
@@ -29,34 +25,20 @@ export default function HomePage() {
       body={
         <>
           {isSearchActive && (
-            <div style={{
-              position: 'fixed',
-              top: 17,
-              flexDirection: 'row',
-              alignItems: 'center',
-              backgroundColor: '#f5f5f5',
-              padding: 10,
-              paddingTop: 0,
-              borderRadius: 8,
-              marginBottom: 10,
-            }}>
+            <View style={styles.searchBar}>
               <TextInput
                 style={styles.searchInput}
                 placeholder="Search cars..."
                 value={searchQuery}
                 onChangeText={handleSearchChange}
               />
-            </div>
+            </View>
           )}
           <CarList searchQuery={searchQuery} />
         </>
       }
       rightComponent={
-        <MaterialIcons
-          name="search"
-          size={24}
-          onPress={toggleSearchBar}
-        />
+        <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
       }
     />
   );
@@ -75,13 +57,24 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 6,
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     borderWidth: 1,
-    borderColor: '#ddd',
-    shadowColor: '#000',
+    borderColor: "#ddd",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 2,
+  },
+  searchBar: {
+    position: "absolute",
+    top: 17,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f5f5f5",
+    padding: 10,
+    paddingTop: 0,
+    borderRadius: 8,
+    marginBottom: 10,
   },
 });

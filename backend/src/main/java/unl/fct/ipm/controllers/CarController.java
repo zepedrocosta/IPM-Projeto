@@ -68,8 +68,8 @@ public class CarController extends AbstractController {
     })
     @GetMapping
     @SneakyThrows
-    public ResponseEntity<List<CarResponse>> list() {
-        var cars = carService.list().get();
+    public ResponseEntity<List<CarResponse>> list(@RequestParam(defaultValue = "") String query) {
+        var cars = carService.list(query).get();
         List<CarResponse> carResponses = cars.stream()
                 .map(car -> convert(car, CarResponse.class))
                 .collect(Collectors.toList());

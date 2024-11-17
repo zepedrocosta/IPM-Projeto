@@ -22,4 +22,6 @@ public class CarResponse implements Serializable {
     private String plate;
 
     private String location;
+
+    private String imageURL;
 }

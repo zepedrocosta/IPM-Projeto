@@ -54,9 +54,12 @@ public class CarService {
     }
 
     @Async
-    public Future<List<Car>> list() {
+    public Future<List<Car>> list(String query) {
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return CompletableFuture.completedFuture(cars.findAllByOwner(principal));
+        if (query.isEmpty())
+            return CompletableFuture.completedFuture(cars.findAllByOwner(principal));
+        else
+            return CompletableFuture.completedFuture(cars.findAllByOwner(principal, query));
     }
 
     @Transactional

@@ -33,6 +33,9 @@ public class Car extends DAO implements Serializable {
     @Column
     private String location;
 
+    @Column
+    private String imageURL;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "car")

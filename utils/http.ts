@@ -3,7 +3,7 @@ import store from "../store";
 import { logout, resetToken } from "../store/session";
 import { router } from "expo-router";
 
-axios.defaults.baseURL = "http://localhost:8080/rest"; // Local
+axios.defaults.baseURL = "http://192.168.1.20:8080/rest"; // Local
 //axios.defaults.baseURL = "Azure link"; // Azure
 
 axios.interceptors.request.use(

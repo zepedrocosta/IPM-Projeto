@@ -52,7 +52,7 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <h1>Register</h1>
+      <Text>Register</Text>
       <TouchableOpacity style={styles.iconContainer}>
         <MaterialIcons name="person-add" size={40} color="blue" />
       </TouchableOpacity>
