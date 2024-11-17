@@ -120,7 +120,15 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         ))}
       </View>
 
-      <Button title="+" onPress={showPopupWindow}></Button>
+      <TouchableOpacity
+        style={styles.addButton}
+        activeOpacity={0.7}
+        onPress={showPopupWindow}
+      >
+        <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 36 }}>
+          +
+        </Text>
+      </TouchableOpacity>
 
       {showPopup && (
         <View
@@ -388,20 +396,13 @@ const styles = StyleSheet.create({
     width: 100,
   },
   addButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    width: 56,
-    height: 56,
-    backgroundColor: "#007bff",
-    color: "#fff",
-    borderRadius: 50,
-    display: "flex",
-    alignItems: "center",
+    backgroundColor: "#3399ff",
+    width: 200,
+    minHeight: 60,
+    borderRadius: 25,
     justifyContent: "center",
-    fontSize: 24,
-    cursor: "pointer",
-    //boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+    alignItems: "center",
+    marginTop: 20,
   },
 });
 
