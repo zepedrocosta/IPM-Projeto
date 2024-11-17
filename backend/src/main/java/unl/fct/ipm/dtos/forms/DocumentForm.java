@@ -21,7 +21,7 @@ public class DocumentForm implements Serializable {
     @Size(max = 64)
     private String filename;
 
-    @NotBlank
+    @NotNull
     @Size(max = 64)
     private DocumentTypeEnum type;
 

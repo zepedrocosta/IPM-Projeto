@@ -18,7 +18,6 @@ public class DocumentResponse implements Serializable {
 
     private DocumentTypeEnum type;
 
-    @NotNull
     private LocalDateTime dueDate;
 
     private String plate;

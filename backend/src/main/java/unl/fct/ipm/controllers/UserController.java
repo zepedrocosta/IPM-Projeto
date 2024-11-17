@@ -4,9 +4,8 @@ import com.google.common.reflect.TypeToken;
 import unl.fct.ipm.daos.User;
 import unl.fct.ipm.dtos.forms.users.EditUserForm;
 import unl.fct.ipm.dtos.forms.users.UserForm;
-import unl.fct.ipm.dtos.responses.users.UserResponsePrivilege;
+import unl.fct.ipm.dtos.responses.users.UserResponse;
 import unl.fct.ipm.services.UserService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -28,21 +26,21 @@ public class UserController extends AbstractController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserResponsePrivilege> create(@Validated @RequestBody UserForm form) {
-        return ok(userService.create(convert(form, User.class)), UserResponsePrivilege.class);
+    public ResponseEntity<UserResponse> create(@Validated @RequestBody UserForm form) {
+        return ok(userService.create(convert(form, User.class)), UserResponse.class);
     }
 
     @GetMapping("/{nickname}")
     public ResponseEntity<?> get(@PathVariable String nickname)
             throws ExecutionException, InterruptedException {
         var user = userService.get(nickname);
-        return ok(user, UserResponsePrivilege.class);
+        return ok(user, UserResponse.class);
     }
 
     @PutMapping("/{nickname}")
     @PreAuthorize("hasAnyRole('ADMIN') or authentication.principal.nickname == #form.nickname")
-    public ResponseEntity<UserResponsePrivilege> edit(@Validated @RequestPart EditUserForm form, @RequestPart(required = false) MultipartFile profilePic) throws ExecutionException, InterruptedException {
-        return ok(userService.edit(form, profilePic), UserResponsePrivilege.class);
+    public ResponseEntity<UserResponse> edit(@Validated @RequestBody EditUserForm form) throws ExecutionException, InterruptedException {
+        return ok(userService.edit(form), UserResponse.class);
     }
 
     @DeleteMapping("/{nickname}")
@@ -54,12 +52,12 @@ public class UserController extends AbstractController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     @SneakyThrows
-    public ResponseEntity<Page<UserResponsePrivilege>> list(@RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "0") Integer page,
+    public ResponseEntity<Page<UserResponse>> list(@RequestParam(defaultValue = "") String query, @RequestParam(defaultValue = "0") Integer page,
                                                             @RequestParam(defaultValue = "10") Integer size) {
-        var token = new TypeToken<List<UserResponsePrivilege>>() {
+        var token = new TypeToken<List<UserResponse>>() {
         }.getType();
         Page<User> result = userService.list(query, page, size).get();
-        Page<UserResponsePrivilege> res = new PageImpl<>(convert(result.getContent(), token), result.getPageable(),
+        Page<UserResponse> res = new PageImpl<>(convert(result.getContent(), token), result.getPageable(),
                 result.getTotalElements());
         return ok(res);
     }

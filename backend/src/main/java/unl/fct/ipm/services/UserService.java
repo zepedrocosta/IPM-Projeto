@@ -36,7 +36,6 @@ public class UserService {
 
     @Transactional
     public Optional<User> create(User user) {
-
         user.setPassword(encoder.encode(user.getPassword()));
         user.setEmail(user.getEmail().toLowerCase().trim());
         user.setNickname(user.getNickname().trim());
@@ -53,12 +52,11 @@ public class UserService {
 
     @Transactional
     @CacheEvict(value = USERS, key = "#form.nickname")
-    public Optional<User> edit(EditUserForm form, MultipartFile profilePic) {
+    public Optional<User> edit(EditUserForm form) {
         User u = users.findByNickname(form.getNickname())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         u.setName(form.getName());
-        u.setPhoneNum(form.getPhoneNum());
 
         return Optional.of(users.save(u));
     }

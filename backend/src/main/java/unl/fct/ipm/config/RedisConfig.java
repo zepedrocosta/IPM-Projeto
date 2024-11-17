@@ -11,8 +11,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
-@EnableCaching
-@Configuration
+//@EnableCaching
+//@Configuration
 public class RedisConfig {
     public static final String USERS = "users";
     public static final String SPAM_FILTER = "spam";

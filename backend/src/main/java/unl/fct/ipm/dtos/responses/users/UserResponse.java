@@ -17,16 +17,6 @@ public class UserResponse implements Serializable {
 
     private String name;
 
-    private int level;
-
-    private int levelExp;
-
-    private int levelExpToNextLevel;
-
-    private boolean isPublic;
-    
-    private String profilePic;
-
-    private String bannerPic;
+    private String email;
 
 }

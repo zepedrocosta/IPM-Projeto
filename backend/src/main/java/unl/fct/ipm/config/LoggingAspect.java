@@ -32,8 +32,8 @@ public class LoggingAspect {
 
     //TODO: Don't forget to change Pointcut when using this template
     private static final String POINT_CUT = """
-            (within(com.fct.ipm.controllers..*) && execution(public * * (..))) ||
-            (within(com.fct.ipm.services..*) && execution(public * * (..)))
+            (within(unl.fct.ipm.controllers..*) && execution(public * * (..))) ||
+            (within(unl.fct.ipm.services..*) && execution(public * * (..)))
             """;
 
     private final ApplicationContext applicationContext;

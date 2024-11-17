@@ -17,17 +17,17 @@ import static unl.fct.ipm.config.RedisConfig.SPAM_FILTER;
  * Uses the Redis Cache to keep a record of the number of requests made by an IP address.
  * If it reaches the SPAM_COUNT limit, it will block the IP address, until the cache expires.
  */
-@Component
-@RequiredArgsConstructor
+//@Component
+//@RequiredArgsConstructor
 public class SpamFilter extends OncePerRequestFilter {
 
     private static final int SPAM_COUNT = 200; // Max number of requests allowed before starting to ignore.
 
-    private final CacheManager cacheManager;
+    //private final CacheManager cacheManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        var ip = request.getHeader("X-Forwarded-For");
+        /*var ip = request.getHeader("X-Forwarded-For");
         if (ip == null) {
             ip = request.getRemoteAddr();
         }
@@ -44,6 +44,6 @@ public class SpamFilter extends OncePerRequestFilter {
         }
 
         cache.put(ip, count == null ? 1 : count + 1);
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);*/
     }
 }

@@ -64,7 +64,7 @@ public class AuthService implements UserDetailsService {
         claims.put("nickname", user.getNickname());
         claims.put("role", user.getRoles().toString());
         claims.put("agent", request.getHeader(HttpHeaders.USER_AGENT));
-        claims.put("jti", session.getId());
+        claims.put("jti", session.getId().toString());
         var token = AuthUtils.build(new DefaultClaims(claims));
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         return Optional.empty();

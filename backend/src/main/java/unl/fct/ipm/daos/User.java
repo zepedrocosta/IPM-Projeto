@@ -28,14 +28,11 @@ public class User extends DAO implements UserDetails, Serializable {
     @ToString.Exclude
     private String password;
 
-    @Column(length = 64, nullable = false)
+    @Column(length = 64)
     private String name;
 
     @Column(length = 64, unique = true, nullable = false)
     private String email;
-
-    @Column(length = 13, nullable = false)
-    private String phoneNum;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
