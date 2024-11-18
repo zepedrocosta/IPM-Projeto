@@ -1,6 +1,14 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Text, View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  TextInput,
+} from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 type Car = {
   url: string;
@@ -39,6 +47,57 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     },
   ];
 
+  const [selectedBrand, setSelectedBrand] = useState("");
+  const brands = [
+    "Acura",
+    "Alfa Romeo",
+    "Aston Martin",
+    "Audi",
+    "Bentley",
+    "BMW",
+    "Bugatti",
+    "Buick",
+    "Cadillac",
+    "Chevrolet",
+    "Chrysler",
+    "Citroën",
+    "Dodge",
+    "Ferrari",
+    "Fiat",
+    "Ford",
+    "Genesis",
+    "GMC",
+    "Honda",
+    "Hyundai",
+    "Infiniti",
+    "Jaguar",
+    "Jeep",
+    "Kia",
+    "Lamborghini",
+    "Land Rover",
+    "Lexus",
+    "Lincoln",
+    "Maserati",
+    "Mazda",
+    "McLaren",
+    "Mercedes-Benz",
+    "Mini",
+    "Mitsubishi",
+    "Nissan",
+    "Peugeot",
+    "Porsche",
+    "Ram",
+    "Renault",
+    "Rolls-Royce",
+    "Saab",
+    "Subaru",
+    "Suzuki",
+    "Tesla",
+    "Toyota",
+    "Volkswagen",
+    "Volvo",
+  ];
+
   const [carList, setCarList] = useState<Car[]>(initialState);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<Car>({
@@ -48,18 +107,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     year: new Date().getFullYear(),
     plate: "",
   });
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setNewCar((prevCar) => ({
-      ...prevCar,
-      [name]: name === "year" ? parseInt(value) : value,
-    }));
-  };
-
-  const showPopupWindow = () => {
-    setShowPopup(true);
-  };
 
   const handleAddCar = () => {
     setCarList((prevList) => [...prevList, newCar]);
@@ -141,7 +188,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
       <TouchableOpacity
         style={styles.addButton}
         activeOpacity={0.7}
-        onPress={showPopupWindow}
+        onPress={() => setShowPopup(true)}
       >
         <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 36 }}>
           +
@@ -182,135 +229,45 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             >
               Add New Car
             </Text>
-            <input
-              type="text"
-              name="url"
+            <TextInput
               placeholder="Image URL"
               value={newCar.url}
-              onChange={handleInputChange}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "10px",
-                fontSize: "16px",
-              }}
+              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
+              style={styles.formInput}
             />
-            <select
-              name="brand"
-              value={newCar.brand}
-              onChange={handleModelChange}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "10px",
-                fontSize: "16px",
-              }}
-            >
-              <option value="" disabled>
-                Select a brand
-              </option>
-              {[
-                "Acura",
-                "Alfa Romeo",
-                "Aston Martin",
-                "Audi",
-                "Bentley",
-                "BMW",
-                "Bugatti",
-                "Buick",
-                "Cadillac",
-                "Chevrolet",
-                "Chrysler",
-                "Citroën",
-                "Dodge",
-                "Ferrari",
-                "Fiat",
-                "Ford",
-                "Genesis",
-                "GMC",
-                "Honda",
-                "Hyundai",
-                "Infiniti",
-                "Jaguar",
-                "Jeep",
-                "Kia",
-                "Lamborghini",
-                "Land Rover",
-                "Lexus",
-                "Lincoln",
-                "Maserati",
-                "Mazda",
-                "McLaren",
-                "Mercedes-Benz",
-                "Mini",
-                "Mitsubishi",
-                "Nissan",
-                "Peugeot",
-                "Porsche",
-                "Ram",
-                "Renault",
-                "Rolls-Royce",
-                "Saab",
-                "Subaru",
-                "Suzuki",
-                "Tesla",
-                "Toyota",
-                "Volkswagen",
-                "Volvo",
-              ].map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              name="model"
+
+            <View style={styles.container}>
+              <Picker
+                selectedValue={selectedBrand}
+                onValueChange={(itemValue) => setSelectedBrand(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Select a brand" value="" enabled={false} />
+                {brands.map((brand) => (
+                  <Picker.Item key={brand} label={brand} value={brand} />
+                ))}
+              </Picker>
+            </View>
+
+            <TextInput
               placeholder="Model"
               value={newCar.model}
-              onChange={handleInputChange}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "10px",
-                fontSize: "16px",
-              }}
+              onChangeText={(value) => setNewCar({ ...newCar, model: value })}
+              style={styles.formInput}
             />
-            <input
-              type="number"
-              name="year"
+            <TextInput
               placeholder="Year"
-              value={newCar.year}
-              onChange={handleInputChange}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "10px",
-                fontSize: "16px",
-              }}
+              value={newCar.year.toString()}
+              onChangeText={(value) =>
+                setNewCar({ ...newCar, year: parseInt(value) })
+              }
+              style={styles.formInput}
             />
-            <input
-              type="text"
-              name="plate"
+            <TextInput
               placeholder="Plate"
               value={newCar.plate}
-              onChange={handleInputChange}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ddd",
-                marginBottom: "10px",
-                fontSize: "16px",
-              }}
+              onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
+              style={styles.formInput}
             />
             <View
               style={{
@@ -319,38 +276,19 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 marginTop: 16,
               }}
             >
-              <button
-                onClick={handleAddCar}
-                style={{
-                  flex: 1,
-                  backgroundColor: "#28a745",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "8px",
-                  padding: "10px",
-                  fontSize: "16px",
-                  marginRight: "8px",
-                  cursor: "pointer",
-                }}
+              <TouchableOpacity
+                style={styles.addButton2}
+                onPress={handleAddCar}
               >
-                Add
-              </button>
-              <button
-                onClick={() => setShowPopup(false)}
-                style={{
-                  flex: 1,
-                  backgroundColor: "#dc3545",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "8px",
-                  padding: "10px",
-                  fontSize: "16px",
-                  marginLeft: "8px",
-                  cursor: "pointer",
-                }}
+                <Text>Add</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={() => setShowPopup(false)}
               >
-                Cancel
-              </button>
+                <Text>Cancel</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -428,6 +366,46 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 16,
     objectFit: "cover",
+  },
+  formInput: {
+    width: "100%",
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 10,
+    fontSize: 16,
+  },
+  cancelButton: {
+    flex: 1,
+    backgroundColor: "#dc3545",
+    color: "#fff",
+    borderColor: "transparent",
+    borderWidth: 0,
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    marginLeft: 8,
+    cursor: "pointer",
+  },
+  addButton2: {
+    flex: 1,
+    backgroundColor: "#28a745",
+    color: "#fff",
+    borderColor: "transparent",
+    borderWidth: 0,
+    borderRadius: 8,
+    padding: 10,
+    fontSize: 16,
+    marginLeft: 8,
+    cursor: "pointer",
+  },
+  container: {
+    margin: 16,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
   },
 });
 
