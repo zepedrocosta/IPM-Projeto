@@ -1,7 +1,7 @@
 import Car from '@/app/car';
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
-// import MapView, { Marker } from 'react-native-maps';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
 interface Location {
     id: string;
@@ -15,8 +15,6 @@ interface LocationProps {
 }
 
 export default function Location({ car }: LocationProps) {
-
-
     const [userLocation] = useState({
         latitude: 37.7749,
         longitude: -122.4194,
@@ -37,8 +35,6 @@ export default function Location({ car }: LocationProps) {
         { id: '12', latitude: 40.748817, longitude: -73.985428, street: "Address: Empire State Building, New York, USA" },
         { id: '13', latitude: -22.9068, longitude: -43.1729, street: "Address: Copacabana Beach, Rio de Janeiro, Brazil" },
     ]);
-
-
 
     function getLocationIndex(input: any) {
         const hash = [...input].reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -63,8 +59,7 @@ export default function Location({ car }: LocationProps) {
 
     return (
         <View style={styles.container}>
-            {/* Map */}{/*
-            <MapView
+            {/*<MapView
                 style={styles.map}
                 initialRegion={{
                     latitude: userLocation.latitude,
@@ -79,18 +74,26 @@ export default function Location({ car }: LocationProps) {
                     description="This is where you are"
                 />
 
-                <Marker
-                    coordinate={carLocation}
-                    title="Car Location"
-                    description="This is where the car is"
-                />
+                {selectedLocation && (
+                    <Marker
+                        coordinate={{
+                            latitude: selectedLocation.latitude,
+                            longitude: selectedLocation.longitude,
+                        }}
+                        title="Car Location"
+                        description={selectedLocation.street}
+                    />
+                )}
             </MapView>*/}
+            <View style={styles.locationMapContainer}>
+                <Image style={styles.locationMap} source={require('../assets/images/locations/location1.png')}></Image>
+            </View>
 
             <View style={styles.addressBox}>
                 <Text style={styles.addressText}>{selectedLocation?.street || "Location not available"}</Text>
             </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -99,6 +102,18 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+    },
+    locationMapContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        height: '60%',
+        marginBottom: 20
+    },
+    locationMap: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        borderRadius: 10
     },
     addressBox: {
         height: 50,
@@ -112,6 +127,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         padding: 10,
-        borderRadius: 5
+        borderRadius: 10
     },
 });

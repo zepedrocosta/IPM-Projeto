@@ -1,7 +1,7 @@
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
-import { Button, Pressable, StyleSheet, View, Text } from 'react-native';
+import { Button, Pressable, StyleSheet, View, Text, ScrollView, Image } from 'react-native';
 
 type Car = {
     url: string;
@@ -22,8 +22,17 @@ const Car: React.FC = () => {
         plate: params.plate.toString(),
     });
 
-    const navigateToDocuments = () => {
-        router.push('/documents');
+    const navigateToDocuments = (car: Car) => {
+        router.push({
+            pathname: '/documents',
+            params: {
+                url: car.url,
+                brand: car.brand,
+                model: car.model,
+                year: car.year,
+                plate: car.plate,
+            },
+        });
     };
 
     const navigateToServices = () => {
@@ -63,32 +72,18 @@ const Car: React.FC = () => {
     );
 
     return (
-        <div style={{ marginTop: '20px' }}> {/**TODO: fix scrolls */}
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px' }}>
-                <img src={car.url} height='160px' max-width='390' style={{ borderRadius: '15px' }} />
-                <div style={{
-                    marginBottom: '8px',
-                    fontSize: '25px',
-                    fontWeight: 'bold',
-                    color: '#333',
-                    marginTop: 5
-                }}>{car.brand} {car.model}</div>
-                <div style={{
-                    padding: '4px 8px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '22px',
-                    backgroundColor: '#f9f9f9',
-                    width: 'fit-content',
-                    marginTop: 5
-                }}>
-                    {car.plate}
-                </div>
-            </div>
-            <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '30px' }}>
-                <div style={styles.carGroupingContainer}>
-                    <p style={{ marginBottom: '0', fontSize: '25px' }}>Info</p>
+            <View style={styles.carInfoContainer}>
+                <Image source={{ uri: car.url }} style={styles.image} />
+                <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
+                <View style={styles.carPlate}>
+                    <Text style={styles.carPlateText}>{car.plate}</Text>
+                </View>
+            </View>
+            <View style={styles.optionsContainer}>
+                <View style={styles.carGroupingContainer}>
+                    <Text style={styles.infoTitle}>Info</Text>
                     <View style={styles.carButtonLess}>
                         <CustomButton title="Location" onPress={() => navigateToLocation(car)} />
                     </View>
@@ -96,27 +91,67 @@ const Car: React.FC = () => {
                         <CustomButton title="Services" onPress={navigateToServices} />
                     </View>
                     <View style={styles.carButton}>
-                        <CustomButton title="Documents" onPress={navigateToDocuments} />
+                        <CustomButton title="Documents" onPress={() => navigateToDocuments(car)} />
                     </View>
-                </div>
-                <div style={styles.carGroupingContainer}>
-                    <p style={{ marginBottom: '0', marginTop: '23px', fontSize: '25px' }}>Performance</p>
+                </View>
+                <View style={styles.carGroupingContainerEnd}>
+                    <Text style={styles.performanceTitle}>Performance</Text>
                     <View style={styles.carButtonLess}>
                         <CustomButton title="Stats" onPress={navigateToStats} />
                     </View>
                     <View style={styles.carButton}>
                         <CustomButton title="Track Records" onPress={navigateToTrackRecords} />
                     </View>
-                </div>
-            </div>
-        </div>
+                </View>
+            </View>
+        </ScrollView>
     );
 };
 
 export default Car;
 
-
 const styles = StyleSheet.create({
+    carInfoContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 15
+    },
+    carBrand: {
+        marginBottom: 8,
+        marginTop: 5
+    },
+    carBrandText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    carPlate: {
+        padding: 8,
+        paddingBottom: 4,
+        paddingTop: 4,
+        borderColor: '#ddd',
+        borderRadius: 4,
+        backgroundColor: '#f9f9f9',
+        marginTop: 5
+    },
+    carPlateText: {
+        fontSize: 22,
+    },
+    optionsContainer: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 30
+    },
+    image: {
+        borderRadius: 15,
+        height: 160,
+        width: '100%',  // Ensures that the image fills the width
+        maxWidth: 390,
+        resizeMode: 'cover',  // This can help scale the image
+    },
     carButton: {
         padding: 15,
         width: '80%',
@@ -134,9 +169,24 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
     },
+    carGroupingContainerEnd: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    infoTitle: {
+        marginBottom: 0,
+        fontSize: 25
+    },
+    performanceTitle: {
+        marginBottom: 0,
+        marginTop: 23,
+        fontSize: 25
+    },
     backButton: {
-        padding: 20,
-        marginTop: 20
+        padding: 22,
     },
     container: {
         flex: 1,

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -52,49 +52,74 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <Text>Register</Text>
-      <TouchableOpacity style={styles.iconContainer}>
-        <MaterialIcons name="person-add" size={40} color="blue" />
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={form.email}
-        onChangeText={(value) => setForm({ ...form, email: value })}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={form.nickname}
-        onChangeText={(value) => setForm({ ...form, nickname: value })}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={form.password}
-        onChangeText={(value) => setForm({ ...form, password: value })}
-        secureTextEntry // replaces the password text with dots for added security
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={form.confirmPassword}
-        onChangeText={(value) => setForm({ ...form, confirmPassword: value })}
-        secureTextEntry // replaces the password text with dots for added security
-      />
-      <Button title="Register" onPress={() => handleRegister()} />
-      <Text onPress={() => navigateToSignIn()}>Sign In</Text>
+      <View style={styles.insideContainer}>
+        <Text style={styles.title}>Register</Text>
+        <TouchableOpacity style={styles.iconContainer}>
+          <MaterialIcons name="person-add" size={40} color="blue" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.insideContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={form.email}
+          onChangeText={(value) => setForm({ ...form, email: value })}
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Username"
+          value={form.nickname}
+          onChangeText={(value) => setForm({ ...form, nickname: value })}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={form.password}
+          onChangeText={(value) => setForm({ ...form, password: value })}
+          secureTextEntry // replaces the password text with dots for added security
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={form.confirmPassword}
+          onChangeText={(value) => setForm({ ...form, confirmPassword: value })}
+          secureTextEntry // replaces the password text with dots for added security
+        />
+      </View>
+
+      <View style={styles.insideContainer}>
+        <Pressable style={styles.button} onPress={() => handleRegister()}>
+          <Text style={styles.buttonText}>Register</Text>
+        </Pressable>
+        <Text style={styles.buttonRegister} onPress={() => navigateToSignIn()}>Sign In</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  signInTitle: {
+    fontSize: 25,
+    fontWeight: 'bold'
+  },
   container: {
-    flex: 1,
+    height: '85%',
+    width: '100%',
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+  },
+  forgotPassword: {
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
+  },
+  insideContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+    width: '100%',
   },
   title: {
     fontSize: 24,
@@ -110,12 +135,38 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    width: "100%",
+    width: "80%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 12,
+    fontSize: 20,
+  },
+  button: {
+    backgroundColor: 'rgba(33,150,243,1.00)',
+    paddingVertical: 10,
+    borderRadius: 2,
+    display: 'flex',
+    width: "80%",
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonRegister: {
+    paddingVertical: 10,
+    borderRadius: 2,
+    width: "80%",
+    marginBottom: 20,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center',
   },
 });

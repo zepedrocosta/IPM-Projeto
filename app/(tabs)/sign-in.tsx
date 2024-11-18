@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Button, TextInput, StyleSheet } from "react-native";
+import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -68,37 +68,64 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <Text>Sign In</Text>
-      <View style={styles.iconContainer}>
-        <MaterialIcons name="person" size={40} color="blue" />
+      <View style={styles.insideContainer}>
+        <Text style={styles.signInTitle}>Sign In</Text>
+        <View style={styles.iconContainer}>
+          <MaterialIcons name="person" size={40} color="blue" />
+        </View>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={form.email}
-        onChangeText={(value) => setForm({ ...form, email: value })}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={form.password}
-        onChangeText={(value) => setForm({ ...form, password: value })}
-        secureTextEntry // replaces the password text with dots for added security
-      />
-      <Text>Forgot Password?</Text>
-      <Text onPress={() => navigateToRegister()}>Register</Text>
-      <Button title="Sign In" onPress={() => handleSignIn()} />
+
+      <View style={styles.insideContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={form.email}
+          onChangeText={(value) => setForm({ ...form, email: value })}
+          keyboardType="email-address"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={form.password}
+          onChangeText={(value) => setForm({ ...form, password: value })}
+          secureTextEntry // replaces the password text with dots for added security
+        />
+        <Pressable>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        </Pressable>
+      </View>
+
+      <View style={styles.insideContainer}>
+        <Pressable style={styles.button} onPress={() => handleSignIn()}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </Pressable>
+        <Text style={styles.buttonRegister} onPress={() => navigateToRegister()}>Register</Text>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  signInTitle: {
+    fontSize: 25,
+    fontWeight: 'bold'
+  },
   container: {
-    flex: 1,
+    height: '85%',
+    width: '100%',
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
+  },
+  forgotPassword: {
+    textDecorationStyle: 'solid',
+    textDecorationLine: 'underline',
+  },
+  insideContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
+    width: '100%',
   },
   title: {
     fontSize: 24,
@@ -109,17 +136,44 @@ const styles = StyleSheet.create({
     backgroundColor: "#3498db", // Circle color
     borderRadius: 50, // Circular shape
     padding: 20,
+    marginTop: 20, // Space between icon and text inputs
     marginBottom: 20, // Space between icon and text inputs
     justifyContent: "center",
     alignItems: "center",
   },
   input: {
-    width: "100%",
+    width: "80%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 12,
+    fontSize: 20,
+  },
+  button: {
+    backgroundColor: 'rgba(33,150,243,1.00)',
+    paddingVertical: 10,
+    borderRadius: 2,
+    display: 'flex',
+    width: "80%",
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonRegister: {
+    paddingVertical: 10,
+    borderRadius: 2,
+    width: "80%",
+    marginBottom: 20,
+    fontSize: 20,
+    color: 'black',
+    textAlign: 'center',
   },
 });

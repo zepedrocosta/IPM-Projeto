@@ -57,7 +57,7 @@ export default function Documents() {
   /** Just missing the document header above the page with the arrow to go a page back */
   return (
     <View style={styles.container}>
-      {documents1.length === 0 && <Text>No documents added...</Text>}{" "}
+      {documents1.length === 0 && <Text>No documents added...</Text>}
       {/** condition && //stuff we want to render */}
       <View style={styles.documentsContainer}>
         {/** We will have several of these document views. Each one represents a document */}

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  Pressable,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
@@ -31,6 +32,7 @@ type CarListProps = {
   searchQuery: string;
 };
 
+/* // Uncomment for testing
 const initialCarList: Car[] = [
   {
     imageURL: 'https://quatrorodas.abril.com.br/wp-content/uploads/2020/11/AFLP9451-e1610749268461.jpg',
@@ -53,35 +55,7 @@ const initialCarList: Car[] = [
     year: 1970,
     plate: 'XX-03-XX',
   },
-  {
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
-    brand: 'NISSAN',
-    model: 'FAIRLADY Z',
-    year: 1970,
-    plate: 'XX-03-XX',
-  },
-  {
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
-    brand: 'NISSAN',
-    model: 'FAIRLADY Z',
-    year: 1970,
-    plate: 'XX-03-XX',
-  },
-  {
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
-    brand: 'NISSAN',
-    model: 'FAIRLADY Z',
-    year: 1970,
-    plate: 'XX-03-XX',
-  },
-  {
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
-    brand: 'NISSAN',
-    model: 'FAIRLADY Z',
-    year: 1970,
-    plate: 'XX-03-XX',
-  },
-];
+];*/
 
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
@@ -142,7 +116,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     plate: "",
   };
 
-  const [carList, setCarList] = useState<Car[]>(initialCarList);
+  // const [carList, setCarList] = useState<Car[]>(initialCarList); // Uncomment for testing
+  const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
 
@@ -203,15 +178,94 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   return (
     <View style={styles.main}>
-      {filteredCarList.length === 0 && (
-        <View style={styles.noCarsFound}>
-          <Text style={styles.noCarFoundText}>No cars found</Text>
-          <Text style={styles.addACarText}>Add a car to get started!</Text>
+
+      {showPopup && (
+        <View
+          style={styles.addCarContainer}
+        >
+          <View style={styles.addCar}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                marginBottom: 16,
+                textAlign: "center",
+                color: "#333",
+              }}
+            >
+              Add New Car
+            </Text>
+            {/*<TextInput
+              placeholder="Image URL"
+              value={newCar.url}
+              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
+              style={styles.formInput}
+            />
+            TODO: Change to Image input (MultipartFile)*/}
+
+            <View>
+              <Picker
+                selectedValue={newCar.brand}
+                onValueChange={(value) =>
+                  setNewCar({ ...newCar, brand: value })
+                }
+                style={styles.formInput}
+              >
+                <Picker.Item label="Select a brand" value="" enabled={false} />
+                {brands.map((brand) => (
+                  <Picker.Item key={brand} label={brand} value={brand} />
+                ))}
+              </Picker>
+            </View>
+
+            <TextInput
+              placeholder="Model"
+              value={newCar.model}
+              onChangeText={(value) => setNewCar({ ...newCar, model: value })}
+              style={styles.formInput}
+            />
+            <TextInput
+              keyboardType="numeric"
+              placeholder="Year"
+              value={newCar.year}
+              onChangeText={(value) => setNewCar({ ...newCar, year: value })}
+              style={styles.formInput}
+            />
+            <TextInput
+              placeholder="Plate"
+              value={newCar.plate}
+              onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
+              style={styles.formInput}
+            />
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 16,
+              }}
+            >
+              <Pressable style={styles.button} onPress={handleAddCar}>
+                <Text style={styles.buttonText}>Add</Text>
+              </Pressable>
+              <Pressable style={styles.cancelButton} onPress={() => setShowPopup(false)}>
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
+            </View>
+          </View>
         </View>
       )}
-      <ScrollView>
-        <View style={styles.secondary}>
 
+      {
+        filteredCarList.length === 0 && (
+          <View style={styles.noCarsFound}>
+            <Text style={styles.noCarFoundText}>No cars found</Text>
+            <Text style={styles.addACarText}>Add a car to get started!</Text>
+          </View>
+        )
+      }
+
+      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
+        <View>
           {filteredCarList.map((car, index) => (
             <TouchableOpacity
               key={index}
@@ -250,90 +304,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         </View>
       </ScrollView>
 
-      {showPopup && (
-        <View
-          style={{
-            backgroundColor: "#fff",
-            padding: 20,
-            borderRadius: 12,
-            width: 320,
-            //boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              fontWeight: "bold",
-              marginBottom: 16,
-              textAlign: "center",
-              color: "#333",
-            }}
-          >
-            Add New Car
-          </Text>
-          {/*<TextInput
-              placeholder="Image URL"
-              value={newCar.url}
-              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
-              style={styles.formInput}
-            />
-            TODO: Change to Image input (MultipartFile)*/}
-
-          <View style={styles.container}>
-            <Picker
-              selectedValue={newCar.brand}
-              onValueChange={(value) =>
-                setNewCar({ ...newCar, brand: value })
-              }
-              style={styles.picker}
-            >
-              <Picker.Item label="Select a brand" value="" enabled={false} />
-              {brands.map((brand) => (
-                <Picker.Item key={brand} label={brand} value={brand} />
-              ))}
-            </Picker>
-          </View>
-
-          <TextInput
-            placeholder="Model"
-            value={newCar.model}
-            onChangeText={(value) => setNewCar({ ...newCar, model: value })}
-            style={styles.formInput}
-          />
-          <TextInput
-            keyboardType="numeric"
-            placeholder="Year"
-            value={newCar.year}
-            onChangeText={(value) => setNewCar({ ...newCar, year: value })}
-            style={styles.formInput}
-          />
-          <TextInput
-            placeholder="Plate"
-            value={newCar.plate}
-            onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
-            style={styles.formInput}
-          />
-          <View
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: 16,
-            }}
-          >
-            <TouchableOpacity style={styles.addButton} onPress={handleAddCar}>
-              <Text>Add</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => setShowPopup(false)}
-            >
-              <Text>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
       <TouchableOpacity
         style={styles.addButton}
         activeOpacity={0.7}
@@ -343,118 +313,137 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           +
         </Text>
       </TouchableOpacity>
-    </View>
+    </View >
   );
 };
 
 const styles = StyleSheet.create({
   main: {
-    position: "relative",
-    minHeight: "100%",
+    flex: 1,
     backgroundColor: "#f5f5f5",
+    paddingHorizontal: 16,
+    width: 335
   },
-  secondary: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 20,
-    maxHeight: "60%",
-    overflow: "scroll",
+  addCarContainer: {
+    position: 'absolute',
+    top: 0,
+    right: -100,
+    left: -100,
+    bottom: 0,
+    zIndex: 1265,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(225, 225, 225, 0.8)',
+  },
+  addCar: {
+    width: 335,
+    top: -70,
+    padding: 20,
+    backgroundColor: '#c4c4c4',
+    borderRadius: 10
+  },
+  button: {
+    backgroundColor: 'rgba(33,150,243,1.00)',
+    paddingVertical: 10,
+    borderRadius: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    marginBottom: 20
+  },
+  cancelButton: {
+    backgroundColor: 'red',
+    paddingVertical: 10,
+    borderRadius: 2,
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+  buttonText: {
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   noCarsFound: {
-    display: "flex",
+    flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
-  noCarFoundText: { fontSize: 18, fontWeight: "bold" },
-  addACarText: { fontSize: 14, color: "#777" },
+  noCarFoundText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  scroll: {
+    maxHeight: '90%'
+  },
+  addACarText: {
+    fontSize: 14,
+    color: "#777",
+    marginTop: 8,
+  },
   carObject: {
-    display: "flex",
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 12,
     padding: 16,
-    cursor: "pointer",
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  image: {
+    width: 120,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 16,
   },
   carBrand: {
-    display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
   },
-  carModel: { color: "#777", fontSize: 16, marginBottom: 8 },
+  carModel: {
+    color: "#777",
+    fontSize: 16,
+    marginBottom: 8,
+  },
   carPlate: {
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 4,
-    fontSize: 14,
     backgroundColor: "#f9f9f9",
-    width: 100,
-  },
-  addButton: {
-    borderWidth: 1,
-    alignItems: 'center',
-    width: 60,
-    height: 60,
-    borderRadius: 50,
-    backgroundColor: "#3399ff",
-    borderColor: "#3399ff",
-    minHeight: 60,
-    marginTop: 20,
-    position: 'absolute',
-    bottom: 150,
-    right: -90
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-    marginRight: 16,
-    objectFit: "cover",
+    fontSize: 14,
+    textAlign: "center",
   },
   formInput: {
     width: "100%",
     padding: 10,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 10,
+    borderColor: "#fff",
+    marginBottom: 15,
     fontSize: 16,
   },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: "#dc3545",
-    color: "#fff",
-    borderColor: "transparent",
-    borderWidth: 0,
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 16,
-    marginLeft: 8,
-    cursor: "pointer",
-  },
-  addButton2: {
-    flex: 1,
-    backgroundColor: "#28a745",
-    color: "#fff",
-    borderColor: "transparent",
-    borderWidth: 0,
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 16,
-    marginLeft: 8,
-    cursor: "pointer",
-  },
-  container: {
-    margin: 16,
-  },
-  picker: {
-    height: 50,
-    width: "100%",
+  addButton: {
+    position: "absolute",
+    bottom: 20,
+    right: -25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#3399ff",
+    alignItems: "center",
   },
 });
+
 
 export default CarList;
