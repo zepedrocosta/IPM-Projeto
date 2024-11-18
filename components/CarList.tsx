@@ -125,9 +125,18 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   const router = useRouter();
 
-  const navigateToCarPage = () => {
-    router.push("/car");
-  };
+    const navigateToCarPage = (car: Car) => {
+        router.push({
+            pathname: '/car',
+            params: {
+                url: car.imageURL,
+                brand: car.brand,
+                model: car.model,
+                year: car.year.toString(),
+                plate: car.plate,
+            },
+        });
+    };
 
   const filteredCarList = carList.filter((car) => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -152,7 +161,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           <TouchableOpacity
             key={index}
             style={styles.carObject}
-            onPress={navigateToCarPage}
+            onPress={() => navigateToCarPage(car)}
           >
             <Image
               source={{
