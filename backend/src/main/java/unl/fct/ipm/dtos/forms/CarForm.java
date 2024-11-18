@@ -28,6 +28,6 @@ public class CarForm implements Serializable {
     private int year;
 
     @NotBlank
-    @Size(max = 8)
+    @Size(max = 8, min = 8)
     private String plate;
 }
