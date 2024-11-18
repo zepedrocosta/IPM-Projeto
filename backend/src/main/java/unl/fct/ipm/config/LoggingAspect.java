@@ -24,8 +24,8 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Parameter;
 import java.util.*;
 
-@Aspect
-@Component
+//@Aspect
+//@Component
 @Slf4j
 @RequiredArgsConstructor
 public class LoggingAspect {
@@ -43,7 +43,7 @@ public class LoggingAspect {
             String.class, Long.class, Integer.class, Optional.class, ResponseEntity.class, Page.class, Collection.class);
 
 
-    @Autowired
+    //@Autowired
     @Qualifier("getGsonAspect")
     private Gson gson;
 

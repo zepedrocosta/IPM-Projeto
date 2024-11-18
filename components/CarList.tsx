@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { httpPost } from "@/utils/http";
+import { httpGet, httpPost } from "@/utils/http";
 
 type Car = {
   imageURL: string;
@@ -22,7 +22,7 @@ type Car = {
 type CarForm = {
   brand: string;
   model: string;
-  year: number;
+  year: string;
   plate: string;
 };
 
@@ -31,33 +31,6 @@ type CarListProps = {
 };
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
-  const initialState: Car[] = [
-    {
-      imageURL:
-        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
-      brand: "FORD",
-      model: "MUSTANG MACH 1",
-      year: 1969,
-      plate: "XX-01-XX",
-    },
-    {
-      imageURL:
-        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
-      brand: "FORD",
-      model: "MUSTANG MACH 1",
-      year: 1969,
-      plate: "XX-01-XX",
-    },
-    {
-      imageURL:
-        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
-      brand: "FORD",
-      model: "MUSTANG MACH 1",
-      year: 1969,
-      plate: "XX-01-XX",
-    },
-  ];
-
   const brands = [
     "Acura",
     "Alfa Romeo",
@@ -108,19 +81,40 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     "Volvo",
   ];
 
-  const [carList, setCarList] = useState<Car[]>([]);
-  const [showPopup, setShowPopup] = useState(false);
-  const [newCar, setNewCar] = useState<CarForm>({
+  const initalNewCar: CarForm = {
     brand: "",
     model: "",
-    year: new Date().getFullYear(),
+    year: new Date().getFullYear().toString(),
     plate: "",
-  });
+  };
+
+  const [carList, setCarList] = useState<Car[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
+
+  useEffect(() => {
+    httpGet("/cars").then(
+      (response: any) => {
+        setCarList(response.data);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }, []);
 
   const handleAddCar = () => {
-    httpPost("/cars", newCar).then(
+    httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
       (res: any) => {
-        setCarList([...carList, res.data]);
+        setCarList([
+          ...carList,
+          {
+            ...newCar,
+            year: parseInt(newCar.year),
+            imageURL: res.data.imageURL,
+          },
+        ]);
+        setNewCar(initalNewCar);
         setShowPopup(false);
       },
       (err) => {
@@ -160,7 +154,14 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             style={styles.carObject}
             onPress={navigateToCarPage}
           >
-            <Image source={{ uri: car.imageURL }} style={styles.image} />
+            <Image
+              source={{
+                uri:
+                  car.imageURL ||
+                  "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+              }}
+              style={styles.image}
+            />
             <View style={{ flex: 1 }}>
               <View style={styles.carBrand}>
                 <Text>{car.brand}</Text>
@@ -260,10 +261,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             <TextInput
               keyboardType="numeric"
               placeholder="Year"
-              value={newCar.year.toString()}
-              onChangeText={(value) =>
-                setNewCar({ ...newCar, year: parseInt(value) })
-              }
+              value={newCar.year}
+              onChangeText={(value) => setNewCar({ ...newCar, year: value })}
               style={styles.formInput}
             />
             <TextInput

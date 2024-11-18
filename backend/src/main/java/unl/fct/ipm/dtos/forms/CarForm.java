@@ -1,11 +1,10 @@
 package unl.fct.ipm.dtos.forms;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -24,7 +23,8 @@ public class CarForm implements Serializable {
     private String model;
 
     @NotNull
-    @Size(max = 4)
+    @Min(1885)
+    @Max(2200)
     private int year;
 
     @NotBlank
