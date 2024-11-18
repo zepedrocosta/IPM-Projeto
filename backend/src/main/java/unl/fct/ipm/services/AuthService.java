@@ -51,11 +51,11 @@ public class AuthService implements UserDetailsService {
 
         //Removing this comment will make the user unable to login if he already has an active session
 
-        /*if (sessions.existsByUserAndEndedIsNull(user.getId())) {
-            var session = sessions.findByUserAndEndedIsNull(user.getId()).get();
+        if (sessions.existsByUserAndEndedIsNull(user)) {
+            var session = sessions.findByUserAndEndedIsNull(user).get();
             session.setEnded(LocalDateTime.now());
             sessions.save(session);
-        }*/
+        }
 
         var session = new Session(request.getHeader(HttpHeaders.USER_AGENT), null, user);
         sessions.save(session);

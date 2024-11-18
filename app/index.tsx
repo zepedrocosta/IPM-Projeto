@@ -15,7 +15,6 @@ export default function App() {
   useEffect(() => {
     const fetchToken = async () => {
       let token = await AsyncStorage.getItem("token");
-      console.log("Token is: " + token);
       if (token !== null) {
         let t: any = jwtDecode(token.split(" ")[1]);
         if (t.exp * 1000 > Date.now()) {

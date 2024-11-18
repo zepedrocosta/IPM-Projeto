@@ -9,9 +9,17 @@ import {
   TextInput,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
+import { httpPost } from "@/utils/http";
 
 type Car = {
-  url: string;
+  imageURL: string;
+  brand: string;
+  model: string;
+  year: number;
+  plate: string;
+};
+
+type CarForm = {
   brand: string;
   model: string;
   year: number;
@@ -25,21 +33,24 @@ type CarListProps = {
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const initialState: Car[] = [
     {
-      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      imageURL:
+        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
       brand: "FORD",
       model: "MUSTANG MACH 1",
       year: 1969,
       plate: "XX-01-XX",
     },
     {
-      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      imageURL:
+        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
       brand: "FORD",
       model: "MUSTANG MACH 1",
       year: 1969,
       plate: "XX-01-XX",
     },
     {
-      url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
+      imageURL:
+        "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
       brand: "FORD",
       model: "MUSTANG MACH 1",
       year: 1969,
@@ -47,7 +58,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     },
   ];
 
-  const [selectedBrand, setSelectedBrand] = useState("");
   const brands = [
     "Acura",
     "Alfa Romeo",
@@ -98,10 +108,9 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     "Volvo",
   ];
 
-  const [carList, setCarList] = useState<Car[]>(initialState);
+  const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [newCar, setNewCar] = useState<Car>({
-    url: "",
+  const [newCar, setNewCar] = useState<CarForm>({
     brand: "",
     model: "",
     year: new Date().getFullYear(),
@@ -109,31 +118,21 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   });
 
   const handleAddCar = () => {
-    setCarList((prevList) => [...prevList, newCar]);
-    setShowPopup(false);
-    setNewCar({
-      url: "",
-      brand: "",
-      model: "",
-      year: new Date().getFullYear(),
-      plate: "",
-    });
+    httpPost("/cars", newCar).then(
+      (res: any) => {
+        setCarList([...carList, res.data]);
+        setShowPopup(false);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
   };
 
   const router = useRouter();
 
   const navigateToCarPage = () => {
     router.push("/car");
-  };
-
-  const handleModelChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setNewCar((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
   };
 
   const filteredCarList = carList.filter((car) => {
@@ -161,7 +160,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             style={styles.carObject}
             onPress={navigateToCarPage}
           >
-            <Image source={{ uri: car.url }} style={styles.image} />
+            <Image source={{ uri: car.imageURL }} style={styles.image} />
             <View style={{ flex: 1 }}>
               <View style={styles.carBrand}>
                 <Text>{car.brand}</Text>
@@ -229,17 +228,20 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             >
               Add New Car
             </Text>
-            <TextInput
+            {/*<TextInput
               placeholder="Image URL"
               value={newCar.url}
               onChangeText={(value) => setNewCar({ ...newCar, url: value })}
               style={styles.formInput}
             />
+            TODO: Change to Image input (MultipartFile)*/}
 
             <View style={styles.container}>
               <Picker
-                selectedValue={selectedBrand}
-                onValueChange={(itemValue) => setSelectedBrand(itemValue)}
+                selectedValue={newCar.brand}
+                onValueChange={(value) =>
+                  setNewCar({ ...newCar, brand: value })
+                }
                 style={styles.picker}
               >
                 <Picker.Item label="Select a brand" value="" enabled={false} />
@@ -256,6 +258,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               style={styles.formInput}
             />
             <TextInput
+              keyboardType="numeric"
               placeholder="Year"
               value={newCar.year.toString()}
               onChangeText={(value) =>
@@ -276,10 +279,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 marginTop: 16,
               }}
             >
-              <TouchableOpacity
-                style={styles.addButton2}
-                onPress={handleAddCar}
-              >
+              <TouchableOpacity style={styles.addButton} onPress={handleAddCar}>
                 <Text>Add</Text>
               </TouchableOpacity>
 
