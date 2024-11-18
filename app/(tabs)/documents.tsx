@@ -7,7 +7,7 @@ import Documents from '@/components/Documents';
 
 export default function DocumentPage() {
   const router = useRouter(); // Use the router hook for navigation
-
+  
   const navigateToRegister = () => {
     router.push('/main'); // Navigate to the register page
   };
