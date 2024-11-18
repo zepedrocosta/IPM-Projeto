@@ -11,8 +11,6 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker"; // Native DatePicker
-import DatePicker from "react-datepicker"; // Web DatePicker
-import "react-datepicker/dist/react-datepicker.css"; // Web styling for react-datepicker
 import * as DocumentPicker from "expo-document-picker";
 
 interface AddDocumentModalProps {
@@ -132,32 +130,16 @@ export default function AddDocumentModal({
           {/* Conditional date picker */}
           {/* Have to make another date function for web testing, because when we confirm the date, is uses DatePicker instead of DateTimePicker*/}
           {expirableDocuments.includes(category) && (
-            <>
-              {Platform.OS === "web" ? (
-                // Web DatePicker
-                <DatePicker
-                  selected={date}
-                  onChange={(event, selectedDate) => {
-                    const currentDate = selectedDate || date;
-                    setShowDatePicker(false);
-                    setDate(date);
-                  }}
-                  dateFormat="MM/dd/yyyy"
-                />
-              ) : (
-                // Mobile DateTimePicker
-                <DateTimePicker
-                  value={date}
-                  mode="date"
-                  display="default"
-                  onChange={(event, selectedDate) => {
-                    const currentDate = selectedDate || date;
-                    setShowDatePicker(false);
-                    setDate(currentDate);
-                  }}
-                />
-              )}
-            </>
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                const currentDate = selectedDate || date;
+                setShowDatePicker(false);
+                setDate(currentDate);
+              }}
+            />
           )}
 
           {/* Buttons */}

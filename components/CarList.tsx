@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
+import { ScrollView } from "react-native-gesture-handler";
 
 type Car = {
   imageURL: string;
@@ -29,6 +30,59 @@ type CarForm = {
 type CarListProps = {
   searchQuery: string;
 };
+
+const initialCarList: Car[] = [
+  {
+    imageURL: 'https://quatrorodas.abril.com.br/wp-content/uploads/2020/11/AFLP9451-e1610749268461.jpg',
+    brand: 'FORD',
+    model: 'MUSTANG MACH 1',
+    year: 1969,
+    plate: 'XX-01-XX',
+  },
+  {
+    imageURL: 'https://silodrome.com/wp-content/uploads/2018/09/BMW-2002-Guide-1600x1138.jpg',
+    brand: 'BMW',
+    model: '2002 Turbo',
+    year: 1966,
+    plate: 'XX-02-XX',
+  },
+  {
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
+    brand: 'NISSAN',
+    model: 'FAIRLADY Z',
+    year: 1970,
+    plate: 'XX-03-XX',
+  },
+  {
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
+    brand: 'NISSAN',
+    model: 'FAIRLADY Z',
+    year: 1970,
+    plate: 'XX-03-XX',
+  },
+  {
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
+    brand: 'NISSAN',
+    model: 'FAIRLADY Z',
+    year: 1970,
+    plate: 'XX-03-XX',
+  },
+  {
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
+    brand: 'NISSAN',
+    model: 'FAIRLADY Z',
+    year: 1970,
+    plate: 'XX-03-XX',
+  },
+  {
+    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
+    brand: 'NISSAN',
+    model: 'FAIRLADY Z',
+    year: 1970,
+    plate: 'XX-03-XX',
+  },
+];
+
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const brands = [
@@ -88,7 +142,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     plate: "",
   };
 
-  const [carList, setCarList] = useState<Car[]>([]);
+  const [carList, setCarList] = useState<Car[]>(initialCarList);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
 
@@ -125,18 +179,18 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   const router = useRouter();
 
-    const navigateToCarPage = (car: Car) => {
-        router.push({
-            pathname: '/car',
-            params: {
-                url: car.imageURL,
-                brand: car.brand,
-                model: car.model,
-                year: car.year.toString(),
-                plate: car.plate,
-            },
-        });
-    };
+  const navigateToCarPage = (car: Car) => {
+    router.push({
+      pathname: '/car',
+      params: {
+        url: car.imageURL,
+        brand: car.brand,
+        model: car.model,
+        year: car.year.toString(),
+        plate: car.plate,
+      },
+    });
+  };
 
   const filteredCarList = carList.filter((car) => {
     const lowercasedQuery = searchQuery.toLowerCase();
@@ -149,50 +203,136 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   return (
     <View style={styles.main}>
-      <View style={styles.secondary}>
-        {filteredCarList.length === 0 && (
-          <View style={styles.carList}>
-            <Text style={styles.noCarFoundText}>No cars found</Text>
-            <Text style={styles.addACarText}>Add a car to get started!</Text>
-          </View>
-        )}
+      {filteredCarList.length === 0 && (
+        <View style={styles.noCarsFound}>
+          <Text style={styles.noCarFoundText}>No cars found</Text>
+          <Text style={styles.addACarText}>Add a car to get started!</Text>
+        </View>
+      )}
+      <ScrollView>
+        <View style={styles.secondary}>
 
-        {filteredCarList.map((car, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.carObject}
-            onPress={() => navigateToCarPage(car)}
-          >
-            <Image
-              source={{
-                uri:
-                  car.imageURL ||
-                  "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
-              }}
-              style={styles.image}
-            />
-            <View style={{ flex: 1 }}>
-              <View style={styles.carBrand}>
-                <Text>{car.brand}</Text>
-                <Text style={{ color: "#555" }}>{car.year}</Text>
-              </View>
-              <View style={styles.carModel}>
-                <Text>{car.model}</Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
+          {filteredCarList.map((car, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.carObject}
+              onPress={() => navigateToCarPage(car)}
+            >
+              <Image
+                source={{
+                  uri:
+                    car.imageURL ||
+                    "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
                 }}
-              >
-                <View style={styles.carPlate}>
-                  <Text>{car.plate}</Text>
+                style={styles.image}
+              />
+              <View style={{ flex: 1 }}>
+                <View style={styles.carBrand}>
+                  <Text>{car.brand}</Text>
+                  <Text style={{ color: "#555" }}>{car.year}</Text>
+                </View>
+                <View style={styles.carModel}>
+                  <Text>{car.model}</Text>
+                </View>
+                <View
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <View style={styles.carPlate}>
+                    <Text>{car.plate}</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+
+      {showPopup && (
+        <View
+          style={{
+            backgroundColor: "#fff",
+            padding: 20,
+            borderRadius: 12,
+            width: 320,
+            //boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              fontWeight: "bold",
+              marginBottom: 16,
+              textAlign: "center",
+              color: "#333",
+            }}
+          >
+            Add New Car
+          </Text>
+          {/*<TextInput
+              placeholder="Image URL"
+              value={newCar.url}
+              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
+              style={styles.formInput}
+            />
+            TODO: Change to Image input (MultipartFile)*/}
+
+          <View style={styles.container}>
+            <Picker
+              selectedValue={newCar.brand}
+              onValueChange={(value) =>
+                setNewCar({ ...newCar, brand: value })
+              }
+              style={styles.picker}
+            >
+              <Picker.Item label="Select a brand" value="" enabled={false} />
+              {brands.map((brand) => (
+                <Picker.Item key={brand} label={brand} value={brand} />
+              ))}
+            </Picker>
+          </View>
+
+          <TextInput
+            placeholder="Model"
+            value={newCar.model}
+            onChangeText={(value) => setNewCar({ ...newCar, model: value })}
+            style={styles.formInput}
+          />
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Year"
+            value={newCar.year}
+            onChangeText={(value) => setNewCar({ ...newCar, year: value })}
+            style={styles.formInput}
+          />
+          <TextInput
+            placeholder="Plate"
+            value={newCar.plate}
+            onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
+            style={styles.formInput}
+          />
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginTop: 16,
+            }}
+          >
+            <TouchableOpacity style={styles.addButton} onPress={handleAddCar}>
+              <Text>Add</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setShowPopup(false)}
+            >
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       <TouchableOpacity
         style={styles.addButton}
@@ -203,104 +343,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           +
         </Text>
       </TouchableOpacity>
-
-      {showPopup && (
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#fff",
-              padding: 20,
-              borderRadius: 12,
-              width: 320,
-              //boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.15)",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                marginBottom: 16,
-                textAlign: "center",
-                color: "#333",
-              }}
-            >
-              Add New Car
-            </Text>
-            {/*<TextInput
-              placeholder="Image URL"
-              value={newCar.url}
-              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
-              style={styles.formInput}
-            />
-            TODO: Change to Image input (MultipartFile)*/}
-
-            <View style={styles.container}>
-              <Picker
-                selectedValue={newCar.brand}
-                onValueChange={(value) =>
-                  setNewCar({ ...newCar, brand: value })
-                }
-                style={styles.picker}
-              >
-                <Picker.Item label="Select a brand" value="" enabled={false} />
-                {brands.map((brand) => (
-                  <Picker.Item key={brand} label={brand} value={brand} />
-                ))}
-              </Picker>
-            </View>
-
-            <TextInput
-              placeholder="Model"
-              value={newCar.model}
-              onChangeText={(value) => setNewCar({ ...newCar, model: value })}
-              style={styles.formInput}
-            />
-            <TextInput
-              keyboardType="numeric"
-              placeholder="Year"
-              value={newCar.year}
-              onChangeText={(value) => setNewCar({ ...newCar, year: value })}
-              style={styles.formInput}
-            />
-            <TextInput
-              placeholder="Plate"
-              value={newCar.plate}
-              onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
-              style={styles.formInput}
-            />
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginTop: 16,
-              }}
-            >
-              <TouchableOpacity style={styles.addButton} onPress={handleAddCar}>
-                <Text>Add</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => setShowPopup(false)}
-              >
-                <Text>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
     </View>
   );
 };
@@ -315,17 +357,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 20,
-    maxHeight: "80%",
+    maxHeight: "60%",
     overflow: "scroll",
   },
-  carList: {
+  noCarsFound: {
     display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
     alignItems: "center",
-    height: "100%", // Ensure it takes full container height
-    textAlign: "center", // Optional for multi-line messages
-    color: "#555", // Customize as needed
   },
   noCarFoundText: { fontSize: 18, fontWeight: "bold" },
   addACarText: { fontSize: 14, color: "#777" },
@@ -335,10 +372,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 12,
-    //boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
     padding: 16,
     cursor: "pointer",
-    //transition: "transform 0.2s, box-shadow 0.2s",
   },
   carBrand: {
     display: "flex",
@@ -360,13 +395,18 @@ const styles = StyleSheet.create({
     width: 100,
   },
   addButton: {
+    borderWidth: 1,
+    alignItems: 'center',
+    width: 60,
+    height: 60,
+    borderRadius: 50,
     backgroundColor: "#3399ff",
-    width: 200,
+    borderColor: "#3399ff",
     minHeight: 60,
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
     marginTop: 20,
+    position: 'absolute',
+    bottom: 150,
+    right: -90
   },
   image: {
     width: 80,

@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     position: "absolute",
-    top: 17,
+    top: -95,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#f5f5f5",
@@ -76,5 +76,6 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     borderRadius: 8,
     marginBottom: 10,
+    zIndex: 1000
   },
 });
