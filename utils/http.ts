@@ -3,8 +3,8 @@ import store from "../store";
 import { logout, resetToken } from "../store/session";
 import { router } from "expo-router";
 
-axios.defaults.baseURL = "http://192.168.84.127:8080/rest"; // Local - Rodrigo
-//axios.defaults.baseURL = "https://ipmprojeto.zepedrocosta.com/rest"; // Cloud
+//axios.defaults.baseURL = "http://192.168.0.16:8080/rest"; // Local - Rodrigo
+axios.defaults.baseURL = "https://ipmprojeto.zepedrocosta.com/rest"; // Cloud
 
 axios.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
