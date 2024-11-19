@@ -3,15 +3,15 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 
 import styles from "./styles";
 
-const [date, setDate] = useState("");
-const [hour, setHour] = useState("");
-const [inspectionCenter, setInspectionCenter] = useState("");
-
-const handleSubmit = () => {
-  console.log({ date, hour, inspectionCenter });
-};
-
 export default function ScheduleInspectionPage() {
+  const [date, setDate] = useState("");
+  const [hour, setHour] = useState("");
+  const [inspectionCenter, setInspectionCenter] = useState("");
+
+  const handleSubmit = () => {
+    console.log({ date, hour, inspectionCenter });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.CarName}>Ford Mustang</Text>
