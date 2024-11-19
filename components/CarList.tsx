@@ -129,7 +129,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     router.push({
       pathname: "/car",
       params: {
-        url:
+        imageURL:
           car.imageURL ||
           "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
         brand: car.brand,
@@ -167,8 +167,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             </Text>
             {/*<TextInput
               placeholder="Image URL"
-              value={newCar.url}
-              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
+              value={newCar.imageURL}
+              onChangeText={(value) => setNewCar({ ...newCar, imageURL: value })}
               style={styles.formInput}
             />
             TODO: Change to Image input (MultipartFile)*/}

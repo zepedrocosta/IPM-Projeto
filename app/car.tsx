@@ -5,7 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 
 type Car = {
-  url: string;
+  imageURL: string;
   brand: string;
   model: string;
   year: string;
@@ -16,7 +16,7 @@ const Car: React.FC = () => {
   const params = useLocalSearchParams();
 
   const [car, setCar] = useState<Car>({
-    url: params.url.toString(),
+    imageURL: params.imageURL.toString(),
     brand: params.brand.toString(),
     model: params.model.toString(),
     year: params.year.toString(),
@@ -28,7 +28,18 @@ const Car: React.FC = () => {
   };
 
   const navigateToServices = () => {
-    router.push("/services");
+    router.push({
+      pathname: "/services",
+      params: {
+        imageURL:
+          car.imageURL ||
+          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        brand: car.brand,
+        model: car.model,
+        year: car.year.toString(),
+        plate: car.plate,
+      },
+    });
   };
 
   const navigateToMain = () => {
@@ -79,7 +90,10 @@ const Car: React.FC = () => {
           alignItems: "center",
         }}
       >
-        <Image source={{ uri: car.url }} style={{ height: 160, width: 160 }} />
+        <Image
+          source={{ uri: car.imageURL }}
+          style={{ height: 160, width: 160 }}
+        />
         <View style={styles.carBrandModel}>
           <Text>
             {car.brand} {car.model}

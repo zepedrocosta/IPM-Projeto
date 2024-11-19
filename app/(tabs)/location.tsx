@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { DefaultTopBar } from '@/components/DefaultTopBar';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { useLocalSearchParams, useRouter } from 'expo-router'; // Use the expo-router hook for navigation
-import Location from '@/components/Location';
-import Car from '../car';
+import React, { useState } from "react";
+import { Text, StyleSheet } from "react-native";
+import { DefaultTopBar } from "@/components/DefaultTopBar";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
+import Location from "@/components/Location";
+import Car from "../car";
 
 export default function LocationPage() {
   const params = useLocalSearchParams();
 
   const [car, setCar] = useState<Car>({
-    url: params.url.toString(),
+    imageURL: params.imageURL.toString(),
     brand: params.brand.toString(),
     model: params.model.toString(),
     year: params.year.toString(),
@@ -21,9 +21,9 @@ export default function LocationPage() {
 
   const navigateToCarPage = () => {
     router.push({
-      pathname: '/car',
+      pathname: "/car",
       params: {
-        url: car.url,
+        imageURL: car.imageURL,
         brand: car.brand,
         model: car.model,
         year: car.year,
@@ -34,8 +34,14 @@ export default function LocationPage() {
 
   return (
     <DefaultTopBar
-      leftComponent={<AntDesign name="left" size={24} onPress={navigateToCarPage} />}
-      children={<Text style={styles.topText}>{car.brand} {car.model}</Text>}
+      leftComponent={
+        <AntDesign name="left" size={24} onPress={navigateToCarPage} />
+      }
+      children={
+        <Text style={styles.topText}>
+          {car.brand} {car.model}
+        </Text>
+      }
       body={<Location car={car} />}
     />
   );
@@ -46,4 +52,3 @@ const styles = StyleSheet.create({
     fontSize: 23,
   },
 });
-

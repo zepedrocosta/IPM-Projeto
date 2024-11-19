@@ -1,20 +1,54 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
-import { DefaultTopBar } from '@/components/DefaultTopBar';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router'; // Use the expo-router hook for navigation
-import Services from '@/components/Services';
+import React, { useState } from "react";
+import { Text, StyleSheet } from "react-native";
+import { DefaultTopBar } from "@/components/DefaultTopBar";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
+import Services from "@/components/Services";
+
+type Car = {
+  imageURL: string;
+  brand: string;
+  model: string;
+  year: string;
+  plate: string;
+};
 
 export default function DocumentPage() {
-  const router = useRouter(); // Use the router hook for navigation
+  const params = useLocalSearchParams();
+  const router = useRouter();
 
-  const navigateToCar = () => {
-    router.push('/car'); // Navigate to the register page
+  const [car, setCar] = useState<Car>({
+    imageURL: params.imageURL.toString(),
+    brand: params.brand.toString(),
+    model: params.model.toString(),
+    year: params.year.toString(),
+    plate: params.plate.toString(),
+  });
+
+  const navigateToCar = (car: Car) => {
+    router.push({
+      pathname: "/car",
+      params: {
+        imageURL:
+          car.imageURL ||
+          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        brand: car.brand,
+        model: car.model,
+        year: car.year.toString(),
+        plate: car.plate,
+      },
+    });
   };
 
   return (
     <DefaultTopBar
-      leftComponent={<MaterialIcons name="arrow-left" size={24} onPress={navigateToCar}/>}
+      leftComponent={
+        <MaterialIcons
+          name="arrow-left"
+          size={24}
+          onPress={() => navigateToCar(car)}
+        />
+      }
       children={<Text style={styles.topText}>Services</Text>}
       body={<Services />}
     />
