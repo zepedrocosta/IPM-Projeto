@@ -14,6 +14,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchToken = async () => {
+      //AsyncStorage.removeItem("token");
       let token = await AsyncStorage.getItem("token");
       if (token !== null) {
         let t: any = jwtDecode(token.split(" ")[1]);
