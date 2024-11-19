@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import Car from "@/app/car";
 
 import styles from "./styles";
 
-export default function ScheduleInspectionPage() {
+export default function ScheduleInspectionPage({ car }: { car: Car }) {
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
   const [inspectionCenter, setInspectionCenter] = useState("");
@@ -14,8 +15,9 @@ export default function ScheduleInspectionPage() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.CarName}>Ford Mustang</Text>
-      <Text style={styles.licencePlate}>(XX-09-XX)</Text>
+      <Text style={styles.CarName}>{car.brand}</Text>
+      <Text style={styles.CarName}>{car.model}</Text>
+      <Text style={styles.licencePlate}>({car.plate})</Text>
 
       <View style={styles.serviceBox}>
         <View style={styles.itemBox}>

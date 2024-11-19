@@ -72,13 +72,17 @@ const brands = [
   "Ram",
   "Renault",
   "Rolls-Royce",
+  "Rover",
   "Saab",
+  "Seat",
+  "Skoda",
   "Subaru",
   "Suzuki",
   "Tesla",
   "Toyota",
   "Volkswagen",
   "Volvo",
+  "Other",
 ];
 
 const initalNewCar: CarForm = {
@@ -181,7 +185,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 }
                 style={styles.formInput}
               >
-                <Picker.Item label="Select a brand" value="" enabled={false} />
+                <Picker.Item label="Select a brand" value="" />
                 {brands.map((brand) => (
                   <Picker.Item key={brand} label={brand} value={brand} />
                 ))}

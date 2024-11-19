@@ -3,14 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 import { httpGet } from "@/utils/http";
 import styles from "./styles";
-
-type Car = {
-  imageURL: string;
-  brand: string;
-  model: string;
-  year: string;
-  plate: string;
-};
+import Car from "@/app/car";
 
 type Service = {
   dueDate: string;
@@ -53,7 +46,18 @@ export default function ServicesPage({ car }: { car: Car }) {
   }, []);
 
   const navigateToScheduleInspection = () => {
-    router.push("/scheduleinspection");
+    router.push({
+      pathname: "/scheduleinspection",
+      params: {
+        imageURL:
+          car.imageURL ||
+          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        brand: car.brand,
+        model: car.model,
+        year: car.year.toString(),
+        plate: car.plate,
+      },
+    });
   };
 
   return (
@@ -104,10 +108,10 @@ export default function ServicesPage({ car }: { car: Car }) {
           <Text style={styles.itemKm}>
             Kms: {vehicleCheck?.dueKms || "N/A"}
           </Text>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Tyre Service</Text>
-          </TouchableOpacity>
         </View>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Tyre Service</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
 import Services from "@/components/Services";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Car = {
   imageURL: string;
@@ -17,13 +18,13 @@ export default function DocumentPage() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  const [car, setCar] = useState<Car>({
-    imageURL: params.imageURL.toString(),
-    brand: params.brand.toString(),
-    model: params.model.toString(),
-    year: params.year.toString(),
-    plate: params.plate.toString(),
-  });
+  const [car, setCar] = useState<Car>();
+
+  useEffect(() => {
+    AsyncStorage.getItem("car").then((value) => {
+      setCar(JSON.parse(value!));
+    });
+  }, []);
 
   const navigateToCar = (car: Car) => {
     router.push({
@@ -41,17 +42,19 @@ export default function DocumentPage() {
   };
 
   return (
-    <DefaultTopBar
-      leftComponent={
-        <MaterialIcons
-          name="arrow-left"
-          size={24}
-          onPress={() => navigateToCar(car)}
-        />
-      }
-      children={<Text style={styles.topText}>Services</Text>}
-      body={<Services car={car} />}
-    />
+    <Fragment>
+      {car && <DefaultTopBar
+        leftComponent={
+          <MaterialIcons
+            name="arrow-left"
+            size={24}
+            onPress={() => navigateToCar(car)}
+          />
+        }
+        children={<Text style={styles.topText}>Services</Text>}
+        body={<Services car={car} />}
+      />}
+    </Fragment>
   );
 }
 

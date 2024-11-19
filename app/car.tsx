@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Car = {
   imageURL: string;
@@ -14,6 +15,7 @@ type Car = {
 
 const Car: React.FC = () => {
   const params = useLocalSearchParams();
+  AsyncStorage.setItem("car", JSON.stringify(params));
 
   const [car, setCar] = useState<Car>({
     imageURL: params.imageURL.toString(),
