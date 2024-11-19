@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 
 type Car = {
   url: string;
@@ -12,12 +13,14 @@ type Car = {
 };
 
 const Car: React.FC = () => {
+  const params = useLocalSearchParams();
+
   const [car, setCar] = useState<Car>({
-    url: "https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png",
-    brand: "FORD",
-    model: "MUSTANG MACH 1",
-    year: "1969",
-    plate: "XX-01-XX",
+    url: params.url.toString(),
+    brand: params.brand.toString(),
+    model: params.model.toString(),
+    year: params.year.toString(),
+    plate: params.plate.toString(),
   });
 
   const navigateToDocuments = () => {

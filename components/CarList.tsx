@@ -31,90 +31,65 @@ type CarListProps = {
   searchQuery: string;
 };
 
-/* // Uncomment for testing
-const initialCarList: Car[] = [
-  {
-    imageURL: 'https://quatrorodas.abril.com.br/wp-content/uploads/2020/11/AFLP9451-e1610749268461.jpg',
-    brand: 'FORD',
-    model: 'MUSTANG MACH 1',
-    year: 1969,
-    plate: 'XX-01-XX',
-  },
-  {
-    imageURL: 'https://silodrome.com/wp-content/uploads/2018/09/BMW-2002-Guide-1600x1138.jpg',
-    brand: 'BMW',
-    model: '2002 Turbo',
-    year: 1966,
-    plate: 'XX-02-XX',
-  },
-  {
-    imageURL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1970-1973_Nissan_Fairlady_Z.jpg/1200px-1970-1973_Nissan_Fairlady_Z.jpg',
-    brand: 'NISSAN',
-    model: 'FAIRLADY Z',
-    year: 1970,
-    plate: 'XX-03-XX',
-  },
-];*/
+const brands = [
+  "Acura",
+  "Alfa Romeo",
+  "Aston Martin",
+  "Audi",
+  "Bentley",
+  "BMW",
+  "Bugatti",
+  "Buick",
+  "Cadillac",
+  "Chevrolet",
+  "Chrysler",
+  "Citroën",
+  "Dodge",
+  "Ferrari",
+  "Fiat",
+  "Ford",
+  "Genesis",
+  "GMC",
+  "Honda",
+  "Hyundai",
+  "Infiniti",
+  "Jaguar",
+  "Jeep",
+  "Kia",
+  "Lamborghini",
+  "Land Rover",
+  "Lexus",
+  "Lincoln",
+  "Maserati",
+  "Mazda",
+  "McLaren",
+  "Mercedes-Benz",
+  "Mini",
+  "Mitsubishi",
+  "Nissan",
+  "Peugeot",
+  "Porsche",
+  "Ram",
+  "Renault",
+  "Rolls-Royce",
+  "Saab",
+  "Subaru",
+  "Suzuki",
+  "Tesla",
+  "Toyota",
+  "Volkswagen",
+  "Volvo",
+];
+
+const initalNewCar: CarForm = {
+  brand: "",
+  model: "",
+  year: new Date().getFullYear().toString(),
+  plate: "",
+};
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
-  const brands = [
-    "Acura",
-    "Alfa Romeo",
-    "Aston Martin",
-    "Audi",
-    "Bentley",
-    "BMW",
-    "Bugatti",
-    "Buick",
-    "Cadillac",
-    "Chevrolet",
-    "Chrysler",
-    "Citroën",
-    "Dodge",
-    "Ferrari",
-    "Fiat",
-    "Ford",
-    "Genesis",
-    "GMC",
-    "Honda",
-    "Hyundai",
-    "Infiniti",
-    "Jaguar",
-    "Jeep",
-    "Kia",
-    "Lamborghini",
-    "Land Rover",
-    "Lexus",
-    "Lincoln",
-    "Maserati",
-    "Mazda",
-    "McLaren",
-    "Mercedes-Benz",
-    "Mini",
-    "Mitsubishi",
-    "Nissan",
-    "Peugeot",
-    "Porsche",
-    "Ram",
-    "Renault",
-    "Rolls-Royce",
-    "Saab",
-    "Subaru",
-    "Suzuki",
-    "Tesla",
-    "Toyota",
-    "Volkswagen",
-    "Volvo",
-  ];
-
-  const initalNewCar: CarForm = {
-    brand: "",
-    model: "",
-    year: new Date().getFullYear().toString(),
-    plate: "",
-  };
-
-  // const [carList, setCarList] = useState<Car[]>(initialCarList); // Uncomment for testing
+  const router = useRouter();
   const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
@@ -150,13 +125,13 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     );
   };
 
-  const router = useRouter();
-
   const navigateToCarPage = (car: Car) => {
     router.push({
       pathname: "/car",
       params: {
-        url: car.imageURL,
+        url:
+          car.imageURL ||
+          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
