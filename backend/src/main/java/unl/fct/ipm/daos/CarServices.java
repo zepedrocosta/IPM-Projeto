@@ -21,7 +21,7 @@ public class CarServices extends DAO implements Serializable {
     @Column(nullable = false)
     private LocalDateTime dueDate;
 
-    @Column(nullable = false)
+    @Column
     private long dueKms;
 
     @Column(nullable = false)

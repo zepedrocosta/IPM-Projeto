@@ -16,7 +16,7 @@ type Car = {
   imageURL: string;
   brand: string;
   model: string;
-  year: number;
+  year: string;
   plate: string;
 };
 
@@ -112,7 +112,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           ...carList,
           {
             ...newCar,
-            year: parseInt(newCar.year),
+            year: newCar.year,
             imageURL: res.data.imageURL,
           },
         ]);

@@ -50,7 +50,7 @@ export default function DocumentPage() {
         />
       }
       children={<Text style={styles.topText}>Services</Text>}
-      body={<Services />}
+      body={<Services car={car} />}
     />
   );
 }
