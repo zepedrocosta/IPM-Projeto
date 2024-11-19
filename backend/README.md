@@ -6,6 +6,10 @@ Compilar e gerar o *.jar
 mvn clean package
 ```
 
+```cmd
+cd /mnt/user0/ZéData/UNI\ Mestrado/IPM/Projeto/IShowCar/backend
+```
+
 Build da imagem
 
 ```cmd
