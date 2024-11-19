@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
-import { ScrollView } from "react-native-gesture-handler";
 
 type Car = {
   imageURL: string;
@@ -56,7 +55,6 @@ const initialCarList: Car[] = [
     plate: 'XX-03-XX',
   },
 ];*/
-
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const brands = [
@@ -156,7 +154,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   const navigateToCarPage = (car: Car) => {
     router.push({
-      pathname: '/car',
+      pathname: "/car",
       params: {
         url: car.imageURL,
         brand: car.brand,
@@ -178,11 +176,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   return (
     <View style={styles.main}>
-
       {showPopup && (
-        <View
-          style={styles.addCarContainer}
-        >
+        <View style={styles.addCarContainer}>
           <View style={styles.addCar}>
             <Text
               style={{
@@ -247,7 +242,10 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               <Pressable style={styles.button} onPress={handleAddCar}>
                 <Text style={styles.buttonText}>Add</Text>
               </Pressable>
-              <Pressable style={styles.cancelButton} onPress={() => setShowPopup(false)}>
+              <Pressable
+                style={styles.cancelButton}
+                onPress={() => setShowPopup(false)}
+              >
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
             </View>
@@ -255,54 +253,50 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         </View>
       )}
 
-      {
-        filteredCarList.length === 0 && (
-          <View style={styles.noCarsFound}>
-            <Text style={styles.noCarFoundText}>No cars found</Text>
-            <Text style={styles.addACarText}>Add a car to get started!</Text>
-          </View>
-        )
-      }
+      {filteredCarList.length === 0 && (
+        <View style={styles.noCarsFound}>
+          <Text style={styles.noCarFoundText}>No cars found</Text>
+          <Text style={styles.addACarText}>Add a car to get started!</Text>
+        </View>
+      )}
 
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <View>
-          {filteredCarList.map((car, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.carObject}
-              onPress={() => navigateToCarPage(car)}
-            >
-              <Image
-                source={{
-                  uri:
-                    car.imageURL ||
-                    "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+      <View>
+        {filteredCarList.map((car, index) => (
+          <TouchableOpacity
+            key={index}
+            style={styles.carObject}
+            onPress={() => navigateToCarPage(car)}
+          >
+            <Image
+              source={{
+                uri:
+                  car.imageURL ||
+                  "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+              }}
+              style={styles.image}
+            />
+            <View style={{ flex: 1 }}>
+              <View style={styles.carBrand}>
+                <Text>{car.brand}</Text>
+                <Text style={{ color: "#555" }}>{car.year}</Text>
+              </View>
+              <View style={styles.carModel}>
+                <Text>{car.model}</Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
                 }}
-                style={styles.image}
-              />
-              <View style={{ flex: 1 }}>
-                <View style={styles.carBrand}>
-                  <Text>{car.brand}</Text>
-                  <Text style={{ color: "#555" }}>{car.year}</Text>
-                </View>
-                <View style={styles.carModel}>
-                  <Text>{car.model}</Text>
-                </View>
-                <View
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <View style={styles.carPlate}>
-                    <Text>{car.plate}</Text>
-                  </View>
+              >
+                <View style={styles.carPlate}>
+                  <Text>{car.plate}</Text>
                 </View>
               </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
 
       <TouchableOpacity
         style={styles.addButton}
@@ -313,7 +307,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           +
         </Text>
       </TouchableOpacity>
-    </View >
+    </View>
   );
 };
 
@@ -322,49 +316,49 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f5f5f5",
     paddingHorizontal: 16,
-    width: 335
+    width: 335,
   },
   addCarContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     right: -100,
     left: -100,
     bottom: 0,
     zIndex: 1265,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(225, 225, 225, 0.8)',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(225, 225, 225, 0.8)",
   },
   addCar: {
     width: 335,
     top: -70,
     padding: 20,
-    backgroundColor: '#c4c4c4',
-    borderRadius: 10
+    backgroundColor: "#c4c4c4",
+    borderRadius: 10,
   },
   button: {
-    backgroundColor: 'rgba(33,150,243,1.00)',
+    backgroundColor: "rgba(33,150,243,1.00)",
     paddingVertical: 10,
     borderRadius: 2,
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 20
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row",
+    marginBottom: 20,
   },
   cancelButton: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     paddingVertical: 10,
     borderRadius: 2,
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "row",
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   noCarsFound: {
     flex: 1,
@@ -376,7 +370,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   scroll: {
-    maxHeight: '90%'
+    maxHeight: "90%",
   },
   addACarText: {
     fontSize: 14,
@@ -444,6 +438,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
 
 export default CarList;
