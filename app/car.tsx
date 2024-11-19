@@ -1,59 +1,35 @@
-import { AntDesign } from '@expo/vector-icons';
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
-import { Button, Pressable, StyleSheet, View, Text, ScrollView, Image } from 'react-native';
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Image, Pressable } from "react-native";
+import {AntDesign} from "@expo/vector-icons"
 
 type Car = {
-    url: string;
-    brand: string;
-    model: string;
-    year: string;
-    plate: string;
+  url: string;
+  brand: string;
+  model: string;
+  year: string;
+  plate: string;
 };
 
 const Car: React.FC = () => {
-    const params = useLocalSearchParams();
-
     const [car, setCar] = useState<Car>({
-        url: params.url.toString(),
-        brand: params.brand.toString(),
-        model: params.model.toString(),
-        year: params.year.toString(),
-        plate: params.plate.toString(),
+        url: 'https://upload.wikimedia.org/wikipedia/pt/c/c2/Peter_Griffin.png',
+        brand: 'FORD',
+        model: 'MUSTANG MACH 1',
+        year: "1969",
+        plate: 'XX-01-XX',
     });
 
-    const navigateToDocuments = (car: Car) => {
-        router.push({
-            pathname: '/documents',
-            params: {
-                url: car.url,
-                brand: car.brand,
-                model: car.model,
-                year: car.year,
-                plate: car.plate,
-            },
-        });
-    };
+  const navigateToDocuments = () => {
+    router.push("/documents");
+  };
 
-    const navigateToServices = () => {
-        router.push('/services');
-    };
+  const navigateToServices = () => {
+    router.push("/services");
+  };
 
     const navigateToMain = () => {
         router.push('/main');
-    };
-
-    const navigateToLocation = (car: Car) => {
-        router.push({
-            pathname: '/location',
-            params: {
-                url: car.url,
-                brand: car.brand,
-                model: car.model,
-                year: car.year,
-                plate: car.plate,
-            },
-        });
     };
 
     const navigateToStats = () => { // TODO: Stats page
@@ -72,30 +48,37 @@ const Car: React.FC = () => {
     );
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ marginTop: 30 }}>
             <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
-            <View style={styles.carInfoContainer}>
-                <Image source={{ uri: car.url }} style={styles.image} />
-                <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
-                <View style={styles.carPlate}>
-                    <Text style={styles.carPlateText}>{car.plate}</Text>
+            {/**TODO: fix scrolls */}
+            <View
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
+            >
+                <Image source={{ uri: car.url }} style={{ height: 160, width: 160 }} />
+                <View style={styles.carBrandModel}>
+                    {car.brand} {car.model}
                 </View>
+                <View style={styles.carPlate}>{car.plate}</View>
             </View>
-            <View style={styles.optionsContainer}>
+            <View style={styles.carMain}>
                 <View style={styles.carGroupingContainer}>
-                    <Text style={styles.infoTitle}>Info</Text>
+                    <Text style={{ marginBottom: 0 }}>Info</Text>
                     <View style={styles.carButtonLess}>
-                        <CustomButton title="Location" onPress={() => navigateToLocation(car)} />
+                        <CustomButton title="Location" onPress={navigateToMain} />
                     </View>
                     <View style={styles.carButton}>
                         <CustomButton title="Services" onPress={navigateToServices} />
                     </View>
                     <View style={styles.carButton}>
-                        <CustomButton title="Documents" onPress={() => navigateToDocuments(car)} />
+                        <CustomButton title="Documents" onPress={navigateToDocuments} />
                     </View>
                 </View>
-                <View style={styles.carGroupingContainerEnd}>
-                    <Text style={styles.performanceTitle}>Performance</Text>
+                <View style={styles.carGroupingContainer}>
+                    <p style={{ marginBottom: "0", marginTop: "23px" }}>Performance</p>
                     <View style={styles.carButtonLess}>
                         <CustomButton title="Stats" onPress={navigateToStats} />
                     </View>
@@ -104,89 +87,58 @@ const Car: React.FC = () => {
                     </View>
                 </View>
             </View>
-        </ScrollView>
+        </View>
     );
 };
 
 export default Car;
 
 const styles = StyleSheet.create({
-    carInfoContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: 15
-    },
-    carBrand: {
-        marginBottom: 8,
-        marginTop: 5
-    },
-    carBrandText: {
-        fontSize: 25,
-        fontWeight: 'bold',
-        color: '#333',
-    },
-    carPlate: {
-        padding: 8,
-        paddingBottom: 4,
-        paddingTop: 4,
-        borderColor: '#ddd',
-        borderRadius: 4,
-        backgroundColor: '#f9f9f9',
-        marginTop: 5
-    },
-    carPlateText: {
-        fontSize: 22,
-    },
-    optionsContainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginTop: 30
-    },
-    image: {
-        borderRadius: 15,
-        height: 160,
-        width: '100%',  // Ensures that the image fills the width
-        maxWidth: 390,
-        resizeMode: 'cover',  // This can help scale the image
-    },
-    carButton: {
-        padding: 15,
-        width: '80%',
-        fontSize: 20
-    },
-    carButtonLess: {
-        marginTop: 5,
-        padding: 15,
-        width: '80%',
-        fontSize: 25
-    },
-    carGroupingContainer: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    carGroupingContainerEnd: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        marginBottom: 20
-    },
-    infoTitle: {
-        marginBottom: 0,
-        fontSize: 25
-    },
-    performanceTitle: {
-        marginBottom: 0,
-        marginTop: 23,
-        fontSize: 25
-    },
+  carMain: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 30,
+  },
+  carButton: {
+    padding: 10,
+    width: 190,
+    fontSize: 15,
+  },
+  carButtonLess: {
+    marginTop: 5,
+    padding: 10,
+    width: 190,
+    fontSize: 15,
+  },
+  carGroupingContainer: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  carBrandModel: {
+    marginBottom: 8,
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 5,
+  },
+  carPlate: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 4,
+    fontSize: 22,
+    backgroundColor: "#f9f9f9",
+    width: "auto",
+    marginTop: 5,
+  },
     backButton: {
-        padding: 22,
+        padding: 20,
+        marginTop: 20
     },
     container: {
         flex: 1,
