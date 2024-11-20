@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import unl.fct.ipm.daos.Car;
 import unl.fct.ipm.daos.CarServices;
 import unl.fct.ipm.daos.Document;
@@ -38,8 +39,9 @@ public class CarController extends AbstractController {
             @ApiResponse(responseCode = "409", description = "Car with same license plate already exists")
     })
     @PostMapping
-    public ResponseEntity<CarResponse> create(@Validated @RequestBody CarForm form) {
-        return ok(carService.create(convert(form, Car.class)), CarResponse.class);
+    public ResponseEntity<CarResponse> create(@Validated @RequestPart CarForm form,
+                                              @RequestPart(required = false) MultipartFile image) {
+        return ok(carService.create(convert(form, Car.class), image), CarResponse.class);
     }
 
     @Operation(summary = "Get a car")

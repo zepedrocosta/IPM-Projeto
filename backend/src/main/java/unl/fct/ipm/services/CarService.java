@@ -1,11 +1,14 @@
 package unl.fct.ipm.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import unl.fct.ipm.daos.Car;
 import unl.fct.ipm.daos.CarServices;
@@ -17,6 +20,9 @@ import unl.fct.ipm.repositories.CarRepository;
 import unl.fct.ipm.repositories.CarServiceRepository;
 import unl.fct.ipm.repositories.DocumentRepository;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,9 +42,24 @@ public class CarService {
     private final CarServiceRepository carServices;
 
     @Transactional
-    public Optional<Car> create(Car car) {
+    @SneakyThrows
+    public Optional<Car> create(Car car, MultipartFile image) {
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         car.setOwner(principal);
+
+        if (image != null) {
+            try {
+                var uploadPath = Paths.get("src/main/resources");
+                var filePath = uploadPath.resolve(car.getPlate());
+                Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+                var url = new UrlResource(filePath.toUri());
+                car.setImageURL(url.getURL().toString());
+                System.out.println(car.getImageURL());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         return Optional.of(cars.save(car));
     }
 
