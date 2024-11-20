@@ -196,7 +196,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   addressBox: {
-    height: 50,
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",

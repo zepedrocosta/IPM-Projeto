@@ -10,7 +10,7 @@ export default function DocumentPage() {
   const params = useLocalSearchParams();
 
   const [car, setCar] = useState<Car>({
-    imageURL: params.imageURL.toString(),
+    url: params.url.toString(),
     brand: params.brand.toString(),
     model: params.model.toString(),
     year: params.year.toString(),
@@ -27,7 +27,7 @@ export default function DocumentPage() {
     router.push({
       pathname: "/car",
       params: {
-        imageURL: car.imageURL,
+        url: car.url,
         brand: car.brand,
         model: car.model,
         year: car.year,

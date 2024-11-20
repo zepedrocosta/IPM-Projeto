@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import CarList from '../components/CarList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type DefaultTopBarProps = {
   children?: React.ReactNode;
@@ -11,7 +12,7 @@ type DefaultTopBarProps = {
 
 export function DefaultTopBar({ children, body, leftComponent, rightComponent }: DefaultTopBarProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
         <View style={styles.sideContainer}>{leftComponent}</View>
 
@@ -25,7 +26,7 @@ export function DefaultTopBar({ children, body, leftComponent, rightComponent }:
       <View style={styles.body}>
         {body}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
