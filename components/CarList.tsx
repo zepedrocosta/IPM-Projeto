@@ -8,10 +8,15 @@ import {
   Image,
   TextInput,
   Pressable,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { httpGet, httpPost } from "@/utils/http";
 import { ScrollView } from "react-native-gesture-handler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from 'expo-file-system';
+import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
+import axios from "axios";
 
 type Car = {
   imageURL: string;
@@ -22,6 +27,7 @@ type Car = {
 };
 
 type CarForm = {
+  imageURL: string;
   brand: string;
   model: string;
   year: string;
@@ -109,7 +115,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     "Volvo",
   ];
 
-  const initalNewCar: CarForm = {
+  const initialNewCar: CarForm = {
+    imageURL: "",
     brand: "",
     model: "",
     year: new Date().getFullYear().toString(),
@@ -119,37 +126,96 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   // const [carList, setCarList] = useState<Car[]>(initialCarList); // Uncomment for testing
   const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
+  const [newCar, setNewCar] = useState<CarForm>(initialNewCar);
+
+  const loadCarsFromCache = async () => {
+    try {
+      const storedCars = await AsyncStorage.getItem("carList");
+      if (storedCars) {
+        setCarList(JSON.parse(storedCars));
+      }
+    } catch (error) {
+      console.error("Error loading cars from cache:", error);
+    }
+  };
 
   useEffect(() => {
-    httpGet("/cars").then(
-      (response: any) => {
-        setCarList(response.data);
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    loadCarsFromCache();
   }, []);
 
-  const handleAddCar = () => {
-    httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
-      (res: any) => {
-        setCarList([
-          ...carList,
-          {
-            ...newCar,
-            year: parseInt(newCar.year),
-            imageURL: res.data.imageURL,
-          },
-        ]);
-        setNewCar(initalNewCar);
-        setShowPopup(false);
-      },
-      (err) => {
-        console.error(err);
+  useEffect(() => {
+    const saveCarsToCache = async () => {
+      try {
+        await AsyncStorage.setItem("carList", JSON.stringify(carList));
+      } catch (error) {
+        console.error("Error saving cars to cache:", error);
       }
-    );
+    };
+
+    if (carList.length > 0) {
+      saveCarsToCache();
+    }
+  }, [carList]);
+
+  const handleAddCar = () => {
+    const carToAdd: Car = {
+      imageURL: newCar.imageURL !== "" ? newCar.imageURL : "https://example.com/car.jpg",
+      brand: newCar.brand,
+      model: newCar.model,
+      year: parseInt(newCar.year),
+      plate: newCar.plate,
+    };
+    console.log(carToAdd.imageURL)
+
+    setCarList((prevList) => [...prevList, carToAdd]);
+
+    setNewCar(initialNewCar);
+    setShowPopup(false);
+  };
+
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      alert("Permission to access gallery is required!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const fileUri = result.assets[0].uri;
+
+      try {
+        const fileName = fileUri.split('/').pop();
+        if (!fileName) {
+          throw new Error('File name could not be extracted');
+        }
+
+        const cacheDirectory = FileSystem.cacheDirectory;
+        if (!cacheDirectory) {
+          throw new Error('Cache directory is not available');
+        }
+
+        const cachedUri = FileSystem.cacheDirectory + fileName;
+
+        await FileSystem.copyAsync({ from: fileUri, to: cachedUri });
+
+        await AsyncStorage.setItem('imageURL', cachedUri);
+        console.log("Image saved in cache at:", cachedUri);
+
+        setNewCar((prevCar) => ({
+          ...prevCar,
+          imageURL: cachedUri,
+        }));
+      } catch (error) {
+        console.error("Error saving image URI to cache:", error);
+      }
+    }
   };
 
   const router = useRouter();
@@ -195,28 +261,19 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             >
               Add New Car
             </Text>
-            {/*<TextInput
-              placeholder="Image URL"
-              value={newCar.url}
-              onChangeText={(value) => setNewCar({ ...newCar, url: value })}
+
+            <Pressable style={styles.button} onPress={pickImage}>
+              <Text style={styles.buttonText}>
+                {newCar.imageURL ? "Change Image" : "Pick an Image"}
+              </Text>
+            </Pressable>
+
+            <TextInput
+              placeholder="Brand"
+              value={newCar.brand}
+              onChangeText={(value) => setNewCar({ ...newCar, brand: value })}
               style={styles.formInput}
             />
-            TODO: Change to Image input (MultipartFile)*/}
-
-            <View>
-              <Picker
-                selectedValue={newCar.brand}
-                onValueChange={(value) =>
-                  setNewCar({ ...newCar, brand: value })
-                }
-                style={styles.formInput}
-              >
-                <Picker.Item label="Select a brand" value="" enabled={false} />
-                {brands.map((brand) => (
-                  <Picker.Item key={brand} label={brand} value={brand} />
-                ))}
-              </Picker>
-            </View>
 
             <TextInput
               placeholder="Model"
@@ -295,7 +352,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                   }}
                 >
                   <View style={styles.carPlate}>
-                    <Text>{car.plate}</Text>
+                    <Text style={styles.carPlateText}>{car.plate}</Text>
                   </View>
                 </View>
               </View>
@@ -313,7 +370,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           +
         </Text>
       </TouchableOpacity>
-    </View >
+    </View>
   );
 };
 
@@ -421,8 +478,9 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 4,
     backgroundColor: "#f9f9f9",
-    fontSize: 14,
-    textAlign: "center",
+  },
+  carPlateText: {
+    textAlign: 'center'
   },
   formInput: {
     width: "100%",

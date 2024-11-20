@@ -1,31 +1,17 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { httpPut } from "@/utils/http";
-import { login } from "@/store/session";
-import { jwtDecode } from "jwt-decode";
-import { useDispatch, useSelector } from "react-redux";
-import { sessionSelector } from "@/store/session";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type RootStackParamList = {
   Home: undefined;
   SignIn: undefined; //might have to say NoLogin() or such
 };
 
-type SignInScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  "SignIn"
->;
 
 // This is the start of the functional component for the Register screen. We export it as the default export so that it can be imported and used elsewhere in the app.
 export default function SignIn() {
-  const navigation = useNavigation<SignInScreenNavigationProp>();
-  const dispatch = useDispatch();
-  const session = useSelector(sessionSelector);
-
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -41,29 +27,24 @@ export default function SignIn() {
     router.push("/register"); // Navigate to the register page
   };
 
-  const handleSignIn = async () => {
-    await httpPut("/security", form).then(
-      (res) => {
-        console.log(res);
-        let t: any = jwtDecode(res.headers["authorization"].split(" ")[1]);
-        dispatch(
-          login({
-            email: t.email,
-            nickname: t.nickname,
-            token: res.headers["authorization"],
-            role: t.role,
-            iat: t.iat,
-            exp: t.exp,
-            jti: t.jti,
-            isLogged: true,
-          })
-        );
-        navigateToMain();
-      },
-      (error) => {
-        console.error("Error at login:", error);
+  const handleSignIn = async (email: string, password: string) => {
+    try {
+      const storedUser = await AsyncStorage.getItem("user");
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+
+        if (user.email === email && user.password === password) {
+          console.log("Login successful!");
+          router.push("/main"); // Navigate to the main app screen
+        } else {
+          console.log("Invalid email or password");
+        }
+      } else {
+        console.log("No user found. Please register first.");
       }
-    );
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+    }
   };
 
   return (
@@ -96,7 +77,7 @@ export default function SignIn() {
       </View>
 
       <View style={styles.insideContainer}>
-        <Pressable style={styles.button} onPress={() => handleSignIn()}>
+        <Pressable style={styles.button} onPress={() => handleSignIn(form.email, form.password)}>
           <Text style={styles.buttonText}>Sign In</Text>
         </Pressable>
         <Text style={styles.buttonRegister} onPress={() => navigateToRegister()}>Register</Text>

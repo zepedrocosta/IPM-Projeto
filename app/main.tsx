@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, TextInput, View } from "react-native";
+import { Text, StyleSheet, TextInput, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { DefaultTopBar } from "../components/DefaultTopBar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -18,29 +18,39 @@ export default function HomePage() {
     setIsSearchActive(!isSearchActive);
   };
 
+  const handleTouchablePress = () => {
+    Keyboard.dismiss();
+    setIsSearchActive(false);
+  };
+
   return (
-    <DefaultTopBar
-      leftComponent={<MaterialIcons name="menu" size={24} />}
-      children={<Text style={styles.topText}>My Cars</Text>}
-      body={
-        <>
-          {isSearchActive && (
-            <View style={styles.searchBar}>
-              <TextInput
-                style={styles.searchInput}
-                placeholder="Search cars..."
-                value={searchQuery}
-                onChangeText={handleSearchChange}
-              />
-            </View>
-          )}
-          <CarList searchQuery={searchQuery} />
-        </>
-      }
-      rightComponent={
-        <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
-      }
-    />
+    <TouchableWithoutFeedback onPress={handleTouchablePress}>
+      <View style={{ flex: 1 }}>
+        <DefaultTopBar
+          leftComponent={<MaterialIcons name="menu" size={24} />}
+          children={<Text style={styles.topText}>My Cars</Text>}
+          body={
+            <>
+              {isSearchActive && (
+                <View style={styles.searchBar}>
+                  <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search cars..."
+                    value={searchQuery}
+                    onChangeText={handleSearchChange}
+                    autoFocus={true}
+                  />
+                </View>
+              )}
+              <CarList searchQuery={searchQuery} />
+            </>
+          }
+          rightComponent={
+            <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
+          }
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

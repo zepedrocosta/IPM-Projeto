@@ -2,6 +2,10 @@ import { AntDesign } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Button, Pressable, StyleSheet, View, Text, ScrollView, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import * as FileSystem from 'expo-file-system';
+import * as ImagePicker from "expo-image-picker";
+
 
 type Car = {
     url: string;
@@ -13,6 +17,7 @@ type Car = {
 
 const Car: React.FC = () => {
     const params = useLocalSearchParams();
+    console.log(params.url.toString())
 
     const [car, setCar] = useState<Car>({
         url: params.url.toString(),
@@ -64,6 +69,12 @@ const Car: React.FC = () => {
         router.push('/main');
     };
 
+    const getLocalUri = async (path: string) => {
+        const fileInfo = await FileSystem.getInfoAsync(path);
+        console.log('File exists:', fileInfo.exists);
+        return fileInfo.exists;
+    };
+
     const CustomButton = ({ title, onPress }: { title: string; onPress: () => void }) => (
         <Pressable style={styles.button} onPress={onPress}>
             <Text style={styles.buttonText}>{title}</Text>
@@ -72,39 +83,41 @@ const Car: React.FC = () => {
     );
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-            <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
-            <View style={styles.carInfoContainer}>
-                <Image source={{ uri: car.url }} style={styles.image} />
-                <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
-                <View style={styles.carPlate}>
-                    <Text style={styles.carPlateText}>{car.plate}</Text>
-                </View>
-            </View>
-            <View style={styles.optionsContainer}>
-                <View style={styles.carGroupingContainer}>
-                    <Text style={styles.infoTitle}>Info</Text>
-                    <View style={styles.carButtonLess}>
-                        <CustomButton title="Location" onPress={() => navigateToLocation(car)} />
-                    </View>
-                    <View style={styles.carButton}>
-                        <CustomButton title="Services" onPress={navigateToServices} />
-                    </View>
-                    <View style={styles.carButton}>
-                        <CustomButton title="Documents" onPress={() => navigateToDocuments(car)} />
+        <SafeAreaView>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
+                <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
+                <View style={styles.carInfoContainer}>
+                    <Image source={{ uri: car.url }} style={styles.image} />
+                    <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
+                    <View style={styles.carPlate}>
+                        <Text style={styles.carPlateText}>{car.plate}</Text>
                     </View>
                 </View>
-                <View style={styles.carGroupingContainerEnd}>
-                    <Text style={styles.performanceTitle}>Performance</Text>
-                    <View style={styles.carButtonLess}>
-                        <CustomButton title="Stats" onPress={navigateToStats} />
+                <View style={styles.optionsContainer}>
+                    <View style={styles.carGroupingContainer}>
+                        <Text style={styles.infoTitle}>Info</Text>
+                        <View style={styles.carButtonLess}>
+                            <CustomButton title="Location" onPress={() => navigateToLocation(car)} />
+                        </View>
+                        <View style={styles.carButton}>
+                            <CustomButton title="Services" onPress={navigateToServices} />
+                        </View>
+                        <View style={styles.carButton}>
+                            <CustomButton title="Documents" onPress={() => navigateToDocuments(car)} />
+                        </View>
                     </View>
-                    <View style={styles.carButton}>
-                        <CustomButton title="Track Records" onPress={navigateToTrackRecords} />
+                    <View style={styles.carGroupingContainerEnd}>
+                        <Text style={styles.performanceTitle}>Performance</Text>
+                        <View style={styles.carButtonLess}>
+                            <CustomButton title="Stats" onPress={navigateToStats} />
+                        </View>
+                        <View style={styles.carButton}>
+                            <CustomButton title="Track Records" onPress={navigateToTrackRecords} />
+                        </View>
                     </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

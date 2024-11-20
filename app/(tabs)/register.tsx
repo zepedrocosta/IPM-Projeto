@@ -1,23 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
-import { httpPost } from "@/utils/http";
-
-// TypeScript type definition that specifies the structure of the navigatio stack. Each key represents a screen name, and the value represents the screen exports.
-// Home: undefined; -> indicates that the Home screen exists and doesn't require any parameters to navigate to it
-// This type helps TypeScript understand what screens are available inn the navigation stack and ensures type safety when navigating
-type RootStackParamList = {
-  Home: undefined;
-  Register: undefined; //might have to say NoLogin() or such
-};
-
-type RegisterScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList, // stack of available screens
-  "Register" // specifies that this navigation prop is specifically for the Register screen
->;
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // This is the start of the functional component for the Register screen. We export it as the default export so that it can be imported and used elsewhere in the app.
 export default function Register() {
@@ -28,17 +14,23 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  // This function will be triggered when the Register button is pressed.
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (form.password === form.confirmPassword) {
-      httpPost("/users", form).then(
-        () => {
-          navigateToSignIn();
-        },
-        (err) => {
-          console.error(err);
-        }
-      );
+      try {
+        const user = {
+          email: form.email,
+          nickname: form.nickname,
+          password: form.password, // Store only if needed; otherwise, omit for security.
+        };
+
+        // Save user data in AsyncStorage
+        await AsyncStorage.setItem("user", JSON.stringify(user));
+
+        // Navigate to the Sign-In page
+        navigateToSignIn();
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
     } else {
       console.log("Passwords do not match");
     }
