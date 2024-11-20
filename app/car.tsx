@@ -29,6 +29,10 @@ const Car: React.FC = () => {
     router.push("/documents");
   };
 
+  const navigateToLocation = () => {
+    router.push("/location");
+  };
+
   const navigateToServices = () => {
     router.push({
       pathname: "/services",
@@ -49,12 +53,10 @@ const Car: React.FC = () => {
   };
 
   const navigateToStats = () => {
-    // TODO: Stats page
     router.push("/main");
   };
 
   const navigateToTrackRecords = () => {
-    // TODO: Track Records page
     router.push("/main");
   };
 
@@ -109,7 +111,7 @@ const Car: React.FC = () => {
         <View style={styles.carGroupingContainer}>
           <Text style={{ marginBottom: 0 }}>Info</Text>
           <View style={styles.carButtonLess}>
-            <CustomButton title="Location" onPress={navigateToMain} />
+            <CustomButton title="Location" onPress={navigateToLocation} />
           </View>
           <View style={styles.carButton}>
             <CustomButton title="Services" onPress={navigateToServices} />

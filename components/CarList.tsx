@@ -8,6 +8,7 @@ import {
   Image,
   TextInput,
   Pressable,
+  Modal,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
@@ -157,7 +158,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     <View style={styles.main}>
       {showPopup && (
         <View style={styles.addCarContainer}>
-          <View style={styles.addCar}>
+          <Modal style={styles.addCar}>
             <Text
               style={{
                 fontSize: 20,
@@ -169,14 +170,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             >
               Add New Car
             </Text>
-            {/*<TextInput
-              placeholder="Image URL"
-              value={newCar.imageURL}
-              onChangeText={(value) => setNewCar({ ...newCar, imageURL: value })}
-              style={styles.formInput}
-            />
-            TODO: Change to Image input (MultipartFile)*/}
-
             <View>
               <Picker
                 selectedValue={newCar.brand}
@@ -223,12 +216,15 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               </Pressable>
               <Pressable
                 style={styles.cancelButton}
-                onPress={() => setShowPopup(false)}
+                onPress={() => {
+                  setShowPopup(false);
+                  setNewCar({ ...newCar, brand: "" });
+                }}
               >
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
             </View>
-          </View>
+          </Modal>
         </View>
       )}
 

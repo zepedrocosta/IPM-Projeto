@@ -1,4 +1,4 @@
-import Car from "@/app/car";
+import { Car } from "@/types/car";
 import React, { useEffect, useState } from "react";
 import {
   View,
