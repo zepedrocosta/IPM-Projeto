@@ -9,6 +9,7 @@ import { login } from "@/store/session";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { sessionSelector } from "@/store/session";
+import Documents from "@/components/Documents";
 
 type RootStackParamList = {
   Home: undefined;
@@ -40,6 +41,10 @@ export default function SignIn() {
   const navigateToRegister = () => {
     router.push("/register"); // Navigate to the register page
   };
+
+  const navigateToDocuments = () => {
+    router.push("/documentspage");
+  }
 
   const handleSignIn = async () => {
     await httpPut("/security", form).then(

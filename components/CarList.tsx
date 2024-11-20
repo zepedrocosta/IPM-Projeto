@@ -20,6 +20,8 @@ type Car = {
   plate: string;
 };
 
+
+
 type CarForm = {
   brand: string;
   model: string;
@@ -144,6 +146,16 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     });
   };
 
+  const cars: Car[] = [
+    {
+      imageURL: "https://th.bing.com/th/id/OIP.JREvq-wAYYqc9dnnPVrZtAHaE8?rs=1&pid=ImgDetMain",
+      brand: "Tesla",
+      model: "Model S",
+      year: "2021",
+      plate: "AA-11-BB",
+    }
+  ]
+
   const filteredCarList = carList.filter((car) => {
     const lowercasedQuery = searchQuery.toLowerCase();
     return (
@@ -240,7 +252,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
       )}
 
       <View>
-        {filteredCarList.map((car, index) => (
+        {cars.map((car, index) => (
           <TouchableOpacity
             key={index}
             style={styles.carObject}
