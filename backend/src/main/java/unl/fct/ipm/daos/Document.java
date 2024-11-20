@@ -22,7 +22,7 @@ public class Document extends DAO implements Serializable {
     @Enumerated
     private DocumentTypeEnum type;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime dueDate;
 
     @Lob

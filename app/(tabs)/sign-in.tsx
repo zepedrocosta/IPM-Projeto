@@ -49,14 +49,9 @@ export default function SignIn() {
     router.push("/register"); // Navigate to the register page
   };
 
-  const navigateToDocuments = () => {
-    router.push("/documentspage");
-  }
-
   const handleSignIn = async () => {
     await httpPut("/security", form).then(
       (res) => {
-        console.log(res);
         let t: any = jwtDecode(res.headers["authorization"].split(" ")[1]);
         dispatch(
           login({

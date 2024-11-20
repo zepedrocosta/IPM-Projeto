@@ -29,7 +29,7 @@ export default function Documents({ car }: { car: Car }) {
   useEffect(() => {
     httpGet("/cars/" + car.plate + "/documents").then(
       (response: any) => {
-        console.log(response.data);
+        console.log("Documents fetched: ", response.data);
         setDocuments(response.data);
       },
       (error) => {
