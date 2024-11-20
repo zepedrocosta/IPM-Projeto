@@ -13,6 +13,8 @@ public interface CarRepository extends JpaRepository<Car, UUID> {
 
     Optional<Car> findByPlate(String licensePlate);
 
+    boolean existsByPlate(String licensePlate);
+
     List<Car> findAllByOwner(User owner);
 
     @Query("SELECT c FROM cars c WHERE c.owner = :owner AND (c.plate LIKE %:query% OR c.brand LIKE %:query% OR c.model LIKE %:query%)")

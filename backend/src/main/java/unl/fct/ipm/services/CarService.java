@@ -44,6 +44,10 @@ public class CarService {
     @Transactional
     @SneakyThrows
     public Optional<Car> create(Car car, MultipartFile image) {
+
+        if (cars.existsByPlate(car.getPlate()))
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         car.setOwner(principal);
 

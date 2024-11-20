@@ -9,6 +9,7 @@ import {
   TextInput,
   Pressable,
   Modal,
+  ToastAndroid,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
@@ -124,8 +125,16 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         setNewCar(initalNewCar);
         setShowPopup(false);
       },
-      (err) => {
-        console.error(err);
+      (error) => {
+        const regex409 = /409/;
+        if (regex409.test(error.message)) {
+          ToastAndroid.show(
+            "Plate already registered. If this is an error, contact support",
+            ToastAndroid.LONG
+          );
+        } else {
+          ToastAndroid.show(error.toString(), ToastAndroid.LONG);
+        }
       }
     );
   };
