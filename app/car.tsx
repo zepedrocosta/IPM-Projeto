@@ -26,7 +26,7 @@ const Car: React.FC = () => {
   });
 
   const navigateToDocuments = () => {
-    router.push("/documents");
+    router.push("/documentspage");
   };
 
   const navigateToLocation = () => {
