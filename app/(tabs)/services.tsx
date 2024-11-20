@@ -14,7 +14,7 @@ type Car = {
   plate: string;
 };
 
-export default function DocumentPage() {
+export default function ServicesTab() {
   const params = useLocalSearchParams();
   const router = useRouter();
 

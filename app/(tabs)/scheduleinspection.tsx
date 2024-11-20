@@ -7,7 +7,7 @@ import { useLocalSearchParams } from "expo-router";
 import ScheduleInspection from "@/components/ScheduleInspection";
 import Car from "@/app/car";
 
-export default function ScheduleInspectionPage() {
+export default function ScheduleInspectionTab() {
   const params = useLocalSearchParams();
   const router = useRouter(); // Use the router hook for navigation
 

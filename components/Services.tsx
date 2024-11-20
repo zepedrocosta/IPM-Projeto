@@ -60,6 +60,10 @@ export default function ServicesPage({ car }: { car: Car }) {
     });
   };
 
+  const navigateToTyreService = () => {
+    router.push("/tyreservice")
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.CarName}>{car.brand}</Text>
@@ -110,7 +114,9 @@ export default function ServicesPage({ car }: { car: Car }) {
           </Text>
         </View>
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Tyre Service</Text>
+          <Text style={styles.buttonText} onPress={navigateToTyreService}>
+            Tyre Service
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
