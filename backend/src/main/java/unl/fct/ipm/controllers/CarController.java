@@ -39,9 +39,8 @@ public class CarController extends AbstractController {
             @ApiResponse(responseCode = "409", description = "Car with same license plate already exists")
     })
     @PostMapping
-    public ResponseEntity<CarResponse> create(@Validated @RequestPart CarForm form,
-                                              @RequestPart(required = false) MultipartFile image) {
-        return ok(carService.create(convert(form, Car.class), image), CarResponse.class);
+    public ResponseEntity<CarResponse> create(@Validated @RequestBody CarForm form) {
+        return ok(carService.create(convert(form, Car.class)), CarResponse.class);
     }
 
     @Operation(summary = "Get a car")

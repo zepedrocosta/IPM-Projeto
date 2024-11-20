@@ -1,9 +1,6 @@
 package unl.fct.ipm.daos;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -33,7 +30,7 @@ public class Car extends DAO implements Serializable {
     @Column
     private String location;
 
-    @Column
+    @Lob
     private String imageURL;
 
     @ToString.Exclude

@@ -43,26 +43,13 @@ public class CarService {
 
     @Transactional
     @SneakyThrows
-    public Optional<Car> create(Car car, MultipartFile image) {
+    public Optional<Car> create(Car car) {
 
         if (cars.existsByPlate(car.getPlate()))
             throw new ResponseStatusException(HttpStatus.CONFLICT);
 
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         car.setOwner(principal);
-
-        if (image != null) {
-            try {
-                var uploadPath = Paths.get("src/main/resources");
-                var filePath = uploadPath.resolve(car.getPlate());
-                Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-                var url = new UrlResource(filePath.toUri());
-                car.setImageURL(url.getURL().toString());
-                System.out.println(car.getImageURL());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
         return Optional.of(cars.save(car));
     }

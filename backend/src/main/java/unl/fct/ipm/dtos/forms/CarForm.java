@@ -30,4 +30,6 @@ public class CarForm implements Serializable {
     @NotBlank
     @Size(max = 8, min = 8)
     private String plate;
+
+    private String imageURL;
 }
