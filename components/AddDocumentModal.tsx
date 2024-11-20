@@ -51,19 +51,17 @@ export default function AddDocumentModal({
   // Function to handle file selection
   const handleFileUpload = async () => {
     try {
-      const result: DocumentPicker.DocumentPickerResult =
-        await DocumentPicker.getDocumentAsync({ type: "application/pdf" });
+      const result: DocumentPicker.DocumentPickerResult = await DocumentPicker.getDocumentAsync({ type: "application/pdf" });
       console.log("document picker result: ", result);
-      if (
-        result.canceled === false &&
-        result.assets?.[0]?.name.includes(".pdf")
-      ) {
+
+      if ( result.canceled === false && result.assets?.[0]?.name.includes(".pdf")) {
         // Add feedback, if the file selected is not supported, tell the user
         console.log("accepted");
-        //setFile(result); THIS IS RESULTING IN A NULL, BECAUSE WE'RE NOT PASSING THE INFO YET
+        setFile(result.assets[0]); //THIS IS RESULTING IN A NULL, BECAUSE WE'RE NOT PASSING THE INFO YET??
       } else {
         console.log("invalid file selected");
       }
+
     } catch (err) {
       console.error("Error picking document:", err);
     }
@@ -71,10 +69,11 @@ export default function AddDocumentModal({
 
   const handleAddDocument = () => {
     const newDocument = {
-      file,
-      category,
-      date: expirableDocuments.includes(category) ? date : null, //if document is not of type expirable, no date is passed
-    };
+      file, //content
+      name, //filename
+      category, //type
+      date: expirableDocuments.includes(category) ? date : null, //dueDate
+    }; //#document picker result:  {"assets": [{"mimeType": "application/pdf", "name": "IPM7_Human_24_25.pdf", "size": 2046918, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/b74d3399-fabc-489c-8ae8-260913ed9f34.pdf"}], "canceled": false}
     console.log("handleAddDocument: ", newDocument.date);
     onConfirm(newDocument); // Pass the document data to parent
     onClose();
@@ -110,7 +109,7 @@ export default function AddDocumentModal({
               onPress={handleFileUpload}
             >
               <Text style={styles.uploadButtonText}>
-                {file ? `Selected: ${file.assets[0].file.name}` : "Upload File"}
+                {file ? `Selected: ${file.name}` : "Upload File"}
               </Text>
             </TouchableOpacity>
           </View>

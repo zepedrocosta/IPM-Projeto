@@ -3,7 +3,7 @@ import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useNavigation, useRouter } from "expo-router"; // Use the expo-router hook for navigation
-import Documents from "@/components/Documents";
+import DocumentsList from "@/components/DocumentsList";
 import Car from "../car";
 
 export default function DocumentPage() {
@@ -42,7 +42,7 @@ export default function DocumentPage() {
         <AntDesign name="left" size={24} />
       }
       children={<Text style={styles.topText}>Documents</Text>}
-      body={<Documents />}
+      body={<DocumentsList />}
     />
   );
 }

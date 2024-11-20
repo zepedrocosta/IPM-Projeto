@@ -15,7 +15,7 @@ import SetReminderModal from "./SetReminderModal";
 //import { getDocs, collection } from 'firebase/firestore'; // Assuming you're using Firestore TODO
 //import { db } from './firebaseConfig'; // Import your Firebase configuration TODO
 
-export default function Documents() {
+export default function DocumentsList() {
   const [documents, setDocuments] = useState([]);
   const [isAddDocumentModalVisible, setAddDocumentModalVisible] = useState(false);
   const [isSetReminderModalVisible, setReminderModalVisible] = useState(false);
