@@ -20,7 +20,7 @@ type Document = {
   plate: String;
 };
 
-export default function Documents({ car }: { car: Car }) {
+export default function DocumentsList({ car }: { car: Car }) {
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isAddDocumentModalVisible, setAddDocumentModalVisible] =
     useState(false);
@@ -83,11 +83,7 @@ export default function Documents({ car }: { car: Car }) {
         onConfirm={() => handleAddDocument}
       />
 
-      <SetReminderModal
-        visible={isSetReminderModalVisible}
-        onClose={() => setReminderModalVisible(false)}
-        onConfirm={() => handleSetReminder()}
-      />
+      
       {/** Floating Add Button */}
       <TouchableOpacity
         style={styles.fab}

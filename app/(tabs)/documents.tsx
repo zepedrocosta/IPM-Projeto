@@ -3,7 +3,7 @@ import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router"; // Use the expo-router hook for navigation
-import Documents from "@/components/Documents";
+import DocumentsList from "@/components/DocumentsList";
 import Car from "../car";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -34,15 +34,13 @@ export default function DocumentPage() {
   };
 
   return (
-    <Fragment>
-      {car && (
-        <DefaultTopBar
-          leftComponent={<AntDesign name="left" size={24} />}
-          children={<Text style={styles.topText}>Documents</Text>}
-          body={<Documents car={car} />}
-        />
-      )}
-    </Fragment>
+    <DefaultTopBar
+      leftComponent={
+        <AntDesign name="left" size={24} />
+      }
+      children={<Text style={styles.topText}>Documents</Text>}
+      body={<DocumentsList car={car} />}
+    />
   );
 }
 
