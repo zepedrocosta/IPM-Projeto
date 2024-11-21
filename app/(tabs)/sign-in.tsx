@@ -43,7 +43,7 @@ export default function SignIn() {
   };
 
   const navigateToDocuments = () => {
-    router.push("/documentspage");
+    router.push("/documents");
   }
 
   const handleSignIn = async () => {

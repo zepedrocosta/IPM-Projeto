@@ -32,6 +32,7 @@ export default function AddDocumentModal({
 }: AddDocumentModalProps) {
   const [file, setFile] = useState<any | null>(null); // File object
   const [category, setCategory] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date | null>(null); // Union type, hold a null value but still have the type Date defined
   const [showReminderModal, setShowReminderModal] = useState(false);
@@ -90,11 +91,12 @@ export default function AddDocumentModal({
     }; //#document picker result:  {"assets": [{"mimeType": "application/pdf", "name": "IPM7_Human_24_25.pdf", "size": 2046918, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/b74d3399-fabc-489c-8ae8-260913ed9f34.pdf"}], "canceled": false}
     console.log("handleAddDocument: ", newDocument.date);
     //onConfirm(newDocument); // Pass the document data to parent*/
+    setCategoryName(category);
     onClose();  
+    setShowReminderModal(true);
     setFile(null);
     setDate(null);
     setCategory("");
-    setShowReminderModal(true);
   };
 
   return (
@@ -172,6 +174,7 @@ export default function AddDocumentModal({
         visible={showReminderModal}
         onClose={handleReminderCancel} // When user cancels reminder
         onSetReminder={handleReminderSet} // When user sets a reminder
+        category= {categoryName}
       />
     </>
   );

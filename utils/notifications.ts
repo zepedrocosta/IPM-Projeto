@@ -14,20 +14,19 @@ export async function requestNotificationPermission(): Promise<boolean> {
 }
 
 // Schedule a Notification
-export async function scheduleOneMinuteReminder(documentName: string) {
+export async function scheduleOneMinuteReminder(documentCategory: string) {
   const hasPermission = await requestNotificationPermission();
   if (!hasPermission) return;
 
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Reminder",
-      body: `Your ${documentName} is about to expire soon!`,
+      body: `Your ${documentCategory} is about to expire soon!`,
       sound: true,
     },
-    trigger: { // THINK THIS IS FUCKING ITSELF BC OF THE VERSIONS
-      seconds: 60, // Time delay in seconds
-      repeats: false, // Ensures it does not repeat
-      type: 'timeInterval', // Explicitly specify the trigger type
-    },
+    trigger: {
+      seconds: 10, // Schedule after 1 minute
+      repeats: false, // Ensure it doesn't repeat
+    } as unknown as Notifications.NotificationTriggerInput, // Cast to satisfy types
   });
 }
