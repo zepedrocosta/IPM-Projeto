@@ -14,6 +14,7 @@ import unl.fct.ipm.daos.Car;
 import unl.fct.ipm.daos.CarServices;
 import unl.fct.ipm.daos.Document;
 import unl.fct.ipm.daos.User;
+import unl.fct.ipm.daos.enums.CarServiceTypeEnum;
 import unl.fct.ipm.dtos.responses.CarServiceResponse;
 import unl.fct.ipm.dtos.responses.DocumentResponse;
 import unl.fct.ipm.repositories.CarRepository;
@@ -40,6 +41,7 @@ public class CarService {
     private final CarRepository cars;
     private final DocumentRepository documents;
     private final CarServiceRepository carServices;
+    private final CarServiceRepository carServiceRepository;
 
     @Transactional
     @SneakyThrows
@@ -110,6 +112,10 @@ public class CarService {
     @Transactional
     public Optional<CarServiceResponse> createService(String licensePlate, CarServices service) {
         Car car = cars.findByPlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, CAR_NOT_FOUND));
+        var s = carServiceRepository.findByCarAndType(car, service.getType());
+
+        s.ifPresent(services -> car.getServices().remove(services));
+
         car.getServices().add(service);
         cars.save(car);
         return Optional.of(buildCarServiceResponse(service, licensePlate));
