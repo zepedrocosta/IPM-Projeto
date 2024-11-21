@@ -10,7 +10,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function DocumentPage() {
   const router = useRouter();
 
-  const [car, setCar] = useState<Car>();
+  const [car, setCar] = useState<Car>({
+    imageURL: "",
+    brand: "",
+    model: "",
+    year: "",
+    plate: "",
+  });
 
   useEffect(() => {
     AsyncStorage.getItem("car").then((value) => {
@@ -35,9 +41,7 @@ export default function DocumentPage() {
 
   return (
     <DefaultTopBar
-      leftComponent={
-        <AntDesign name="left" size={24} />
-      }
+      leftComponent={<AntDesign name="left" size={24} />}
       children={<Text style={styles.topText}>Documents</Text>}
       body={<DocumentsList car={car} />}
     />

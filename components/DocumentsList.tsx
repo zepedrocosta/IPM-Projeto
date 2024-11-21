@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddDocumentModal from "./AddDocumentModal";
-import SetReminderModal from "./SetReminderModal";
 import { Car } from "@/types/car";
 import { httpGet } from "@/utils/http";
 
@@ -27,16 +26,18 @@ export default function DocumentsList({ car }: { car: Car }) {
   const [isSetReminderModalVisible, setReminderModalVisible] = useState(false);
 
   useEffect(() => {
-    httpGet("/cars/" + car.plate + "/documents").then(
-      (response: any) => {
-        console.log("Documents fetched: ", response.data);
-        setDocuments(response.data);
-      },
-      (error) => {
-        console.log("Error fetching documents: ", error);
-      }
-    );
-  }, []);
+    if (car.plate !== "") {
+      httpGet("/cars/" + car.plate + "/documents").then(
+        (response: any) => {
+          console.log("Documents fetched: ", response.data);
+          setDocuments(response.data);
+        },
+        (error) => {
+          console.log("Error fetching documents: ", error);
+        }
+      );
+    }
+  }, [car]);
 
   // Function to add a new document
   function handleAddDocument() {
@@ -83,7 +84,6 @@ export default function DocumentsList({ car }: { car: Car }) {
         onConfirm={() => handleAddDocument}
       />
 
-      
       {/** Floating Add Button */}
       <TouchableOpacity
         style={styles.fab}
