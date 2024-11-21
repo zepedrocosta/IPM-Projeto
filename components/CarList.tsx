@@ -14,7 +14,6 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Car = {
@@ -120,32 +119,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         ...prevCar,
         imageURL: result.assets[0].base64 || "",
       }));
-
-      /*try {
-        const fileName = fileUri.split("/").pop();
-        if (!fileName) {
-          throw new Error("File name could not be extracted");
-        }
-
-        const cacheDirectory = FileSystem.cacheDirectory;
-        if (!cacheDirectory) {
-          throw new Error("Cache directory is not available");
-        }
-
-        const cachedUri = FileSystem.cacheDirectory + fileName;
-
-        await FileSystem.copyAsync({ from: fileUri, to: cachedUri });
-
-        await AsyncStorage.setItem("imageURL", cachedUri);
-        console.log("Image saved in cache at:", cachedUri);
-
-        setNewCar((prevCar) => ({
-          ...prevCar,
-          imageURL: cachedUri,
-        }));
-      } catch (error) {
-        console.error("Error saving image URI to cache:", error);
-      }*/
     }
   };
 
@@ -211,7 +184,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     return (
       car.brand.toLowerCase().includes(lowercasedQuery) ||
       car.model.toLowerCase().includes(lowercasedQuery) ||
-      car.plate.toLowerCase().includes(lowercasedQuery)
+      car.plate.toLowerCase().includes(lowercasedQuery) ||
+      car.year.toString().toLowerCase().includes(lowercasedQuery)
     );
   });
 
@@ -303,7 +277,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
       )}
 
       <View>
-        {carList.map((car, index) => (
+        {filteredCarList.map((car, index) => (
           <TouchableOpacity
             key={index}
             style={styles.carObject}
