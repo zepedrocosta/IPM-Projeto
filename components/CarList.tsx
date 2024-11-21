@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    marginBottom: 80,
+    //marginBottom: 60,
   },
   addCarContainer: {
     position: "absolute",
