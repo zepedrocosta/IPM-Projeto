@@ -13,20 +13,16 @@ import {
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Car = {
+  brand: string;
+  model: string;
+  year: string;
+  plate: string;
   imageURL: string;
-  brand: string;
-  model: string;
-  year: string;
-  plate: string;
-};
-
-type CarForm = {
-  brand: string;
-  model: string;
-  year: string;
-  plate: string;
 };
 
 type CarListProps = {
@@ -87,18 +83,71 @@ const brands = [
   "Other",
 ];
 
-const initalNewCar: CarForm = {
+const initalNewCar: Car = {
   brand: "",
   model: "",
   year: new Date().getFullYear().toString(),
   plate: "",
+  imageURL: "",
 };
 
 const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const router = useRouter();
   const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [newCar, setNewCar] = useState<CarForm>(initalNewCar);
+  const [newCar, setNewCar] = useState<Car>(initalNewCar);
+
+  const pickImage = async () => {
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionResult.granted === false) {
+      ToastAndroid.show(
+        "Permission to access gallery is required!",
+        ToastAndroid.LONG
+      );
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      base64: true,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setNewCar((prevCar) => ({
+        ...prevCar,
+        imageURL: result.assets[0].base64 || "",
+      }));
+
+      /*try {
+        const fileName = fileUri.split("/").pop();
+        if (!fileName) {
+          throw new Error("File name could not be extracted");
+        }
+
+        const cacheDirectory = FileSystem.cacheDirectory;
+        if (!cacheDirectory) {
+          throw new Error("Cache directory is not available");
+        }
+
+        const cachedUri = FileSystem.cacheDirectory + fileName;
+
+        await FileSystem.copyAsync({ from: fileUri, to: cachedUri });
+
+        await AsyncStorage.setItem("imageURL", cachedUri);
+        console.log("Image saved in cache at:", cachedUri);
+
+        setNewCar((prevCar) => ({
+          ...prevCar,
+          imageURL: cachedUri,
+        }));
+      } catch (error) {
+        console.error("Error saving image URI to cache:", error);
+      }*/
+    }
+  };
 
   useEffect(() => {
     httpGet("/cars").then(
@@ -118,8 +167,6 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           ...carList,
           {
             ...newCar,
-            year: newCar.year,
-            imageURL: res.data.imageURL,
           },
         ]);
         setNewCar(initalNewCar);
@@ -140,12 +187,17 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   };
 
   const navigateToCarPage = (car: Car) => {
+    let img = "";
+
+    if (car.imageURL) {
+      img = "data:image/png;base64," + car.imageURL;
+    }
+
+    AsyncStorage.setItem("image", img);
     router.push({
       pathname: "/car",
       params: {
-        imageURL:
-          car.imageURL ||
-          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        imageURL: "",
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
@@ -180,6 +232,12 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               Add New Car
             </Text>
             <View>
+              <Pressable style={styles.button} onPress={pickImage}>
+                <Text style={styles.buttonText}>
+                  {newCar.imageURL ? "Change Image" : "Pick an Image"}
+                </Text>
+              </Pressable>
+
               <Picker
                 selectedValue={newCar.brand}
                 onValueChange={(value) =>
@@ -253,9 +311,9 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           >
             <Image
               source={{
-                uri:
-                  car.imageURL ||
-                  "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+                uri: car.imageURL
+                  ? "data:image/png;base64," + car.imageURL
+                  : "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
               }}
               style={styles.image}
             />

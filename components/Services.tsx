@@ -49,9 +49,7 @@ export default function ServicesPage({ car }: { car: Car }) {
     router.push({
       pathname: "/scheduleinspection",
       params: {
-        imageURL:
-          car.imageURL ||
-          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        imageURL: "",
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
@@ -61,7 +59,7 @@ export default function ServicesPage({ car }: { car: Car }) {
   };
 
   const navigateToTyreService = () => {
-    router.push("/tyreservice")
+    router.push("/tyreservice");
   };
 
   return (

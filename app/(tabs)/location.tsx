@@ -25,7 +25,7 @@ export default function LocationPage() {
       router.push({
         pathname: "/car",
         params: {
-          imageURL: car.imageURL,
+          imageURL: "",
           brand: car.brand,
           model: car.model,
           year: car.year,

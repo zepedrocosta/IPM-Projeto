@@ -30,9 +30,7 @@ export default function TyreServiceTab() {
     router.push({
       pathname: "/car",
       params: {
-        imageURL:
-          car.imageURL ||
-          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        imageURL: "",
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
@@ -43,17 +41,19 @@ export default function TyreServiceTab() {
 
   return (
     <Fragment>
-      {car && <DefaultTopBar
-        leftComponent={
-          <MaterialIcons
-            name="arrow-left"
-            size={24}
-            onPress={() => navigateToCar(car)}
-          />
-        }
-        children={<Text style={styles.topText}>Tyre Service</Text>}
-        body={<TyreService car={car}/>}
-      />}
+      {car && (
+        <DefaultTopBar
+          leftComponent={
+            <MaterialIcons
+              name="arrow-left"
+              size={24}
+              onPress={() => navigateToCar(car)}
+            />
+          }
+          children={<Text style={styles.topText}>Tyre Service</Text>}
+          body={<TyreService car={car} />}
+        />
+      )}
     </Fragment>
   );
 }

@@ -16,9 +16,16 @@ type Car = {
 const Car: React.FC = () => {
   const params = useLocalSearchParams();
   AsyncStorage.setItem("car", JSON.stringify(params));
+  const [image, setImage] = useState<string>(
+    "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
+  );
+
+  AsyncStorage.getItem("image").then((value) => {
+    setImage(value!);
+  });
 
   const [car, setCar] = useState<Car>({
-    imageURL: params.imageURL.toString(),
+    imageURL: image,
     brand: params.brand.toString(),
     model: params.model.toString(),
     year: params.year.toString(),
@@ -37,9 +44,7 @@ const Car: React.FC = () => {
     router.push({
       pathname: "/services",
       params: {
-        imageURL:
-          car.imageURL ||
-          "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg",
+        imageURL: car.imageURL,
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
@@ -94,10 +99,7 @@ const Car: React.FC = () => {
           alignItems: "center",
         }}
       >
-        <Image
-          source={{ uri: car.imageURL }}
-          style={{ height: 160, width: 160 }}
-        />
+        <Image source={{ uri: image }} style={{ height: 160, width: 160 }} />
         <View style={styles.carBrandModel}>
           <Text>
             {car.brand} {car.model}

@@ -9,8 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
-
-import java.lang.reflect.Type;
+import unl.fct.ipm.config.json.AnnotationExclusionStrategy;
+import unl.fct.ipm.config.json.PageAdapter;
+import unl.fct.ipm.config.json.SqlRelationshipStrategy;
 
 /**
  * Configuration class for JSON processing.
@@ -34,14 +35,19 @@ public class JsonConfig {
     @Bean
     @Primary
     public Gson getGson() {
-        return Converters.registerAll(new GsonBuilder().setPrettyPrinting()
-                .registerTypeAdapter(Page.class, new PageAdapter<>())).create();
+        return Converters.registerAll(new GsonBuilder()
+                        .setPrettyPrinting()
+                        .setExclusionStrategies(new AnnotationExclusionStrategy())
+                        .registerTypeAdapter(Page.class, new PageAdapter<>()))
+                .create();
     }
 
     @Bean
     public Gson getGsonAspect() {
         return Converters.registerAll(new GsonBuilder()
-                .registerTypeAdapter(Page.class, new PageAdapter<>())).create();
+                        .setExclusionStrategies(new SqlRelationshipStrategy())
+                        .registerTypeAdapter(Page.class, new PageAdapter<>()))
+                .create();
     }
 
     /**
@@ -54,36 +60,5 @@ public class JsonConfig {
     @Bean
     public GsonHttpMessageConverter getMsgConverter() {
         return new GsonHttpMessageConverter(getGson());
-    }
-
-    /**
-     * Custom serializer for Page objects.
-     * It serializes a Page object into a JSON object with properties for page size,
-     * page number, number of elements, total pages, total elements, and content.
-     * The content is a JSON array of the serialized content of the Page.
-     * @param <T> the type of the content of the Page
-     */
-    static class PageAdapter<T> implements JsonSerializer<Page<T>> {
-
-        /**
-         * Serializes a Page object into a JsonElement.
-         * @param src the Page to serialize
-         * @param typeOfSrc the actual type of the source object
-         * @param context the context of the serialization
-         * @return a JsonElement representing the serialized Page
-         */
-        @Override
-        public JsonElement serialize(Page<T> src, Type typeOfSrc, JsonSerializationContext context) {
-            JsonObject object = new JsonObject();
-            object.addProperty("pageSize", src.getSize());
-            object.addProperty("page", src.getNumber());
-            object.addProperty("elements", src.getNumberOfElements());
-            object.addProperty("totalPages", src.getTotalPages());
-            object.addProperty("total", src.getTotalElements());
-            JsonArray array = new JsonArray();
-            src.getContent().forEach((item) -> array.add(context.serialize(item)));
-            object.add("content", array);
-            return object;
-        }
     }
 }

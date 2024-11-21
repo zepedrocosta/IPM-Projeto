@@ -10,22 +10,20 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export default function DocumentPage() {
   const router = useRouter();
 
+  const [car, setCar] = useState<Car>();
 
-    const [car, setCar] = useState<Car>();
-
-    useEffect(() => {
-        AsyncStorage.getItem("car").then((value) => {
-            setCar(JSON.parse(value!));
-        });
-    }, []);
-    
+  useEffect(() => {
+    AsyncStorage.getItem("car").then((value) => {
+      setCar(JSON.parse(value!));
+    });
+  }, []);
 
   const navigateToCarPage = () => {
     if (car) {
       router.push({
         pathname: "/car",
         params: {
-          imageURL: car.imageURL,
+          imageURL: "",
           brand: car.brand,
           model: car.model,
           year: car.year,
@@ -39,9 +37,7 @@ export default function DocumentPage() {
     <Fragment>
       {car && (
         <DefaultTopBar
-          leftComponent={
-            <AntDesign name="left" size={24} />
-          }
+          leftComponent={<AntDesign name="left" size={24} />}
           children={<Text style={styles.topText}>Documents</Text>}
           body={<Documents car={car} />}
         />
