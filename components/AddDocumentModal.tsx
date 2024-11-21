@@ -12,6 +12,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native DatePicker
 import * as DocumentPicker from "expo-document-picker";
+import ReminderModal from "./ReminderModal";
 
 interface AddDocumentModalProps {
   visible: boolean;
@@ -33,6 +34,7 @@ export default function AddDocumentModal({
   const [category, setCategory] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date | null>(null); // Union type, hold a null value but still have the type Date defined
+  const [showReminderModal, setShowReminderModal] = useState(false);
 
   // Documents that expire every year
   // Stuff like inspection, insurace
@@ -54,7 +56,7 @@ export default function AddDocumentModal({
       const result: DocumentPicker.DocumentPickerResult = await DocumentPicker.getDocumentAsync({ type: "application/pdf" });
       console.log("document picker result: ", result);
 
-      if ( result.canceled === false && result.assets?.[0]?.name.includes(".pdf")) {
+      if (result.canceled === false && result.assets?.[0]?.name.includes(".pdf")) {
         // Add feedback, if the file selected is not supported, tell the user
         console.log("accepted");
         setFile(result.assets[0]); //THIS IS RESULTING IN A NULL, BECAUSE WE'RE NOT PASSING THE INFO YET??
@@ -67,87 +69,111 @@ export default function AddDocumentModal({
     }
   };
 
+  const handleReminderSet = (daysBefore: number) => {
+    console.log(`Reminder set for ${daysBefore} days before expiration.`);
+    setShowReminderModal(false);
+    onClose(); // Close AddDocumentModal
+  };
+
+  const handleReminderCancel = () => {
+    console.log("No reminder set.");
+    setShowReminderModal(false);
+    onClose(); // Close AddDocumentModal
+  };
+
   const handleAddDocument = () => {
-    const newDocument = {
+    /*const newDocument = {
       file, //content
       name, //filename
       category, //type
       date: expirableDocuments.includes(category) ? date : null, //dueDate
     }; //#document picker result:  {"assets": [{"mimeType": "application/pdf", "name": "IPM7_Human_24_25.pdf", "size": 2046918, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/b74d3399-fabc-489c-8ae8-260913ed9f34.pdf"}], "canceled": false}
     console.log("handleAddDocument: ", newDocument.date);
-    onConfirm(newDocument); // Pass the document data to parent
-    onClose();
+    //onConfirm(newDocument); // Pass the document data to parent*/
+    onClose();  
+    setFile(null);
+    setDate(null);
+    setCategory("");
+    setShowReminderModal(true);
   };
 
   return (
-    <Modal visible={visible} transparent={true} animationType="slide">
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Add Document</Text>
+    <>
+      <Modal visible={visible} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Add Document</Text>
 
-          {/* Category Selection Section */}
-          <View style={styles.section}>
-            <Text style={styles.label}>Category</Text>
-            <Picker
-              selectedValue={category}
-              onValueChange={(itemValue) => setCategory(itemValue)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Select Category" value="" />
-              <Picker.Item label="Insurance" value="Insurance" />
-              <Picker.Item label="Registration" value="Registration" />
-              <Picker.Item label="Inspection" value="Inspection" />
-              <Picker.Item label="Expirable" value="Expirable" />
-            </Picker>
-          </View>
-
-          {/* File Upload Section */}
-          <View style={styles.section}>
-            <Text style={styles.label}>File</Text>
-            <TouchableOpacity
-              style={styles.uploadButton}
-              onPress={handleFileUpload}
-            >
-              <Text style={styles.uploadButtonText}>
-                {file ? `Selected: ${file.name}` : "Upload File"}
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Date Picker Section */}
-          {expirableDocuments.includes(category) && (
+            {/* Category Selection Section */}
             <View style={styles.section}>
-              <Text style={styles.label}>Expiration Date</Text>
-              <View style={styles.datePickerContainer}>
-                <Text style={styles.dateLabel}>
-                  {date
-                    ? `${date.toDateString()}`
-                    : "No date selected"}
-                </Text>
-                <TouchableOpacity
-                  style={styles.datePickerButton}
-                  onPress={showDatePicker}
-                >
-                  <Text style={styles.datePickerButtonText}>Pick Date</Text>
-                </TouchableOpacity>
-                <DateTimePickerModal
-                  isVisible={isDatePickerVisible}
-                  mode="date"
-                  onConfirm={handleDateConfirm}
-                  onCancel={hideDatePicker}
-                />
-              </View>
+              <Text style={styles.label}>Category</Text>
+              <Picker
+                selectedValue={category}
+                onValueChange={(itemValue) => setCategory(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Select Category" value="" />
+                <Picker.Item label="Insurance" value="Insurance" />
+                <Picker.Item label="Registration" value="Registration" />
+                <Picker.Item label="Inspection" value="Inspection" />
+                <Picker.Item label="Expirable" value="Expirable" />
+              </Picker>
             </View>
-          )}
 
-          {/* Action Buttons */}
-          <View style={styles.buttonContainer}>
-            <Button title="Cancel" onPress={onClose} color="red" />
-            <Button title="Confirm" onPress={handleAddDocument} color="green" />
+            {/* File Upload Section */}
+            <View style={styles.section}>
+              <Text style={styles.label}>File</Text>
+              <TouchableOpacity
+                style={styles.uploadButton}
+                onPress={handleFileUpload}
+              >
+                <Text style={styles.uploadButtonText}>
+                  {file ? `Selected: ${file.name}` : "Upload File"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Date Picker Section */}
+            {expirableDocuments.includes(category) && (
+              <View style={styles.section}>
+                <Text style={styles.label}>Expiration Date</Text>
+                <View style={styles.datePickerContainer}>
+                  <Text style={styles.dateLabel}>
+                    {date
+                      ? `${date.toDateString()}`
+                      : "No date selected"}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.datePickerButton}
+                    onPress={showDatePicker}
+                  >
+                    <Text style={styles.datePickerButtonText}>Pick Date</Text>
+                  </TouchableOpacity>
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleDateConfirm}
+                    onCancel={hideDatePicker}
+                  />
+                </View>
+              </View>
+            )}
+
+            {/* Action Buttons */}
+            <View style={styles.buttonContainer}>
+              <Button title="Cancel" onPress={onClose} color="red" />
+              <Button title="Confirm" onPress={handleAddDocument} color="green" />
+            </View>
           </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+      {/* Reminder Modal */}
+      <ReminderModal
+        visible={showReminderModal}
+        onClose={handleReminderCancel} // When user cancels reminder
+        onSetReminder={handleReminderSet} // When user sets a reminder
+      />
+    </>
   );
 }
 

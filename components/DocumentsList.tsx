@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddDocumentModal from "./AddDocumentModal";
-import SetReminderModal from "./SetReminderModal";
 
 // Uncomment these 2 imports when firebase and it's setup is done
 //import { getDocs, collection } from 'firebase/firestore'; // Assuming you're using Firestore TODO
@@ -81,12 +80,7 @@ export default function DocumentsList() {
         onClose={() => setAddDocumentModalVisible(false)}
         onConfirm={() => handleAddDocument}
       />
-    
-      <SetReminderModal
-        visible={isSetReminderModalVisible}
-        onClose={() => setReminderModalVisible(false)}
-        onConfirm={() => handleSetReminder()}
-      />
+  
       {/** Floating Add Button */}
       <TouchableOpacity
         style={styles.fab}
