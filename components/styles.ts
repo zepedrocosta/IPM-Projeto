@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
     marginTop: -30,
   },
   CarName: {
@@ -18,12 +18,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
-  serviceBox: {
+  itemsBox: {
+    flex: 1,
+    alignContent: "center",
     width: "100%",
     marginTop: 10,
     padding: 10,
     borderRadius: 5,
-    minWidth: 400,
+    minWidth: 350,
   },
   PageTitle: {
     textAlign: "center",
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
   },
   itemBox: {
     paddingVertical: 20,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#ddd",
     paddingHorizontal: 10,
   },
@@ -73,6 +75,27 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     marginTop: 20,
+  },
+  datePickerContainer: {
+    marginTop: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  dateLabel: {
+    fontSize: 16,
+    flex: 1,
+  },
+  datePickerButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    marginLeft: 10,
+  },
+  datePickerButtonText: {
+    color: "white",
+    fontSize: 16,
   },
 });
 

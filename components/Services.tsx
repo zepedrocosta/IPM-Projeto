@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { router } from "expo-router";
 import { httpGet } from "@/utils/http";
 import styles from "./styles";
@@ -65,12 +65,12 @@ export default function ServicesPage({ car }: { car: Car }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.CarName}>{car.brand}</Text>
       <Text style={styles.CarName}>{car.model}</Text>
       <Text style={styles.licencePlate}>({car.plate})</Text>
 
-      <View style={styles.serviceBox}>
+      <View style={styles.itemsBox}>
         <Text style={styles.PageTitle}>Next Service</Text>
 
         <View style={styles.itemBox}>
@@ -119,6 +119,6 @@ export default function ServicesPage({ car }: { car: Car }) {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
