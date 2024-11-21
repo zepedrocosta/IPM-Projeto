@@ -10,6 +10,7 @@ import {
   Pressable,
   Modal,
   ToastAndroid,
+  ScrollView,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
@@ -304,7 +305,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         </Fragment>
       )}
 
-      <View>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.scroll}>
         {filteredCarList.map((car, index) => (
           <TouchableOpacity
             key={index}
@@ -340,7 +341,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             </View>
           </TouchableOpacity>
         ))}
-      </View>
+      </ScrollView>
 
       <TouchableOpacity
         style={styles.addButton}
@@ -361,6 +362,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     paddingHorizontal: 16,
     width: 335,
+  },
+  list: {
+    flex: 1,
+    marginBottom: 80,
   },
   addCarContainer: {
     position: "absolute",
