@@ -248,7 +248,9 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             <TextInput
               placeholder="Plate"
               value={newCar.plate}
-              onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
+              onChangeText={(value) =>
+                setNewCar({ ...newCar, plate: value.toUpperCase() })
+              }
               style={styles.formInput}
             />
             <View
