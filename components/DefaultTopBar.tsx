@@ -1,7 +1,6 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import CarList from '../components/CarList';
-
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 type DefaultTopBarProps = {
   children?: React.ReactNode;
   body?: React.ReactNode;
@@ -9,23 +8,24 @@ type DefaultTopBarProps = {
   rightComponent?: React.ReactNode;
 };
 
-export function DefaultTopBar({ children, body, leftComponent, rightComponent }: DefaultTopBarProps) {
+export function DefaultTopBar({
+  children,
+  body,
+  leftComponent,
+  rightComponent,
+}: DefaultTopBarProps) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.topBar}>
         <View style={styles.sideContainer}>{leftComponent}</View>
 
-        <View style={styles.centerContainer}>
-          {children}
-        </View>
+        <View style={styles.centerContainer}>{children}</View>
 
         <View style={styles.sideContainer}>{rightComponent}</View>
       </View>
 
-      <View style={styles.body}>
-        {body}
-      </View>
-    </View>
+      <View style={styles.body}>{body}</View>
+    </SafeAreaView>
   );
 }
 
@@ -35,28 +35,28 @@ const styles = StyleSheet.create({
   },
   topBar: {
     height: 70,
-    backgroundColor: '#f5f5f5',
-    flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: "#f5f5f5",
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: "#ddd",
   },
   sideContainer: {
     width: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   centerContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   body: {
     flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    marginTop: 40
+    display: "flex",
+    alignItems: "center",
+    marginTop: 40,
   },
 });
