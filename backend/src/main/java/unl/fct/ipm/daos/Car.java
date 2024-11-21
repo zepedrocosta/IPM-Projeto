@@ -30,7 +30,7 @@ public class Car extends DAO implements Serializable {
     @Column
     private String location;
 
-    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String imageURL;
 
     @ToString.Exclude
