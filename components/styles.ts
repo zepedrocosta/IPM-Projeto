@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 20,
     marginTop: -30,
   },
   CarName: {
@@ -95,6 +94,65 @@ const styles = StyleSheet.create({
   },
   datePickerButtonText: {
     color: "white",
+    fontSize: 16,
+  },
+  carLayout: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  bottomTyreInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  carImage: {
+    flex: 1,
+    alignItems: "center",
+  },
+  carShape: {
+    width: 80,
+    height: 160,
+    backgroundColor: "#ccc",
+    borderRadius: 10,
+  },
+  tyreInfo: {
+    alignItems: "center",
+    flex: 1,
+  },
+  tyreText: {
+    borderTopWidth: 2,
+    borderTopColor: "#ddd",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  tyrePressureText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  detailsSection: {
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 20,
+  },
+  detailsText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  detailRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  value: {
     fontSize: 16,
   },
 });
