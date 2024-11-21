@@ -21,7 +21,7 @@ const Car: React.FC = () => {
   );
 
   AsyncStorage.getItem("image").then((value) => {
-    setImage(value!);
+    if (value && value !== "") setImage(value!);
   });
 
   const [car, setCar] = useState<Car>({
@@ -54,7 +54,7 @@ const Car: React.FC = () => {
   };
 
   const navigateToMain = () => {
-    router.push("/main");
+    router.back();
   };
 
   const navigateToStats = () => {

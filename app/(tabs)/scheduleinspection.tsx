@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router"; // Use the expo-router hook for navigation
 import { useLocalSearchParams } from "expo-router";
 import ScheduleInspection from "@/components/ScheduleInspection";
@@ -12,7 +12,7 @@ export default function ScheduleInspectionTab() {
   const router = useRouter(); // Use the router hook for navigation
 
   const navigateToServices = () => {
-    router.push("/services"); // Navigate to the register page
+    router.back();
   };
 
   const [car, setCar] = useState<Car>({
@@ -26,11 +26,7 @@ export default function ScheduleInspectionTab() {
   return (
     <DefaultTopBar
       leftComponent={
-        <MaterialIcons
-          name="arrow-left"
-          size={24}
-          onPress={navigateToServices}
-        />
+        <AntDesign name="left" size={24} onPress={navigateToServices} />
       }
       children={<Text style={styles.topText}>Schedule Inspection</Text>}
       body={<ScheduleInspection car={car} />}

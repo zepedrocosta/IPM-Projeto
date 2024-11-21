@@ -26,17 +26,8 @@ export default function ServicesTab() {
     });
   }, []);
 
-  const navigateToCar = (car: Car) => {
-    router.replace({
-      pathname: "/car",
-      params: {
-        imageURL: "",
-        brand: car.brand,
-        model: car.model,
-        year: car.year.toString(),
-        plate: car.plate,
-      },
-    });
+  const navigateToCar = () => {
+    router.back();
   };
 
   return (
@@ -44,11 +35,7 @@ export default function ServicesTab() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <AntDesign
-              name="left"
-              size={24}
-              onPress={() => navigateToCar(car)}
-            />
+            <AntDesign name="left" size={24} onPress={navigateToCar} />
           }
           children={<Text style={styles.topText}>Services</Text>}
           body={<Services car={car} />}

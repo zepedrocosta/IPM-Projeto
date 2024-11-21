@@ -95,7 +95,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<Car>(initalNewCar);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadingAddCar, setLoadingAddCar] = useState(false);
 
   const pickImage = async () => {
     const permissionResult =
@@ -127,6 +128,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
     httpGet("/cars").then(
       (response: any) => {
         setCarList(response.data);
+        setLoading(false);
       },
       (err) => {
         console.error(err);
@@ -135,7 +137,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   }, []);
 
   const handleAddCar = () => {
-    setLoading(true);
+    setLoadingAddCar(true);
     httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
       (res: any) => {
         setCarList([
@@ -146,7 +148,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         ]);
         setNewCar(initalNewCar);
         setShowPopup(false);
-        setLoading(false);
+        setLoadingAddCar(false);
       },
       (error) => {
         const regex409 = /409/;
@@ -158,7 +160,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         } else {
           ToastAndroid.show(error.toString(), ToastAndroid.LONG);
         }
-        setLoading(false);
+        setLoadingAddCar(false);
       }
     );
   };
@@ -257,7 +259,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               }}
             >
               <Fragment>
-                {loading ? (
+                {loadingAddCar ? (
                   <Pressable style={styles.button}>
                     <Text style={styles.buttonText}>
                       Adding car, please wait
@@ -284,11 +286,20 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         </View>
       )}
 
-      {filteredCarList.length === 0 && (
+      {loading ? (
         <View style={styles.noCarsFound}>
-          <Text style={styles.noCarFoundText}>No cars found</Text>
-          <Text style={styles.addACarText}>Add a car to get started!</Text>
+          <Text style={styles.noCarFoundText}>Loading...</Text>
+          <Text style={styles.addACarText}>Fetching car info</Text>
         </View>
+      ) : (
+        <Fragment>
+          {filteredCarList.length === 0 && (
+            <View style={styles.noCarsFound}>
+              <Text style={styles.noCarFoundText}>No cars found</Text>
+              <Text style={styles.addACarText}>Add a car to get started!</Text>
+            </View>
+          )}
+        </Fragment>
       )}
 
       <View>

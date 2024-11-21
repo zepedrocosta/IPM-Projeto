@@ -25,18 +25,7 @@ export default function DocumentPage() {
   }, []);
 
   const navigateToCarPage = () => {
-    if (car) {
-      router.push({
-        pathname: "/car",
-        params: {
-          imageURL: "",
-          brand: car.brand,
-          model: car.model,
-          year: car.year,
-          plate: car.plate,
-        },
-      });
-    }
+    router.back();
   };
 
   return (

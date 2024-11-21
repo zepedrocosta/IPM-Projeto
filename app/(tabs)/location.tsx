@@ -21,18 +21,7 @@ export default function LocationPage() {
   const router = useRouter(); // Use the router hook for navigation
 
   const navigateToCarPage = () => {
-    if (car) {
-      router.push({
-        pathname: "/car",
-        params: {
-          imageURL: "",
-          brand: car.brand,
-          model: car.model,
-          year: car.year,
-          plate: car.plate,
-        },
-      });
-    }
+    router.back();
   };
 
   return (
