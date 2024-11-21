@@ -96,42 +96,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
   },
-  carLayout: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-  },
   bottomTyreInfo: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
-  },
-  carImage: {
-    flex: 1,
-    alignItems: "center",
-  },
-  carShape: {
-    width: 80,
-    height: 160,
-    backgroundColor: "#ccc",
-    borderRadius: 10,
-  },
-  tyreInfo: {
-    alignItems: "center",
-    flex: 1,
-  },
-  tyreText: {
-    borderTopWidth: 2,
-    borderTopColor: "#ddd",
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  tyrePressureText: {
-    fontSize: 14,
-    fontWeight: "bold",
-    marginBottom: 5,
   },
   detailsSection: {
     borderTopWidth: 1,
@@ -154,6 +123,39 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 16,
+  },
+  tyreStatus: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  carImage: {
+    width: 200,
+    height: 300, // Adjust to match your image size
+    resizeMode: "contain",
+  },
+  verticalTyreInfo: {
+    flexDirection: "column",
+    justifyContent: "space-around",
+    height: 300, // Match the car image height
+  },
+  tyreText: {
+    borderTopWidth: 2,
+    borderTopColor: "#ddd",
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  tyrePressureText: {
+    textAlign: "center",
+    fontSize: 14,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 });
 
