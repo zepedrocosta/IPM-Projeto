@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
 import Services from "@/components/Services";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -27,7 +27,7 @@ export default function ServicesTab() {
   }, []);
 
   const navigateToCar = (car: Car) => {
-    router.push({
+    router.replace({
       pathname: "/car",
       params: {
         imageURL: "",
@@ -44,8 +44,8 @@ export default function ServicesTab() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <MaterialIcons
-              name="arrow-left"
+            <AntDesign
+              name="left"
               size={24}
               onPress={() => navigateToCar(car)}
             />

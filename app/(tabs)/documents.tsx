@@ -41,7 +41,9 @@ export default function DocumentPage() {
 
   return (
     <DefaultTopBar
-      leftComponent={<AntDesign name="left" size={24} />}
+      leftComponent={
+        <AntDesign name="left" size={24} onPress={navigateToCarPage} />
+      }
       children={<Text style={styles.topText}>Documents</Text>}
       body={<DocumentsList car={car} />}
     />

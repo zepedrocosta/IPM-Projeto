@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -95,6 +95,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   const [carList, setCarList] = useState<Car[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [newCar, setNewCar] = useState<Car>(initalNewCar);
+  const [loading, setLoading] = useState(false);
 
   const pickImage = async () => {
     const permissionResult =
@@ -134,6 +135,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   }, []);
 
   const handleAddCar = () => {
+    setLoading(true);
     httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
       (res: any) => {
         setCarList([
@@ -144,6 +146,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         ]);
         setNewCar(initalNewCar);
         setShowPopup(false);
+        setLoading(false);
       },
       (error) => {
         const regex409 = /409/;
@@ -155,6 +158,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         } else {
           ToastAndroid.show(error.toString(), ToastAndroid.LONG);
         }
+        setLoading(false);
       }
     );
   };
@@ -252,9 +256,20 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 marginTop: 16,
               }}
             >
-              <Pressable style={styles.button} onPress={handleAddCar}>
-                <Text style={styles.buttonText}>Add</Text>
-              </Pressable>
+              <Fragment>
+                {loading ? (
+                  <Pressable style={styles.button}>
+                    <Text style={styles.buttonText}>
+                      Adding car, please wait
+                    </Text>
+                  </Pressable>
+                ) : (
+                  <Pressable style={styles.button} onPress={handleAddCar}>
+                    <Text style={styles.buttonText}>Add</Text>
+                  </Pressable>
+                )}
+              </Fragment>
+
               <Pressable
                 style={styles.cancelButton}
                 onPress={() => {

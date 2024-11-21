@@ -80,9 +80,7 @@ public class CarService {
     public Optional<DocumentResponse> createDocument(String licensePlate, Document document) {
         Car car = cars.findByPlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, CAR_NOT_FOUND));
 
-        if (documents.existsByCarAndFilename(car, document.getFilename()))
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
-
+        document.setFilename(document.getType() + "-" + car.getPlate());
         document.setCar(car);
         documents.save(document);
         return Optional.of(buildDocumentResponse(document, licensePlate));

@@ -17,13 +17,11 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(doNotUseGetters = true)
 public class DocumentForm implements Serializable {
 
-    @NotBlank
-    @Size(max = 64)
-    private String filename;
-
     @NotNull
     @Size(max = 64)
     private DocumentTypeEnum type;
+
+    private byte[] content;
 
     @NotNull
     private LocalDateTime dueDate;
