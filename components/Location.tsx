@@ -19,8 +19,8 @@ export default function Location({ car }: LocationProps) {
   const mapRef = useRef<MapView>(null);
 
   const [userLocation] = useState({
-    latitude: 38.660667,
-    longitude: -9.203528,
+    latitude: 38.693196,
+    longitude: -9.215934,
   });
 
   const [selectedLocation] = useState<Location>({
@@ -64,8 +64,8 @@ export default function Location({ car }: LocationProps) {
         ref={mapRef}
         style={styles.map}
         initialRegion={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
@@ -113,11 +113,11 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   navContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    marginTop: 25
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    marginTop: 25,
   },
   map: {
     height: "60%",
