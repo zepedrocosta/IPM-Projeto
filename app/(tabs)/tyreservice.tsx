@@ -35,7 +35,7 @@ export default function TyreServiceTab() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <AntDesign name="left" size={24} onPress={navigateToCar} />
+            <AntDesign name="left" size={24} onPress={navigateToCar} style={styles.backButton} />
           }
           children={<Text style={styles.topText}>Tyre Service</Text>}
           body={<TyreService car={car} />}
@@ -48,5 +48,8 @@ export default function TyreServiceTab() {
 const styles = StyleSheet.create({
   topText: {
     fontSize: 25,
+  },
+  backButton: {
+    color: "#007aff",
   },
 });

@@ -52,7 +52,7 @@ export default function HomePage() {
       <View style={{ flex: 1 }}>
         <DefaultTopBar
           leftComponent={
-            <MaterialIcons name="menu" size={24} onPress={toggleSideMenu} />
+            <MaterialIcons name="menu" size={24} onPress={toggleSideMenu} style={styles.icon} />
           }
           children={<Text style={styles.topText}>My Cars</Text>}
           body={
@@ -72,7 +72,7 @@ export default function HomePage() {
             </>
           }
           rightComponent={
-            <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
+            <MaterialIcons name="search" size={24} onPress={toggleSearchBar} style={styles.icon} />
           }
         />
 
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
   topText: {
     fontSize: 25,
   },
-  searchIcon: {
-    marginRight: 10,
+  icon: {
+    color: "#007aff",
   },
   searchInput: {
     flex: 1,
