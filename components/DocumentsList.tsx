@@ -6,6 +6,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddDocumentModal from "./AddDocumentModal";
@@ -55,6 +56,38 @@ export default function DocumentsList({ car }: { car: Car }) {
     console.log("set a reminder");
   }
 
+    // Function to handle document deletion with confirmation
+    const handleDeleteDocument = (documentId: string) => {
+      Alert.alert(
+        "Confirm Delete",
+        "Are you sure you want to delete this document?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => {
+              // Call delete API and update the state
+              /*httpDelete(`/documents/${documentId}`)
+                .then(() => {
+                  console.log("Document deleted");
+                  setDocuments((prevDocuments) =>
+                    prevDocuments.filter((doc) => doc.id !== documentId)
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error deleting document:", error);
+                });*/
+                console.log("deleted");
+            },
+            style: "destructive",
+          },
+        ]
+      );
+    };
+
   /** Just missing the document header above the page with the arrow to go a page back */
   return (
     <View style={styles.container}>
@@ -71,7 +104,7 @@ export default function DocumentsList({ car }: { car: Car }) {
               </TouchableOpacity>
 
               <TouchableOpacity style={{ marginLeft: 15 }}>
-                <MaterialIcons name="delete" size={20} color="red" />
+                <MaterialIcons name="delete" size={20} color="red" onClick={handleDeleteDocument(document.filename)} />
               </TouchableOpacity>
             </View>
           </View>
@@ -93,8 +126,10 @@ export default function DocumentsList({ car }: { car: Car }) {
         <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
     </View>
+
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
