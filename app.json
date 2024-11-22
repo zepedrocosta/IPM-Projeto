@@ -21,6 +21,10 @@
         "foregroundImage": "./assets/images/splash.png",
         "backgroundColor": "#007aff"
       },
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
       "package": "com.jose_costa.IShowCar"
     },
     "web": {
