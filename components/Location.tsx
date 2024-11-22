@@ -91,15 +91,15 @@ export default function Location({ car }: LocationProps) {
 
       <View style={styles.addressBox}>
         <Text style={styles.addressText}>
-          {selectedLocation?.street || "Location not available"}
+          Car is at: {selectedLocation?.street || "Location not available"}
         </Text>
       </View>
 
       <View style={styles.navContainer}>
-        <TouchableOpacity onPress={focusOnCar} style={styles.addButton}>
+        <TouchableOpacity onPress={focusOnCar} style={styles.carButton}>
           <AntDesign name="car" size={24} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={focusOnUser} style={styles.addButton}>
+        <TouchableOpacity onPress={focusOnUser} style={styles.userButton}>
           <AntDesign name="user" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -151,11 +151,19 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
   },
-  addButton: {
+  carButton: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#3399ff",
+    backgroundColor: "#030dad",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  userButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#e80505",
     alignItems: "center",
     justifyContent: "center",
   },
