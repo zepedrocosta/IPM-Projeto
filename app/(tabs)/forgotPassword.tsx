@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
   },
   backToSignIn: {
     fontSize: 18,
-    color: "blue",
     textDecorationLine: "underline",
     marginTop: 10,
   },

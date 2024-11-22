@@ -95,12 +95,14 @@ export default function Location({ car }: LocationProps) {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={focusOnCar} style={styles.addButton}>
-        <AntDesign name="car" size={24} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={focusOnUser} style={styles.addButton}>
-        <AntDesign name="user" size={24} color="white" />
-      </TouchableOpacity>
+      <View style={styles.navContainer}>
+        <TouchableOpacity onPress={focusOnCar} style={styles.addButton}>
+          <AntDesign name="car" size={24} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={focusOnUser} style={styles.addButton}>
+          <AntDesign name="user" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -109,6 +111,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "80%",
+  },
+  navContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+    marginTop: 25
   },
   map: {
     height: "60%",
