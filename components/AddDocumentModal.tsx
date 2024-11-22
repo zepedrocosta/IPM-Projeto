@@ -71,7 +71,6 @@ export default function AddDocumentModal({
         const base64 = await FileSystem.readAsStringAsync(fileUri, {
           encoding: FileSystem.EncodingType.Base64,
         });
-        console.log("Base64 string: ", base64);
         setFile(result.assets[0]);
         setFile64(base64);
       } else {
@@ -97,8 +96,8 @@ export default function AddDocumentModal({
   const handleAddDocument = () => {
     setCategoryName(category);
     const newDocument = {
+      type: category.toUpperCase(),
       content: file64,
-      type: categoryName.toUpperCase(),
       dueDate: expirableDocuments.includes(category)
         ? date?.toISOString().split(".")[0]
         : null,
