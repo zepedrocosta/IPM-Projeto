@@ -29,7 +29,7 @@ export default function LocationPage() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <AntDesign name="left" size={24} onPress={navigateToCarPage} />
+            <AntDesign name="left" size={24} onPress={navigateToCarPage} style={styles.backButton} />
           }
           children={
             <Text style={styles.topText}>
@@ -46,5 +46,8 @@ export default function LocationPage() {
 const styles = StyleSheet.create({
   topText: {
     fontSize: 23,
+  },
+  backButton: {
+    color: "#007aff",
   },
 });

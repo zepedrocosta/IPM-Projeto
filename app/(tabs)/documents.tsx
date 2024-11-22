@@ -31,7 +31,7 @@ export default function DocumentPage() {
   return (
     <DefaultTopBar
       leftComponent={
-        <AntDesign name="left" size={24} onPress={navigateToCarPage} />
+        <AntDesign name="left" size={24} onPress={navigateToCarPage} style={styles.backButton} />
       }
       children={<Text style={styles.topText}>Documents</Text>}
       body={<DocumentsList car={car} />}
@@ -42,5 +42,8 @@ export default function DocumentPage() {
 const styles = StyleSheet.create({
   topText: {
     fontSize: 25,
+  },
+  backButton: {
+    color: "#007aff",
   },
 });

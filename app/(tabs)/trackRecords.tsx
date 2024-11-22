@@ -60,7 +60,7 @@ export default function TrackRecords() {
           onPress={navigateToTrackHistory}
         />
         <Text style={styles.topTextBar}>
-          {car.brand} {car.model} {car.plate}
+          {car.model} ({car.plate})
         </Text>
       </SafeAreaView>
       <View style={styles.trackRecordContainer}>

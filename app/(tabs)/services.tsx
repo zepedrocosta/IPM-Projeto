@@ -35,7 +35,7 @@ export default function ServicesTab() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <AntDesign name="left" size={24} onPress={navigateToCar} />
+            <AntDesign name="left" size={24} onPress={navigateToCar} style={styles.backButton} />
           }
           children={<Text style={styles.topText}>Services</Text>}
           body={<Services car={car} />}
@@ -48,5 +48,8 @@ export default function ServicesTab() {
 const styles = StyleSheet.create({
   topText: {
     fontSize: 25,
+  },
+  backButton: {
+    color: "#007aff",
   },
 });

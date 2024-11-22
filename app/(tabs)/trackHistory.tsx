@@ -132,7 +132,7 @@ export default function TrackHistory() {
           onPress={navigateToCarPage}
         />
         <Text style={styles.topTextBar}>
-          {car.brand} {car.model} {car.plate}
+          {car.model} ({car.plate})
         </Text>
       </SafeAreaView>
       <View style={styles.trackRecordList}>

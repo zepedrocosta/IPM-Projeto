@@ -23,15 +23,15 @@ type Car = {
 };
 
 const Car: React.FC = () => {
-  const params = useLocalSearchParams();
-  AsyncStorage.setItem("car", JSON.stringify(params));
-  const [image, setImage] = useState<string>(
-    "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
-  );
+    const params = useLocalSearchParams();
+    AsyncStorage.setItem("car", JSON.stringify(params));
+    const [image, setImage] = useState<string>(
+        "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
+    );
 
-  /*AsyncStorage.getItem("image").then((value) => {
-    if (value && value !== "") setImage(value!);
-  });*/
+    /*AsyncStorage.getItem("image").then((value) => {
+        if (value && value !== "") setImage(value!);
+    });*/
 
   const [car, setCar] = useState<Car>({
     imageURL: image,
@@ -58,14 +58,14 @@ const Car: React.FC = () => {
   };
 
   const navigateToLocation = () => {
-    router.push("/location");
-  };
+        router.push("/location");
+    };
 
-  const navigateToServices = () => {
-    router.push({
-      pathname: "/services",
-      params: {
-        imageURL: car.imageURL,
+    const navigateToServices = () => {
+        router.push({
+            pathname: "/services",
+            params: {
+                imageURL: car.imageURL,
         brand: car.brand,
         model: car.model,
         year: car.year.toString(),
@@ -74,9 +74,9 @@ const Car: React.FC = () => {
     });
   };
 
-  const navigateToMain = () => {
-    router.back();
-  };
+    const navigateToMain = () => {
+        router.back();
+    };
 
   const handleEdit = () => {
     router.push({
@@ -148,7 +148,8 @@ const Car: React.FC = () => {
             style={styles.backButton}
             onPress={navigateToMain}
           />
-          <MaterialIcons
+          <Text style={styles.carBrandText}>{car.brand}</Text>
+                    <MaterialIcons
             name="edit"
             size={24}
             style={styles.editButton}
@@ -159,11 +160,11 @@ const Car: React.FC = () => {
           <Image source={{ uri: image }} style={{ height: 160, width: 160 }} />
           <View style={styles.carBrand}>
             <Text style={styles.carBrandText}>
-              {car.brand} {car.model}
+              {car.model}
             </Text>
           </View>
           <View style={styles.carPlate}>
-            <Text>{car.plate}</Text>
+            <Text style={styles.carPlateText}>{car.plate}</Text>
           </View>
         </View>
         <View style={styles.carMain}>
@@ -200,128 +201,140 @@ const Car: React.FC = () => {
 export default Car;
 
 const styles = StyleSheet.create({
-  carMain: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  topView: {
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
-  carInfoContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: 15,
-  },
-  carBrand: {
-    marginBottom: 8,
-    marginTop: 5,
-  },
-  carBrandText: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  carBrandModel: {
-    marginBottom: 8,
-  },
-  carPlate: {
-    padding: 8,
-    paddingBottom: 4,
-    paddingTop: 4,
-    borderColor: "#ddd",
-    borderRadius: 4,
-    backgroundColor: "#f9f9f9",
-    marginTop: 5,
-  },
-  carPlateText: {
-    fontSize: 22,
-  },
-  optionsContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginTop: 30,
-  },
-  image: {
-    borderRadius: 15,
-    height: 160,
-    width: "100%",
-    maxWidth: 390,
-    resizeMode: "cover",
-  },
-  carButton: {
-    padding: 15,
-    width: "80%",
-    fontSize: 20,
-  },
-  carButtonLess: {
-    marginTop: 5,
-    padding: 15,
-    width: "80%",
-    fontSize: 25,
-  },
-  carGroupingContainer: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  carGroupingContainerEnd: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  infoTitle: {
-    marginBottom: 0,
-    fontSize: 25,
-  },
-  performanceTitle: {
-    marginBottom: 0,
-    marginTop: 23,
-    fontSize: 25,
-  },
-  backButton: {
-    padding: 22,
-    color: "#007aff",
-  },
-  editButton: {
-    padding: 22,
-    color: "#005bb5",
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  button: {
-    backgroundColor: "rgba(33,150,243,1.00)",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 2,
-    display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
-  buttonText: {
-    fontSize: 20,
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  arrow: {
-    width: "auto",
-    textAlignVertical: "center",
-  },
-  rightArrow: {
-    color: "#fff",
-  },
+    carMain: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: 20,
+    },
+    topView: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderBottomColor: "lightgray",
+        borderBottomWidth: 1,
+    },
+    carInfoContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 15
+    },
+    carBrand: {
+        marginBottom: 8,
+        marginTop: 5
+    },
+    carBrandText: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    carBrandTextTop: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
+    },
+    carBrandModel: {
+        marginBottom: 8,
+    },
+    carPlate: {
+        padding: 8,
+        paddingBottom: 4,
+        paddingTop: 4,
+        marginTop: 5
+    },
+    carPlateText: {
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 4,
+        backgroundColor: "#f9f9f9",
+        fontSize: 16,
+        textAlign: "center",
+    },
+    optionsContainer: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginTop: 30
+    },
+    image: {
+        borderRadius: 15,
+        height: 160,
+        width: '100%',
+        maxWidth: 390,
+        resizeMode: 'cover',
+    },
+    carButton: {
+        padding: 15,
+        width: '80%',
+        fontSize: 20
+    },
+    carButtonLess: {
+        marginTop: 5,
+        padding: 15,
+        width: '80%',
+        fontSize: 25
+    },
+    carGroupingContainer: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    carGroupingContainerEnd: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    infoTitle: {
+        marginBottom: 0,
+        fontSize: 25
+    },
+    performanceTitle: {
+        marginBottom: 0,
+        marginTop: 23,
+        fontSize: 25
+    },
+    backButton: {
+        padding: 22,
+        color: "#007aff",
+    },
+    editButton: {
+        padding: 22,
+        color: "#005bb5",
+    },
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        backgroundColor: 'rgba(33,150,243,1.00)',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 2,
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
+    buttonText: {
+        fontSize: 20,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    arrow: {
+        width: 'auto',
+        textAlignVertical: 'center'
+    },
+    rightArrow: {
+        color: '#fff'
+    }
 });

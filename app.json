@@ -4,7 +4,7 @@
     "slug": "IShowCar",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "myapp",
     "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
@@ -18,9 +18,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/splash.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jose_costa.IShowCar"
     },
     "web": {
       "bundler": "metro",
@@ -32,7 +33,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "38aa3cbe-56a7-4196-bf79-4aeb1c0c6246"
+      }
     }
   }
-  
 }
