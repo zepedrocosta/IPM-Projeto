@@ -78,6 +78,10 @@ export default function SignIn() {
     );
   };
 
+  const navigateToForgotPassword = () => {
+    router.push("/(tabs)/forgotPassword"); // Navigate to the register page
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.insideContainer}>
@@ -102,7 +106,7 @@ export default function SignIn() {
           onChangeText={(value) => setForm({ ...form, password: value })}
           secureTextEntry // replaces the password text with dots for added security
         />
-        <Pressable>
+        <Pressable onPress={() => navigateToForgotPassword()}>
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
         </Pressable>
       </View>
