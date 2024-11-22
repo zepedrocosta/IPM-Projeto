@@ -54,8 +54,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#007BFF",
-    height: 35,
-    width: 250,
+    height: 50,
+    width: 150,
     borderRadius: 5,
     marginTop: 10,
     alignSelf: "center",
@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: "center",
   },
-
   inputBox: {
     borderWidth: 1,
     borderColor: "#ccc",
@@ -156,6 +155,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     marginBottom: 5,
+  },
+  buttonContainer: {
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-evenly",
+    alignItems: "center", // Center items vertically if needed
+  },
+  picker: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 5,
+    width: "100%",
   },
 });
 

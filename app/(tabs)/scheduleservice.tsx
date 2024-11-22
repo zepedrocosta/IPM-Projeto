@@ -4,7 +4,7 @@ import { DefaultTopBar } from "@/components/DefaultTopBar";
 import { AntDesign } from "@expo/vector-icons";
 import { useRouter } from "expo-router"; // Use the expo-router hook for navigation
 import { useLocalSearchParams } from "expo-router";
-import ScheduleInspection from "@/components/ScheduleInspection";
+import ScheduleService from "@/components/ScheduleService";
 import Car from "@/app/car";
 
 export default function ScheduleInspectionTab() {
@@ -28,8 +28,8 @@ export default function ScheduleInspectionTab() {
       leftComponent={
         <AntDesign name="left" size={24} onPress={navigateToServices} />
       }
-      children={<Text style={styles.topText}>Schedule Inspection</Text>}
-      body={<ScheduleInspection car={car} />}
+      children={<Text style={styles.topText}>Schedule Service</Text>}
+      body={<ScheduleService car={car} />}
     />
   );
 }
