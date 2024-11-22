@@ -51,6 +51,7 @@ public class CarService {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
 
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        car.setCarYear(car.getCarYear());
         car.setOwner(principal);
 
         return Optional.of(cars.save(car));
@@ -114,8 +115,8 @@ public class CarService {
 
         s.ifPresent(services -> car.getServices().remove(services));
 
-        car.getServices().add(service);
-        cars.save(car);
+        service.setCar(car);
+        carServices.save(service);
         return Optional.of(buildCarServiceResponse(service, licensePlate));
     }
 
@@ -145,6 +146,6 @@ public class CarService {
     }
 
     private CarServiceResponse buildCarServiceResponse(CarServices service, String licensePlate) {
-        return new CarServiceResponse(service.getId(), service.getDueDate(), service.getDueKms(), service.getType(), licensePlate);
+        return new CarServiceResponse(service.getId(), service.getDueDate(), service.getDueKms(), service.getType(), service.getPlace(), licensePlate);
     }
 }

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { httpGet } from "@/utils/http";
 import styles from "./styles";
 import Car from "@/app/car";
@@ -17,33 +17,35 @@ export default function ServicesPage({ car }: { car: Car }) {
   const [inspection, setInspection] = useState<Service>();
   const [vehicleCheck, setVehicleCheck] = useState<Service>();
 
-  useEffect(() => {
-    httpGet("/cars/" + car.plate + "/services").then(
-      (res: any) => {
-        res.data.forEach((service: any) => {
-          switch (service.type) {
-            case "OIL_CHANGE":
-              setOilChange(service);
-              break;
-            case "BRAKE_CHANGE":
-              setBrakeChange(service);
-              break;
-            case "INSPECTION":
-              setInspection(service);
-              break;
-            case "VEHICLE_CHECKUP":
-              setVehicleCheck(service);
-              break;
-            default:
-              console.warn(`Unhandled service type: ${service.type}`);
-          }
-        });
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      httpGet("/cars/" + car.plate + "/services").then(
+        (res: any) => {
+          res.data.forEach((service: any) => {
+            switch (service.type) {
+              case "OIL_CHANGE":
+                setOilChange(service);
+                break;
+              case "BRAKE_CHANGE":
+                setBrakeChange(service);
+                break;
+              case "INSPECTION":
+                setInspection(service);
+                break;
+              case "VEHICLE_CHECKUP":
+                setVehicleCheck(service);
+                break;
+              default:
+                console.warn(`Unhandled service type: ${service.type}`);
+            }
+          });
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }, [])
+  );
 
   const navigateToScheduleService = () => {
     router.push({
@@ -74,7 +76,14 @@ export default function ServicesPage({ car }: { car: Car }) {
         <View style={styles.itemBox}>
           <Text style={styles.itemTitle}>Engine Oil</Text>
           <Text style={styles.itemDate}>
-            Date: {oilChange?.dueDate || "N/A"}
+            Date:{" "}
+            {oilChange?.dueDate
+              ? oilChange.dueDate.split("T")[0] +
+                " " +
+                oilChange.dueDate.split("T")[1].split(":")[0] +
+                ":" +
+                oilChange.dueDate.split("T")[1].split(":")[1]
+              : "N/A"}
           </Text>
           <Text style={styles.itemKm}>Kms: {oilChange?.dueKms || "N/A"}</Text>
         </View>
@@ -82,7 +91,14 @@ export default function ServicesPage({ car }: { car: Car }) {
         <View style={styles.itemBox}>
           <Text style={styles.itemTitle}>Brake Service</Text>
           <Text style={styles.itemDate}>
-            Date: {brakeChange?.dueDate || "N/A"}
+            Date:{" "}
+            {brakeChange?.dueDate
+              ? brakeChange.dueDate.split("T")[0] +
+                " " +
+                brakeChange.dueDate.split("T")[1].split(":")[0] +
+                ":" +
+                brakeChange.dueDate.split("T")[1].split(":")[1]
+              : "N/A"}
           </Text>
           <Text style={styles.itemKm}>Kms: {brakeChange?.dueKms || "N/A"}</Text>
         </View>
@@ -90,14 +106,28 @@ export default function ServicesPage({ car }: { car: Car }) {
         <View style={styles.itemBox}>
           <Text style={styles.itemTitle}>Inspection (IPO)</Text>
           <Text style={styles.itemDate}>
-            Date: {inspection?.dueDate || "N/A"}
+            Date:{" "}
+            {inspection?.dueDate
+              ? inspection.dueDate.split("T")[0] +
+                " " +
+                inspection.dueDate.split("T")[1].split(":")[0] +
+                ":" +
+                inspection.dueDate.split("T")[1].split(":")[1]
+              : "N/A"}
           </Text>
         </View>
 
         <View style={styles.itemBox}>
           <Text style={styles.itemTitle}>Vehicle Check</Text>
           <Text style={styles.itemDate}>
-            Date: {vehicleCheck?.dueDate || "N/A"}
+            Date:{" "}
+            {vehicleCheck?.dueDate
+              ? vehicleCheck.dueDate.split("T")[0] +
+                " " +
+                vehicleCheck.dueDate.split("T")[1].split(":")[0] +
+                ":" +
+                vehicleCheck.dueDate.split("T")[1].split(":")[1]
+              : "N/A"}
           </Text>
           <Text style={styles.itemKm}>
             Kms: {vehicleCheck?.dueKms || "N/A"}
@@ -106,10 +136,7 @@ export default function ServicesPage({ car }: { car: Car }) {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button}>
-            <Text
-              style={styles.buttonText}
-              onPress={navigateToScheduleService}
-            >
+            <Text style={styles.buttonText} onPress={navigateToScheduleService}>
               Schedule Service
             </Text>
           </TouchableOpacity>
@@ -119,7 +146,6 @@ export default function ServicesPage({ car }: { car: Car }) {
             </Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </ScrollView>
   );

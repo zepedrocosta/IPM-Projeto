@@ -21,17 +21,23 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
   const [date, setDate] = useState<Date>();
   const [category, setCategory] = useState<string>("");
   const [serviceCenter, setServiceCenter] = useState<string>("");
-  const [lifetime, setLifetime] = useState("");
+  const [lifetime, setLifetime] = useState("0");
 
   const expirableServices = ["OIL_CHANGE", "BRAKE_CHANGE", "VEHICLE_CHECKUP"];
 
   const handleSubmit = () => {
-    httpPost("/cars/" + car.plate + "/services", {
-      dueDate: date,
+    if (date) {
+      console.log(date.toISOString().split(".")[0]);
+    }
+    const a = {
+      dueDate: date?.toISOString().split(".")[0],
       dueKms: parseInt(lifetime),
       type: category,
       place: serviceCenter,
-    }).then(
+    };
+
+    console.log(a);
+    httpPost("/cars/" + car.plate + "/services", a).then(
       (response: any) => {
         router.back();
       },
