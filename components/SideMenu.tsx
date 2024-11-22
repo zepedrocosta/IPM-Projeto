@@ -48,7 +48,13 @@ const SideMenu = ({
 
       {/* Animated Side Menu */}
       <Animated.View
-        style={[styles.menu, { transform: [{ translateX: slideAnimation }], marginTop: insets.top }]}
+        style={[
+          styles.menu,
+          {
+            transform: [{ translateX: slideAnimation }],
+            marginTop: insets.top,
+          },
+        ]}
       >
         <SafeAreaView style={styles.safeArea}>
           {/* Close Icon */}
@@ -65,7 +71,10 @@ const SideMenu = ({
               style={styles.menuItem}
               onPress={() => {
                 closeMenu();
-                ToastAndroid.show("Profile not Implemented", ToastAndroid.LONG);
+                ToastAndroid.show(
+                  "Profile not Implemented",
+                  ToastAndroid.SHORT
+                );
               }}
             >
               <Text style={styles.menuText}>Profile</Text>
@@ -75,7 +84,10 @@ const SideMenu = ({
               style={styles.menuItem}
               onPress={() => {
                 closeMenu();
-                ToastAndroid.show("Settings not Implemented", ToastAndroid.LONG);
+                ToastAndroid.show(
+                  "Settings not Implemented",
+                  ToastAndroid.SHORT
+                );
               }}
             >
               <Text style={styles.menuText}>Settings</Text>
@@ -122,7 +134,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    width: Dimensions.get("window").width * 0.70,
+    width: Dimensions.get("window").width * 0.7,
     backgroundColor: "rgba(230, 230, 230, 1)",
     zIndex: 2,
     shadowColor: "#000",
