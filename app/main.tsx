@@ -67,6 +67,7 @@ export default function HomePage() {
             <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
           }
         />
+        
         {/* SideMenu */}
         {isSideMenuVisible && (
           <SideMenu

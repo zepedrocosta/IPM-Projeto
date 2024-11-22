@@ -7,6 +7,7 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 const SideMenu = ({
   onLogout,
@@ -15,6 +16,7 @@ const SideMenu = ({
   onLogout: () => void;
   onClose: () => void;
 }) => {
+  const insets = useSafeAreaInsets();
   const slideAnimation = new Animated.Value(-Dimensions.get("window").width);
 
   React.useEffect(() => {
@@ -40,38 +42,42 @@ const SideMenu = ({
       <TouchableOpacity style={styles.overlay} onPress={closeMenu} />
 
       {/* Animated Side Menu */}
-      <Animated.View style={[styles.menu, { transform: [{ translateX: slideAnimation }] }]}>
-        <Text style={styles.menuHeader}>Menu</Text>
+      <Animated.View
+        style={[styles.menu, { transform: [{ translateX: slideAnimation }] }]}
+      >
+        <SafeAreaView style={[styles.safeArea, { paddingTop: insets.top }]}>
+          <Text style={styles.menuHeader}>Menu</Text>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => {
-            closeMenu();
-            console.log("Navigate to Profile");
-          }}
-        >
-          <Text style={styles.menuText}>Profile</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => {
+              closeMenu();
+              console.log("Navigate to Profile");
+            }}
+          >
+            <Text style={styles.menuText}>Profile</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => {
-            closeMenu();
-            console.log("Navigate to Settings");
-          }}
-        >
-          <Text style={styles.menuText}>Settings</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => {
+              closeMenu();
+              console.log("Navigate to Settings");
+            }}
+          >
+            <Text style={styles.menuText}>Settings</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.menuItem}
-          onPress={() => {
-            closeMenu();
-            onLogout();
-          }}
-        >
-          <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.menuItem}
+            onPress={() => {
+              closeMenu();
+              onLogout();
+            }}
+          >
+            <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
       </Animated.View>
     </>
   );
@@ -95,12 +101,15 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.75,
     backgroundColor: "#fff",
     zIndex: 2,
-    padding: 16,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowOffset: { width: 2, height: 0 },
     shadowRadius: 4,
     elevation: 5,
+  },
+  safeArea: {
+    flex: 1,
+    paddingHorizontal: 16,
   },
   menuHeader: {
     fontSize: 24,
