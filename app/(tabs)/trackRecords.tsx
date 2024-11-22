@@ -51,7 +51,7 @@ export default function TrackRecords() {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.topBar}>
                 <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToTrackHistory} />
-                <Text style={styles.topTextBar}>{car.brand} {car.model} {car.plate}</Text>
+                <Text style={styles.topTextBar}>{car.model} ({car.plate})</Text>
             </SafeAreaView>
             <View style={styles.trackRecordContainer}>
                 <Text style={styles.statsText}>Stats</Text>

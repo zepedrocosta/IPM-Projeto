@@ -118,7 +118,7 @@ export default function TrackHistory() {
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
             <SafeAreaView style={styles.topBar}>
                 <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToCarPage} />
-                <Text style={styles.topTextBar}>{car.brand} {car.model} {car.plate}</Text>
+                <Text style={styles.topTextBar}>{car.model} ({car.plate})</Text>
             </SafeAreaView>
             <View style={styles.trackRecordList}>
                 <Text style={styles.topText}>Previous track records: </Text>

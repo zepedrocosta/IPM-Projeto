@@ -15,15 +15,15 @@ type Car = {
 };
 
 const Car: React.FC = () => {
-  const params = useLocalSearchParams();
-  AsyncStorage.setItem("car", JSON.stringify(params));
-  const [image, setImage] = useState<string>(
-    "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
-  );
+    const params = useLocalSearchParams();
+    AsyncStorage.setItem("car", JSON.stringify(params));
+    const [image, setImage] = useState<string>(
+        "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
+    );
 
-  AsyncStorage.getItem("image").then((value) => {
-    if (value && value !== "") setImage(value!);
-  });
+    AsyncStorage.getItem("image").then((value) => {
+        if (value && value !== "") setImage(value!);
+    });
 
     const [car, setCar] = useState<Car>({
         imageURL: image,
@@ -38,14 +38,14 @@ const Car: React.FC = () => {
     };
 
     const navigateToLocation = () => {
-    router.push("/location");
-  };
+        router.push("/location");
+    };
 
-  const navigateToServices = () => {
-    router.push({
-      pathname: "/services",
-      params: {
-        imageURL: car.imageURL,
+    const navigateToServices = () => {
+        router.push({
+            pathname: "/services",
+            params: {
+                imageURL: car.imageURL,
                 brand: car.brand,
                 model: car.model,
                 year: car.year.toString(),
@@ -54,9 +54,9 @@ const Car: React.FC = () => {
         });
     };
 
-  const navigateToMain = () => {
-    router.back();
-  };
+    const navigateToMain = () => {
+        router.back();
+    };
 
     const handleEdit = () => {
         router.push({
@@ -109,13 +109,14 @@ const Car: React.FC = () => {
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
                 <View style={styles.topView}>
                     <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
+                    <Text style={styles.carBrandText}>{car.brand}</Text>
                     <MaterialIcons name="edit" size={24} style={styles.editButton} onPress={handleEdit} />
                 </View>
                 <View style={styles.carInfoContainer}>
                     <Image source={{ uri: image }} style={{ height: 160, width: 160 }} />
-                    <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
+                    <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.model}</Text></View>
                     <View style={styles.carPlate}>
-                        <Text>{car.plate}</Text>
+                        <Text style={styles.carPlateText}>{car.plate}</Text>
                     </View>
                 </View>
                 <View style={styles.carMain}>
@@ -159,7 +160,10 @@ const styles = StyleSheet.create({
     topView: {
         display: 'flex',
         justifyContent: 'space-between',
-        flexDirection: 'row'
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderBottomColor: "lightgray",
+        borderBottomWidth: 1,
     },
     carInfoContainer: {
         display: 'flex',
@@ -176,6 +180,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#333',
     },
+    carBrandTextTop: {
+        fontSize: 25,
+        fontWeight: 'bold',
+        color: '#333',
+    },
     carBrandModel: {
         marginBottom: 8,
     },
@@ -183,13 +192,17 @@ const styles = StyleSheet.create({
         padding: 8,
         paddingBottom: 4,
         paddingTop: 4,
-        borderColor: '#ddd',
-        borderRadius: 4,
-        backgroundColor: '#f9f9f9',
         marginTop: 5
     },
     carPlateText: {
-        fontSize: 22,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 4,
+        backgroundColor: "#f9f9f9",
+        fontSize: 16,
+        textAlign: "center",
     },
     optionsContainer: {
         width: '100%',

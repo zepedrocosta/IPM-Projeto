@@ -52,7 +52,7 @@ const TrackRecordDetails = () => {
         <ScrollView style={styles.container}>
             <SafeAreaView style={styles.topBar}>
                 <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToCarPage} />
-                <Text style={styles.topTextBar}>{car.brand} {car.model} {car.plate}</Text>
+                <Text style={styles.topTextBar}>{car.model} ({car.plate})</Text>
             </SafeAreaView>
 
             <Text style={styles.header}>Track Record Details</Text>
