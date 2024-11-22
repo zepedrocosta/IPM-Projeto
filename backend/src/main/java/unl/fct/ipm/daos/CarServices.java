@@ -27,6 +27,9 @@ public class CarServices extends DAO implements Serializable {
     @Column(nullable = false)
     private CarServiceTypeEnum type;
 
+    @Column
+    private String place;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne

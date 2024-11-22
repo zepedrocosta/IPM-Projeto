@@ -91,7 +91,6 @@ const Car: React.FC = () => {
         style={styles.backButton}
         onPress={navigateToMain}
       />
-      {/**TODO: fix scrolls */}
       <View
         style={{
           display: "flex",

@@ -22,5 +22,7 @@ public class CarServiceResponse implements Serializable {
 
     private CarServiceTypeEnum type;
 
+    private String place;
+
     private String plate;
 }

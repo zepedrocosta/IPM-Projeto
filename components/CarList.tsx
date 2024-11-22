@@ -16,6 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MaterialIcons } from "@expo/vector-icons";
 
 type Car = {
   brand: string;
@@ -86,7 +87,7 @@ const brands = [
 const initalNewCar: Car = {
   brand: "",
   model: "",
-  year: new Date().getFullYear().toString(),
+  year: "",
   plate: "",
   imageURL: "",
 };
@@ -153,9 +154,15 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
       },
       (error) => {
         const regex409 = /409/;
+        const regex400 = /400/;
         if (regex409.test(error.message)) {
           ToastAndroid.show(
             "Plate already registered. If this is an error, contact support",
+            ToastAndroid.LONG
+          );
+        } else if (regex400.test(error.message)) {
+          ToastAndroid.show(
+            "Invalid data. Please check the fields and try again",
             ToastAndroid.LONG
           );
         } else {
@@ -198,9 +205,9 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   return (
     <View style={styles.main}>
-      {showPopup && (
+      <Modal transparent={true} visible={showPopup} animationType="fade">
         <View style={styles.addCarContainer}>
-          <Modal style={styles.addCar}>
+          <View style={styles.addCar}>
             <Text
               style={{
                 fontSize: 20,
@@ -247,7 +254,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
               style={styles.formInput}
             />
             <TextInput
-              placeholder="Plate"
+              placeholder="Plate (XX-XX-XX)"
               value={newCar.plate}
               onChangeText={(value) =>
                 setNewCar({ ...newCar, plate: value.toUpperCase() })
@@ -285,9 +292,9 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
             </View>
-          </Modal>
+          </View>
         </View>
-      )}
+      </Modal>
 
       {loading ? (
         <View style={styles.noCarsFound}>
@@ -348,9 +355,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
         activeOpacity={0.7}
         onPress={() => setShowPopup(true)}
       >
-        <Text style={{ fontWeight: "bold", color: "#fff", fontSize: 36 }}>
-          +
-        </Text>
+        <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );
@@ -377,13 +382,17 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(225, 225, 225, 0.8)",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   addCar: {
     width: 335,
-    top: -70,
     padding: 20,
-    backgroundColor: "#c4c4c4",
+    backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
     borderRadius: 10,
   },
   button: {
@@ -478,13 +487,14 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: "absolute",
+    right: -20,
     bottom: 20,
-    right: -25,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: "#3399ff",
+    backgroundColor: "blue",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     alignItems: "center",
+    justifyContent: "center",
   },
 });
 

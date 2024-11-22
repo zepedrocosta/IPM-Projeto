@@ -23,4 +23,6 @@ public class CarServiceForm implements Serializable {
 
     @NotNull
     private CarServiceTypeEnum type;
+
+    private String place;
 }
