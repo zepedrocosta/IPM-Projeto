@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @ToString(doNotUseGetters = true)
 public class DocumentResponse implements Serializable {
 
-    private String filename;
+    private String content;
 
     private DocumentTypeEnum type;
 

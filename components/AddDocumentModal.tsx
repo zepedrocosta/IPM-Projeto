@@ -53,17 +53,20 @@ export default function AddDocumentModal({
   // Function to handle file selection
   const handleFileUpload = async () => {
     try {
-      const result: DocumentPicker.DocumentPickerResult = await DocumentPicker.getDocumentAsync({ type: "application/pdf" });
+      const result: DocumentPicker.DocumentPickerResult =
+        await DocumentPicker.getDocumentAsync({ type: "application/pdf" });
       console.log("document picker result: ", result);
 
-      if (result.canceled === false && result.assets?.[0]?.name.includes(".pdf")) {
+      if (
+        result.canceled === false &&
+        result.assets?.[0]?.name.includes(".pdf")
+      ) {
         // Add feedback, if the file selected is not supported, tell the user
         console.log("accepted");
         setFile(result.assets[0]); //THIS IS RESULTING IN A NULL, BECAUSE WE'RE NOT PASSING THE INFO YET??
       } else {
         console.log("invalid file selected");
       }
-
     } catch (err) {
       console.error("Error picking document:", err);
     }
@@ -82,19 +85,20 @@ export default function AddDocumentModal({
   };
 
   const handleAddDocument = () => {
-    /*const newDocument = {
-      file, //content
-      name, //filename
-      category, //type
-      date: expirableDocuments.includes(category) ? date : null, //dueDate
+    const newDocument = {
+      content: file,
+      type: category,
+      dueDate: expirableDocuments.includes(category)
+        ? date?.toISOString().split(".")[0]
+        : null,
     }; //#document picker result:  {"assets": [{"mimeType": "application/pdf", "name": "IPM7_Human_24_25.pdf", "size": 2046918, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/b74d3399-fabc-489c-8ae8-260913ed9f34.pdf"}], "canceled": false}
-    console.log("handleAddDocument: ", newDocument.date);
-    //onConfirm(newDocument); // Pass the document data to parent*/
-    onClose();  
+    console.log("handleAddDocument: ", newDocument);
+    //onConfirm(newDocument); // Pass the document data to parent
+    /*onClose();
     setFile(null);
     setDate(null);
     setCategory("");
-    setShowReminderModal(true);
+    setShowReminderModal(true);*/
   };
 
   return (
@@ -139,9 +143,7 @@ export default function AddDocumentModal({
                 <Text style={styles.label}>Expiration Date</Text>
                 <View style={styles.datePickerContainer}>
                   <Text style={styles.dateLabel}>
-                    {date
-                      ? `${date.toDateString()}`
-                      : "No date selected"}
+                    {date ? `${date.toDateString()}` : "No date selected"}
                   </Text>
                   <TouchableOpacity
                     style={styles.datePickerButton}
@@ -162,7 +164,11 @@ export default function AddDocumentModal({
             {/* Action Buttons */}
             <View style={styles.buttonContainer}>
               <Button title="Cancel" onPress={onClose} color="red" />
-              <Button title="Confirm" onPress={handleAddDocument} color="green" />
+              <Button
+                title="Confirm"
+                onPress={handleAddDocument}
+                color="green"
+              />
             </View>
           </View>
         </View>
