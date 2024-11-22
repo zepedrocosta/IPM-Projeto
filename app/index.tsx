@@ -6,18 +6,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { jwtDecode } from "jwt-decode";
 import { sessionSelector, login, logout } from "@/store/session";
 import SignIn from "./(tabs)/sign-in";
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 import { requestNotificationPermission } from "@/utils/notifications";
-import 'react-native-get-random-values';
+import "react-native-get-random-values";
 
-  // Set global notification behavior
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    }),
-  });
+// Set global notification behavior
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
   const dispatch = useDispatch();
@@ -54,9 +54,8 @@ export default function App() {
     };
 
     fetchToken();
-    requestNotificationPermission(); 
+    requestNotificationPermission();
   }, []);
-  
 
   useEffect(() => {
     if (session.isLogged) {

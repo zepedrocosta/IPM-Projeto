@@ -6,15 +6,19 @@ import {
   View,
   Keyboard,
   TouchableWithoutFeedback,
+  ToastAndroid,
 } from "react-native";
 import { DefaultTopBar } from "../components/DefaultTopBar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import CarList from "@/components/CarList";
 import SideMenu from "@/components/SideMenu";
+import { useDispatch } from "react-redux";
+import { logout } from "@/store/session";
 
 export default function HomePage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
   const [isSideMenuVisible, setSideMenuVisible] = useState<boolean>(false);
@@ -37,7 +41,9 @@ export default function HomePage() {
   };
 
   const handleLogout = () => {
-    console.log("Logged out!");
+    dispatch(logout());
+    router.replace("/sign-in");
+    ToastAndroid.show("Logged out", ToastAndroid.SHORT);
     // Add logout logic here, e.g., navigating to the login screen or clearing user data.
   };
 
@@ -45,7 +51,9 @@ export default function HomePage() {
     <TouchableWithoutFeedback onPress={handleTouchablePress}>
       <View style={{ flex: 1 }}>
         <DefaultTopBar
-          leftComponent={<MaterialIcons name="menu" size={24} onPress={toggleSideMenu}/>}
+          leftComponent={
+            <MaterialIcons name="menu" size={24} onPress={toggleSideMenu} />
+          }
           children={<Text style={styles.topText}>My Cars</Text>}
           body={
             <>
@@ -67,7 +75,7 @@ export default function HomePage() {
             <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
           }
         />
-        
+
         {/* SideMenu */}
         {isSideMenuVisible && (
           <SideMenu
