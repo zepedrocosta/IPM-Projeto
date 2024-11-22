@@ -1,39 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
-import Documents from "@/components/Documents";
+import { AntDesign } from "@expo/vector-icons";
+import { useRouter } from "expo-router"; // Use the expo-router hook for navigation
+import DocumentsList from "@/components/DocumentsList";
 import Car from "../car";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function DocumentPage() {
-  const params = useLocalSearchParams();
+  const router = useRouter();
 
   const [car, setCar] = useState<Car>({
-    url: params.url.toString(),
-    brand: params.brand.toString(),
-    model: params.model.toString(),
-    year: params.year.toString(),
-    plate: params.plate.toString(),
+    imageURL: "",
+    brand: "",
+    model: "",
+    year: "",
+    plate: "",
   });
 
-  const router = useRouter(); // Use the router hook for navigation
-
-  const navigateToRegister = () => {
-    router.push("/main"); // Navigate to the register page
-  };
+  useEffect(() => {
+    AsyncStorage.getItem("car").then((value) => {
+      setCar(JSON.parse(value!));
+    });
+  }, []);
 
   const navigateToCarPage = () => {
-    router.push({
-      pathname: "/car",
-      params: {
-        url: car.url,
-        brand: car.brand,
-        model: car.model,
-        year: car.year,
-        plate: car.plate,
-      },
-    });
+    router.back();
   };
 
   return (
@@ -42,7 +34,7 @@ export default function DocumentPage() {
         <AntDesign name="left" size={24} onPress={navigateToCarPage} />
       }
       children={<Text style={styles.topText}>Documents</Text>}
-      body={<Documents />}
+      body={<DocumentsList car={car} />}
     />
   );
 }

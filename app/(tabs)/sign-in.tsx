@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  ToastAndroid,
+  TextInput,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,6 +16,7 @@ import { login } from "@/store/session";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { sessionSelector } from "@/store/session";
+import Documents from "@/components/DocumentsList";
 
 type RootStackParamList = {
   Home: undefined;
@@ -44,7 +52,6 @@ export default function SignIn() {
   const handleSignIn = async () => {
     await httpPut("/security", form).then(
       (res) => {
-        console.log(res);
         let t: any = jwtDecode(res.headers["authorization"].split(" ")[1]);
         dispatch(
           login({
@@ -61,7 +68,12 @@ export default function SignIn() {
         navigateToMain();
       },
       (error) => {
-        console.error("Error at login:", error);
+        const regex403 = /403/;
+        if (regex403.test(error.message)) {
+          ToastAndroid.show("Invalid credentials", ToastAndroid.LONG);
+        } else {
+          ToastAndroid.show(error.toString(), ToastAndroid.LONG);
+        }
       }
     );
   };
@@ -96,10 +108,15 @@ export default function SignIn() {
       </View>
 
       <View style={styles.insideContainer}>
-        <Pressable style={styles.button} onPress={() => navigateToMain()}>
+        <Pressable style={styles.button} onPress={() => handleSignIn()}>
           <Text style={styles.buttonText}>Sign In</Text>
         </Pressable>
-        <Text style={styles.buttonRegister} onPress={() => navigateToRegister()}>Register</Text>
+        <Text
+          style={styles.buttonRegister}
+          onPress={() => navigateToRegister()}
+        >
+          Register
+        </Text>
       </View>
     </View>
   );
@@ -108,24 +125,24 @@ export default function SignIn() {
 const styles = StyleSheet.create({
   signInTitle: {
     fontSize: 25,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   container: {
-    height: '85%',
-    width: '100%',
+    height: "85%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
   },
   forgotPassword: {
-    textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
+    textDecorationStyle: "solid",
+    textDecorationLine: "underline",
   },
   insideContainer: {
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    width: '100%',
+    width: "100%",
   },
   title: {
     fontSize: 24,
@@ -152,20 +169,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    backgroundColor: 'rgba(33,150,243,1.00)',
+    backgroundColor: "rgba(33,150,243,1.00)",
     paddingVertical: 10,
     borderRadius: 2,
-    display: 'flex',
+    display: "flex",
     width: "80%",
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 20
+    justifyContent: "center",
+    flexDirection: "row",
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   buttonRegister: {
     paddingVertical: 10,
@@ -173,7 +190,7 @@ const styles = StyleSheet.create({
     width: "80%",
     marginBottom: 20,
     fontSize: 20,
-    color: 'black',
-    textAlign: 'center',
+    color: "black",
+    textAlign: "center",
   },
 });

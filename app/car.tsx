@@ -1,13 +1,13 @@
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
-import { Button, Pressable, StyleSheet, View, Text, ScrollView, Image } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import * as FileSystem from 'expo-file-system';
-
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Image, Pressable, ScrollView } from "react-native";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type Car = {
-    url: string;
+    imageURL: string;
     brand: string;
     model: string;
     year: string;
@@ -16,41 +16,53 @@ type Car = {
 
 const Car: React.FC = () => {
     const params = useLocalSearchParams();
+    AsyncStorage.setItem("car", JSON.stringify(params));
+    const [image, setImage] = useState<string>(
+        "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
+    );
+
+    AsyncStorage.getItem("image").then((value) => {
+        if (value && value !== "") setImage(value!);
+    });
 
     const [car, setCar] = useState<Car>({
-        url: params.url.toString(),
+        imageURL: image,
         brand: params.brand.toString(),
         model: params.model.toString(),
         year: params.year.toString(),
         plate: params.plate.toString(),
     });
 
-    const navigateToDocuments = (car: Car) => {
+    const navigateToDocuments = () => {
+        router.push("/documents");
+    };
+
+    const navigateToLocation = () => {
+        router.push("/location");
+    };
+
+    const navigateToServices = () => {
         router.push({
-            pathname: '/documents',
+            pathname: "/services",
             params: {
-                url: car.url,
+                imageURL: car.imageURL,
                 brand: car.brand,
                 model: car.model,
-                year: car.year,
+                year: car.year.toString(),
                 plate: car.plate,
             },
         });
     };
 
-    const navigateToServices = () => {
-        router.push('/services');
-    };
-
     const navigateToMain = () => {
-        router.push('/main');
+        router.back();
     };
 
     const handleEdit = () => {
         router.push({
             pathname: '/(tabs)/edit',
             params: {
-                url: car.url,
+                url: car.imageURL,
                 brand: car.brand,
                 model: car.model,
                 year: car.year,
@@ -59,24 +71,11 @@ const Car: React.FC = () => {
         });
     };
 
-    const navigateToLocation = (car: Car) => {
-        router.push({
-            pathname: '/location',
-            params: {
-                url: car.url,
-                brand: car.brand,
-                model: car.model,
-                year: car.year,
-                plate: car.plate,
-            },
-        });
-    };
-
-    const navigateToStats = () => { 
+    const navigateToStats = () => {
         router.push({
             pathname: '/(tabs)/stats',
             params: {
-                url: car.url,
+                url: car.imageURL,
                 brand: car.brand,
                 model: car.model,
                 year: car.year,
@@ -89,19 +88,13 @@ const Car: React.FC = () => {
         router.push({
             pathname: '/(tabs)/trackHistory',
             params: {
-                url: car.url,
+                url: car.imageURL,
                 brand: car.brand,
                 model: car.model,
                 year: car.year,
                 plate: car.plate,
             },
         });
-    };
-
-    const getLocalUri = async (path: string) => {
-        const fileInfo = await FileSystem.getInfoAsync(path);
-        console.log('File exists:', fileInfo.exists);
-        return fileInfo.exists;
     };
 
     const CustomButton = ({ title, onPress }: { title: string; onPress: () => void }) => (
@@ -119,23 +112,23 @@ const Car: React.FC = () => {
                     <MaterialIcons name="edit" size={24} style={styles.editButton} onPress={handleEdit} />
                 </View>
                 <View style={styles.carInfoContainer}>
-                    <Image source={{ uri: car.url }} style={styles.image} />
+                    <Image source={{ uri: image }} style={{ height: 160, width: 160 }} />
                     <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
                     <View style={styles.carPlate}>
-                        <Text style={styles.carPlateText}>{car.plate}</Text>
+                        <Text>{car.plate}</Text>
                     </View>
                 </View>
-                <View style={styles.optionsContainer}>
+                <View style={styles.carMain}>
                     <View style={styles.carGroupingContainer}>
                         <Text style={styles.infoTitle}>Info</Text>
                         <View style={styles.carButtonLess}>
-                            <CustomButton title="Location" onPress={() => navigateToLocation(car)} />
+                            <CustomButton title="Location" onPress={navigateToLocation} />
                         </View>
                         <View style={styles.carButton}>
                             <CustomButton title="Services" onPress={navigateToServices} />
                         </View>
                         <View style={styles.carButton}>
-                            <CustomButton title="Documents" onPress={() => navigateToDocuments(car)} />
+                            <CustomButton title="Documents" onPress={navigateToDocuments} />
                         </View>
                     </View>
                     <View style={styles.carGroupingContainerEnd}>
