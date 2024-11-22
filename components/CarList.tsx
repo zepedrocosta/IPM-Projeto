@@ -329,7 +329,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             />
             <View style={{ flex: 1 }}>
               <View style={styles.carBrand}>
-                <Text>{car.brand}</Text>
+                <Text style={styles.carBrandText}>{car.brand}</Text>
                 <Text style={{ color: "#555" }}>{car.year}</Text>
               </View>
               <View style={styles.carModel}>
@@ -342,7 +342,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 }}
               >
                 <View style={styles.carPlate}>
-                  <Text>{car.plate}</Text>
+                  <Text style={styles.carPlateText}>{car.plate}</Text>
                 </View>
               </View>
             </View>
@@ -364,9 +364,8 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
     paddingHorizontal: 16,
-    width: 335,
+    width: '95%',
   },
   list: {
     flex: 1,
@@ -469,7 +468,10 @@ const styles = StyleSheet.create({
   carBrand: {
     flexDirection: "row",
     justifyContent: "space-between",
-    fontSize: 18,
+    alignItems: 'flex-end'
+  },
+  carBrandText: {
+    fontSize: 16,
     fontWeight: "bold",
     color: "#333",
   },
@@ -479,6 +481,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   carPlate: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+  },
+  carPlateText: {
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderWidth: 1,
@@ -499,7 +506,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     position: "absolute",
-    right: -20,
+    right: 10,
     bottom: 20,
     backgroundColor: "rgba(33,150,243,1.00)",
     width: 56,
