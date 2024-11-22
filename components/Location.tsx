@@ -1,15 +1,8 @@
 import { Car } from "@/types/car";
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Button,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import React, { useRef, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { AntDesign } from "@expo/vector-icons";
 
 interface Location {
   id: string;
@@ -23,6 +16,8 @@ interface LocationProps {
 }
 
 export default function Location({ car }: LocationProps) {
+  const mapRef = useRef<MapView>(null);
+
   const [userLocation] = useState({
     latitude: 38.660667,
     longitude: -9.203528,
@@ -35,43 +30,77 @@ export default function Location({ car }: LocationProps) {
     street: "2825-097 Caparica",
   });
 
+  const focusOnCar = () => {
+    if (mapRef.current) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: selectedLocation.latitude,
+          longitude: selectedLocation.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+        1000 // Duration in milliseconds
+      );
+    }
+  };
+
+  const focusOnUser = () => {
+    if (mapRef.current) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        },
+        1000 // Duration in milliseconds
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
-      {
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-        >
-          <Marker
-            coordinate={userLocation}
-            title="User Location"
-            description="This is where you are"
-          />
+      <MapView
+        ref={mapRef}
+        style={styles.map}
+        initialRegion={{
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+      >
+        <Marker
+          coordinate={userLocation}
+          title="User Location"
+          description="This is where you are"
+        />
 
-          {selectedLocation && (
-            <Marker
-              pinColor="blue"
-              coordinate={{
-                latitude: selectedLocation.latitude,
-                longitude: selectedLocation.longitude,
-              }}
-              title="Car Location"
-              description={selectedLocation.street}
-            />
-          )}
-        </MapView>
-      }
+        {selectedLocation && (
+          <Marker
+            pinColor="blue"
+            coordinate={{
+              latitude: selectedLocation.latitude,
+              longitude: selectedLocation.longitude,
+            }}
+            title="Car Location"
+            description={selectedLocation.street}
+          />
+        )}
+      </MapView>
 
       <View style={styles.addressBox}>
         <Text style={styles.addressText}>
           {selectedLocation?.street || "Location not available"}
         </Text>
       </View>
+
+      <TouchableOpacity onPress={focusOnCar} style={styles.addButton}>
+        <AntDesign name="car" size={24} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={focusOnUser} style={styles.addButton}>
+        <AntDesign name="user" size={24} color="white" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -112,5 +141,13 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     padding: 10,
     borderRadius: 10,
+  },
+  addButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#3399ff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
