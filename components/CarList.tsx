@@ -11,12 +11,14 @@ import {
   Modal,
   ToastAndroid,
   ScrollView,
+  Keyboard,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import { httpGet, httpPost } from "@/utils/http";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
+import * as FileSystem from "expo-file-system";
 
 type Car = {
   brand: string;
@@ -139,6 +141,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
   }, []);
 
   const handleAddCar = () => {
+    Keyboard.dismiss();
     setLoadingAddCar(true);
     httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
       (res: any) => {
@@ -180,7 +183,22 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
       img = "data:image/png;base64," + car.imageURL;
     }
 
-    AsyncStorage.setItem("image", img);
+    //AsyncStorage.setItem("image", img);
+    if (car.imageURL) {
+      img = "data:image/png;base64," + car.imageURL;
+      const cachePath = `${FileSystem.cacheDirectory}${car.plate}.png`;
+
+      try {
+        FileSystem.writeAsStringAsync(cachePath, car.imageURL, {
+          encoding: FileSystem.EncodingType.Base64,
+        }).then(() => {
+          img = cachePath;
+        });
+      } catch (error) {
+        console.log("Error saving image to cache:", error);
+      }
+    }
+
     router.push({
       pathname: "/car",
       params: {
@@ -365,7 +383,7 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     paddingHorizontal: 16,
-    width: '95%',
+    width: "95%",
   },
   list: {
     flex: 1,
@@ -468,7 +486,7 @@ const styles = StyleSheet.create({
   carBrand: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: 'flex-end'
+    alignItems: "flex-end",
   },
   carBrandText: {
     fontSize: 16,
@@ -481,9 +499,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   carPlate: {
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
   },
   carPlateText: {
     paddingVertical: 4,

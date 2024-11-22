@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native DatePicker
@@ -36,13 +37,23 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
       place: serviceCenter,
     };
 
-    console.log(a);
+    if (date === undefined || category === "" || serviceCenter === "") {
+      ToastAndroid.show(
+        "Invalid input. Please check all fields.",
+        ToastAndroid.SHORT
+      );
+      return;
+    }
+
     httpPost("/cars/" + car.plate + "/services", a).then(
       (response: any) => {
         router.back();
       },
       (error) => {
-        console.log(error);
+        ToastAndroid.show(
+          "An error occurred, please try again later.",
+          ToastAndroid.SHORT
+        );
       }
     );
   };
@@ -84,7 +95,7 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
             <Text style={styles.itemTitle}>Date</Text>
             <View style={styles.datePickerContainer}>
               <Text style={styles.dateLabel}>
-                {date ? `${date}` : "No date selected"}
+                {date ? `${date}`.split(":00")[0] : "No date selected"}
               </Text>
               <TouchableOpacity
                 style={styles.datePickerButton}
