@@ -5,7 +5,7 @@ import Car from "@/app/car";
 
 export default function TyreServicePage({ car }: { car: Car }) {
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       <Text style={styles.CarName}>{car.brand}</Text>
       <Text style={styles.CarName}>{car.model}</Text>
       <Text style={styles.licencePlate}>({car.plate})</Text>

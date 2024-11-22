@@ -23,6 +23,8 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
   const [serviceCenter, setServiceCenter] = useState<string>("");
   const [lifetime, setLifetime] = useState("");
 
+  const expirableServices = ["OIL_CHANGE", "BRAKE_CHANGE", "VEHICLE_CHECKUP"];
+
   const handleSubmit = () => {
     httpPost("/cars/" + car.plate + "/services", {
       dueDate: date,
@@ -94,16 +96,6 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
           </View>
 
           <View style={styles.itemBox}>
-            <Text style={styles.itemTitle}>Lifetime (kms)</Text>
-            <TextInput
-              style={styles.inputBox}
-              placeholder="Enter the lifetime in kms"
-              value={lifetime}
-              onChangeText={setLifetime}
-            />
-          </View>
-
-          <View style={styles.itemBox}>
             <Text style={styles.itemTitle}>Service Center</Text>
             <TextInput
               style={styles.inputBox}
@@ -112,6 +104,18 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
               onChangeText={setServiceCenter}
             />
           </View>
+
+          {expirableServices.includes(category) && (
+            <View style={styles.itemBox}>
+              <Text style={styles.itemTitle}>Lifetime (kms)</Text>
+              <TextInput
+                style={styles.inputBox}
+                placeholder="Enter the lifetime in kms"
+                value={lifetime}
+                onChangeText={setLifetime}
+              />
+            </View>
+          )}
 
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Submit</Text>
