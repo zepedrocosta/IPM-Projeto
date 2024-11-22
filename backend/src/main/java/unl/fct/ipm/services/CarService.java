@@ -51,7 +51,7 @@ public class CarService {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
 
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        car.setCarYear(car.getCarYear());
+        car.setYear(car.getYear());
         car.setOwner(principal);
 
         return Optional.of(cars.save(car));
