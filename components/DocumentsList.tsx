@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Button,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddDocumentModal from "./AddDocumentModal";
 import { Car } from "@/types/car";
-import { httpGet } from "@/utils/http";
+import { httpDelete, httpGet } from "@/utils/http";
+import * as FileSystem from "expo-file-system";
 
 type Document = {
   filename: string;
@@ -37,7 +37,7 @@ export default function DocumentsList({ car }: { car: Car }) {
         }
       );
     }
-  }, [car]);
+  }, [car, isAddDocumentModalVisible]);
 
   // Function to add a new document
   function handleAddDocument() {
@@ -51,8 +51,44 @@ export default function DocumentsList({ car }: { car: Car }) {
     console.log("Would you like to add a reminder?");
   }
 
-  function handleSetReminder() {
-    console.log("set a reminder");
+  function handleDownload(doc: Document) {
+    ToastAndroid.show("Downloading document...", ToastAndroid.LONG);
+    httpGet("/cars/" + car.plate + "/documents/" + doc.filename).then(
+      (response: any) => {
+        const base64 = response.data;
+        const path = `${FileSystem.documentDirectory}${doc.filename}.pdf`;
+
+        FileSystem.writeAsStringAsync(path, base64, {
+          encoding: FileSystem.EncodingType.Base64,
+        })
+          .then(() => {
+            console.log("PDF saved to:", path);
+            ToastAndroid.show(
+              "Document downloaded and saved.",
+              ToastAndroid.LONG
+            );
+          })
+          .catch((error) => {
+            console.log("Error saving PDF:", error);
+            ToastAndroid.show("Error saving document.", ToastAndroid.LONG);
+          });
+      },
+      (error) => {
+        console.log("Error deleting document: ", error);
+      }
+    );
+  }
+
+  function handleDelete(doc: Document) {
+    httpDelete("/cars/" + car.plate + "/documents/" + doc.filename).then(
+      (response: any) => {
+        console.log("Document deleted: ", doc.filename);
+        setDocuments(documents.filter((d) => d.filename !== doc.filename));
+      },
+      (error) => {
+        console.log("Error deleting document: ", error);
+      }
+    );
   }
 
   /** Just missing the document header above the page with the arrow to go a page back */
@@ -66,7 +102,7 @@ export default function DocumentsList({ car }: { car: Car }) {
           <View key={index} style={styles.document}>
             <Text>{document.filename}</Text>
             <View style={styles.iconsContainer}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => handleDownload(document)}>
                 <MaterialIcons name="cloud-download" size={20} color="green" />
               </TouchableOpacity>
 

@@ -95,6 +95,7 @@ export default function AddDocumentModal({
 
   const handleAddDocument = () => {
     setCategoryName(category);
+    console.log(category);
     const newDocument = {
       type: category.toUpperCase(),
       content: file64,
@@ -105,7 +106,7 @@ export default function AddDocumentModal({
 
     httpPost(`/cars/${car.plate}/documents`, newDocument).then(
       (response: any) => {
-        console.log("Document added");
+        console.log("Document added: ", response.data);
         onConfirm({
           file: file,
           category: category,
