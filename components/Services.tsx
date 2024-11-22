@@ -45,9 +45,9 @@ export default function ServicesPage({ car }: { car: Car }) {
     );
   }, []);
 
-  const navigateToScheduleInspection = () => {
+  const navigateToScheduleService = () => {
     router.push({
-      pathname: "/scheduleinspection",
+      pathname: "/scheduleservice",
       params: {
         imageURL: "",
         brand: car.brand,
@@ -92,14 +92,6 @@ export default function ServicesPage({ car }: { car: Car }) {
           <Text style={styles.itemDate}>
             Date: {inspection?.dueDate || "N/A"}
           </Text>
-          <TouchableOpacity style={styles.button}>
-            <Text
-              style={styles.buttonText}
-              onPress={navigateToScheduleInspection}
-            >
-              Schedule Inspection
-            </Text>
-          </TouchableOpacity>
         </View>
 
         <View style={styles.itemBox}>
@@ -111,11 +103,23 @@ export default function ServicesPage({ car }: { car: Car }) {
             Kms: {vehicleCheck?.dueKms || "N/A"}
           </Text>
         </View>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={navigateToTyreService}>
-            Tyre Service
-          </Text>
-        </TouchableOpacity>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button}>
+            <Text
+              style={styles.buttonText}
+              onPress={navigateToScheduleService}
+            >
+              Schedule Service
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText} onPress={navigateToTyreService}>
+              Tyre Service
+            </Text>
+          </TouchableOpacity>
+        </View>
+
       </View>
     </ScrollView>
   );
