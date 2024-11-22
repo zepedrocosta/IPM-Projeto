@@ -13,15 +13,30 @@ import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native 
 import Car from "@/app/car";
 
 import styles from "./styles";
+import { httpPost } from "@/utils/http";
+import { router } from "expo-router";
 
 export default function ScheduleServicePage({ car }: { car: Car }) {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [date, setDate] = useState<Date | null>(null);
-  const [category, setCategory] = useState("");
-  const [serviceCenter, setServiceCenter] = useState("");
+  const [date, setDate] = useState<Date>();
+  const [category, setCategory] = useState<string>("");
+  const [serviceCenter, setServiceCenter] = useState<string>("");
+  const [lifetime, setLifetime] = useState("");
 
   const handleSubmit = () => {
-    console.log({ date, inspectionCenter: serviceCenter });
+    httpPost("/cars/" + car.plate + "/services", {
+      dueDate: date,
+      dueKms: parseInt(lifetime),
+      type: category,
+      place: serviceCenter,
+    }).then(
+      (response: any) => {
+        router.back();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
 
   // DatePicker (Date) Related functions
@@ -77,6 +92,17 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
               />
             </View>
           </View>
+
+          <View style={styles.itemBox}>
+            <Text style={styles.itemTitle}>Lifetime (kms)</Text>
+            <TextInput
+              style={styles.inputBox}
+              placeholder="Enter the lifetime in kms"
+              value={lifetime}
+              onChangeText={setLifetime}
+            />
+          </View>
+
           <View style={styles.itemBox}>
             <Text style={styles.itemTitle}>Service Center</Text>
             <TextInput
@@ -87,7 +113,7 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
             />
           </View>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>

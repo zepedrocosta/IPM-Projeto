@@ -18,7 +18,6 @@ public class CarServiceForm implements Serializable {
     @NotNull
     private LocalDateTime dueDate;
 
-    @NotNull
     private long dueKms;
 
     @NotNull
