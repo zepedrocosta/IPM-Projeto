@@ -49,6 +49,10 @@ export default function SignIn() {
     router.push("/register"); // Navigate to the register page
   };
 
+  const navigateToDocuments = () => {
+    router.push("/documents");
+  }
+
   const handleSignIn = async () => {
     await httpPut("/security", form).then(
       (res) => {

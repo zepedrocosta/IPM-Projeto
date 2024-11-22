@@ -7,16 +7,19 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Picker } from "@react-native-picker/picker";
+import { scheduleOneMinuteReminder } from '@/utils/notifications';
 
 interface ReminderModalProps {
   visible: boolean;
   onClose: () => void;
   onSetReminder: (daysBefore: number) => void; // Pass back the reminder interval
+  category: string;
 }
 
-export default function ReminderModal({ visible, onClose, onSetReminder }: ReminderModalProps) {
+export default function ReminderModal({ visible, onClose, onSetReminder, category }: ReminderModalProps) {
   const [stage, setStage] = useState(1); // Track the current stage
   const [daysBefore, setDaysBefore] = useState(1); // Default reminder interval
+
 
   useEffect(() => {
     if (visible) {
@@ -30,6 +33,7 @@ export default function ReminderModal({ visible, onClose, onSetReminder }: Remin
 
   const handleSetReminder = () => {
     onSetReminder(daysBefore); // Pass the selected interval to the parent
+    scheduleOneMinuteReminder(category);
     onClose(); // Close the modal
   };
 

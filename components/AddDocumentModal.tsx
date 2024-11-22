@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
   Button,
   StyleSheet,
   Modal,
   TouchableOpacity,
-  Platform,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native DatePicker
@@ -38,6 +36,7 @@ export default function AddDocumentModal({
   const [file, setFile] = useState<any | null>(null); // File object
   const [file64, setFile64] = useState<string>("");
   const [category, setCategory] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date | null>(null); // Union type, hold a null value but still have the type Date defined
   const [showReminderModal, setShowReminderModal] = useState(false);
@@ -201,6 +200,7 @@ export default function AddDocumentModal({
         visible={showReminderModal}
         onClose={handleReminderCancel} // When user cancels reminder
         onSetReminder={handleReminderSet} // When user sets a reminder
+        category= {categoryName}
       />
     </>
   );
