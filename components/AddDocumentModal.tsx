@@ -95,9 +95,10 @@ export default function AddDocumentModal({
   };
 
   const handleAddDocument = () => {
+    setCategoryName(category);
     const newDocument = {
       content: file64,
-      type: category,
+      type: categoryName.toUpperCase(),
       dueDate: expirableDocuments.includes(category)
         ? date?.toISOString().split(".")[0]
         : null,
@@ -200,7 +201,7 @@ export default function AddDocumentModal({
         visible={showReminderModal}
         onClose={handleReminderCancel} // When user cancels reminder
         onSetReminder={handleReminderSet} // When user sets a reminder
-        category= {categoryName}
+        category={categoryName}
       />
     </>
   );

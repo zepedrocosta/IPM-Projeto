@@ -106,7 +106,7 @@ public class CarController extends AbstractController {
             @ApiResponse(responseCode = "404", description = "Car or document not found")
     })
     @GetMapping("/{plate}/documents/{filename}")
-    public ResponseEntity<DocumentResponse> getDocument(@PathVariable String plate, @PathVariable String filename) {
+    public ResponseEntity<String> getDocument(@PathVariable String plate, @PathVariable String filename) {
         return ok(carService.getDocument(plate, filename));
     }
 

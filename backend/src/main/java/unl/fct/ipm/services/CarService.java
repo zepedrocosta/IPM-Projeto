@@ -80,8 +80,12 @@ public class CarService {
     @Transactional
     public Optional<DocumentResponse> createDocument(String licensePlate, Document document) {
         Car car = cars.findByPlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, CAR_NOT_FOUND));
+        var fn = document.getType() + " " + car.getPlate();
 
-        document.setFilename(document.getType() + "-" + car.getPlate());
+        var doc = documents.findByCarAndFilename(car, fn);
+
+        doc.ifPresent(documents::delete);
+        document.setFilename(fn);
         document.setCar(car);
         documents.save(document);
         return Optional.of(buildDocumentResponse(document, licensePlate));
@@ -95,10 +99,10 @@ public class CarService {
         return Optional.empty();
     }
 
-    public Optional<DocumentResponse> getDocument(String licensePlate, String filename) {
+    public Optional<String> getDocument(String licensePlate, String filename) {
         Car car = cars.findByPlate(licensePlate).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, CAR_NOT_FOUND));
         Document document = documents.findByCarAndFilename(car, filename).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, DOCUMENT_NOT_FOUND));
-        return Optional.of(buildDocumentResponse(document, licensePlate));
+        return Optional.of(document.getContent());
     }
 
     public List<DocumentResponse> listDocuments(String licensePlate) {
