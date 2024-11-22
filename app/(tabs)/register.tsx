@@ -49,7 +49,7 @@ export default function Register() {
   const router = useRouter(); // Use the router hook for navigation
 
   const navigateToSignIn = () => {
-    router.push("/sign-in"); // Navigate to the register page
+    router.back(); // Navigate to the register page
   };
 
   const checkEmailValidity = () => {
@@ -59,7 +59,6 @@ export default function Register() {
   };
 
   const emailValidity = checkEmailValidity();
-
 
   return (
     <View style={styles.container}>
@@ -78,26 +77,29 @@ export default function Register() {
           onChangeText={(value) => setForm({ ...form, email: value })}
           keyboardType="email-address"
         />
-        {(form.email.length > 0 && (!emailValidity.containsAt || !emailValidity.containsDot)) && (
-          <View style={styles.validationContainer}>
-            <Text style={styles.textHelp}>Missing characters: </Text>
-            {!emailValidity.containsAt && (
-              <Text style={styles.textHelp}> @ </Text>
-            )}
-            {!emailValidity.containsDot && (
-              <Text style={styles.textHelp}> . </Text>
-            )}
-          </View>
-        )}
+        {form.email.length > 0 &&
+          (!emailValidity.containsAt || !emailValidity.containsDot) && (
+            <View style={styles.validationContainer}>
+              <Text style={styles.textHelp}>Missing characters: </Text>
+              {!emailValidity.containsAt && (
+                <Text style={styles.textHelp}> @ </Text>
+              )}
+              {!emailValidity.containsDot && (
+                <Text style={styles.textHelp}> . </Text>
+              )}
+            </View>
+          )}
         <TextInput
           style={styles.input}
           placeholder="Username"
           value={form.nickname}
           onChangeText={(value) => setForm({ ...form, nickname: value })}
         />
-        {(form.nickname.length > 0 && form.nickname.length < 3) && (
+        {form.nickname.length > 0 && form.nickname.length < 3 && (
           <View style={styles.validationContainer}>
-            <Text style={styles.textHelp}>Names should be at least 3 characters long.</Text>
+            <Text style={styles.textHelp}>
+              Names should be at least 3 characters long.
+            </Text>
           </View>
         )}
         <TextInput
@@ -125,11 +127,12 @@ export default function Register() {
           onChangeText={(value) => setForm({ ...form, confirmPassword: value })}
           secureTextEntry // replaces the password text with dots for added security
         />
-        {(form.confirmPassword.length > 2 && (form.confirmPassword != form.password)) && (
-          <View style={styles.validationContainer}>
-            <Text style={styles.textWeak}>Passwords don't match!</Text>
-          </View>
-        )}
+        {form.confirmPassword.length > 2 &&
+          form.confirmPassword != form.password && (
+            <View style={styles.validationContainer}>
+              <Text style={styles.textWeak}>Passwords don't match!</Text>
+            </View>
+          )}
       </View>
 
       <View style={styles.insideContainer}>
@@ -226,14 +229,14 @@ const styles = StyleSheet.create({
   },
   textHelp: {
     fontSize: 16,
-    color: 'gray'
+    color: "gray",
   },
   textWeak: {
     fontSize: 16,
-    color: 'red'
+    color: "red",
   },
   textStrong: {
     fontSize: 16,
-    color: 'green'
+    color: "green",
   },
 });

@@ -1,6 +1,6 @@
 import { Car } from "@/types/car";
 import React, { useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -60,34 +60,41 @@ export default function Location({ car }: LocationProps) {
 
   return (
     <View style={styles.container}>
-      <MapView
-        ref={mapRef}
-        style={styles.map}
-        initialRegion={{
-          latitude: selectedLocation.latitude,
-          longitude: selectedLocation.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
+      <Image
+        source={{
+          uri: "https://img001.prntscr.com/file/img001/yNxkwpDqQxCdxiOlAXGhCw.png",
         }}
-      >
-        <Marker
-          coordinate={userLocation}
-          title="User Location"
-          description="This is where you are"
-        />
-
-        {selectedLocation && (
+        style={styles.map}
+      />
+      {/*
+        <MapView
+          ref={mapRef}
+          style={styles.map}
+          initialRegion={{
+            latitude: selectedLocation.latitude,
+            longitude: selectedLocation.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }}
+        >
           <Marker
-            pinColor="blue"
-            coordinate={{
-              latitude: selectedLocation.latitude,
-              longitude: selectedLocation.longitude,
-            }}
-            title="Car Location"
-            description={selectedLocation.street}
+            coordinate={userLocation}
+            title="User Location"
+            description="This is where you are"
           />
-        )}
-      </MapView>
+
+          {selectedLocation && (
+            <Marker
+              pinColor="blue"
+              coordinate={{
+                latitude: selectedLocation.latitude,
+                longitude: selectedLocation.longitude,
+              }}
+              title="Car Location"
+              description={selectedLocation.street}
+            />
+          )
+        </MapView>*/}
 
       <View style={styles.addressBox}>
         <Text style={styles.addressText}>
@@ -96,10 +103,12 @@ export default function Location({ car }: LocationProps) {
       </View>
 
       <View style={styles.navContainer}>
-        <TouchableOpacity onPress={focusOnCar} style={styles.carButton}>
+        <TouchableOpacity
+          /*</View>onPress={focusOnCar}*/ style={styles.carButton}
+        >
           <AntDesign name="car" size={24} color="white" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={focusOnUser} style={styles.userButton}>
+        <TouchableOpacity /*onPress={focusOnUser}*/ style={styles.userButton}>
           <AntDesign name="user" size={24} color="white" />
         </TouchableOpacity>
       </View>

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { Text, StyleSheet, View, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "expo-router";
 
 export default function TrackHistory() {
   const params = useLocalSearchParams();
@@ -69,9 +70,11 @@ export default function TrackHistory() {
     );
   };
 
-  useEffect(() => {
-    fetchTrackRecords(); // Fetch track records when the component mounts
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTrackRecords(); // Fetch track records when the component is focused
+    }, [])
+  );
 
   const navigateToCarPage = () => {
     /*router.push({

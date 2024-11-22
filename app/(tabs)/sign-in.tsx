@@ -42,7 +42,7 @@ export default function SignIn() {
   const router = useRouter(); // Use the router hook for navigation
 
   const navigateToMain = () => {
-    router.push("/main"); // Navigate to the register page
+    router.replace("/main"); // Navigate to the register page
   };
 
   const navigateToRegister = () => {
