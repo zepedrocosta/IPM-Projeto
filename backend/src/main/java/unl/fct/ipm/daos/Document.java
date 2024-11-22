@@ -25,8 +25,8 @@ public class Document extends DAO implements Serializable {
     @Column
     private LocalDateTime dueDate;
 
-    @Lob
-    private byte[] content;
+    @Column(columnDefinition = "LONGTEXT")
+    private String content;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

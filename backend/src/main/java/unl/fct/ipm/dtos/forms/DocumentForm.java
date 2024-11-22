@@ -21,7 +21,7 @@ public class DocumentForm implements Serializable {
     @Size(max = 64)
     private DocumentTypeEnum type;
 
-    private byte[] content;
+    private String content;
 
     @NotNull
     private LocalDateTime dueDate;
