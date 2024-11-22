@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ToastAndroid,
+  Alert,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import AddDocumentModal from "./AddDocumentModal";
@@ -79,17 +80,35 @@ export default function DocumentsList({ car }: { car: Car }) {
     );
   }
 
-  function handleDelete(doc: Document) {
-    httpDelete("/cars/" + car.plate + "/documents/" + doc.filename).then(
-      (response: any) => {
-        console.log("Document deleted: ", doc.filename);
-        setDocuments(documents.filter((d) => d.filename !== doc.filename));
-      },
-      (error) => {
-        console.log("Error deleting document: ", error);
-      }
-    );
-  }
+    // Function to handle document deletion with confirmation
+    const handleDeleteDocument = (doc: Document) => {
+      Alert.alert(
+        "Confirm Delete",
+        "Are you sure you want to delete this document?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => {
+                httpDelete("/cars/" + car.plate + "/documents/" + doc.filename).then(
+                    (response: any) => {
+                        console.log("Document deleted: ", doc.filename);
+                        setDocuments(documents.filter((d) => d.filename !== doc.filename));
+                    },
+                    (error) => {
+                        console.log("Error deleting document: ", error);
+                    }
+                );
+                console.log("deleted");
+            },
+            style: "destructive",
+          },
+        ]
+      );
+    };
 
   /** Just missing the document header above the page with the arrow to go a page back */
   return (
@@ -107,7 +126,7 @@ export default function DocumentsList({ car }: { car: Car }) {
               </TouchableOpacity>
 
               <TouchableOpacity style={{ marginLeft: 15 }}>
-                <MaterialIcons name="delete" size={20} color="red" />
+                <MaterialIcons name="delete" size={20} color="red" onClick={handleDeleteDocument(document)} />
               </TouchableOpacity>
             </View>
           </View>
@@ -129,8 +148,10 @@ export default function DocumentsList({ car }: { car: Car }) {
         <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
     </View>
+
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

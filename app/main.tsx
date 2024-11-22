@@ -11,11 +11,13 @@ import { DefaultTopBar } from "../components/DefaultTopBar";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import CarList from "@/components/CarList";
+import SideMenu from "@/components/SideMenu";
 
 export default function HomePage() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [isSideMenuVisible, setSideMenuVisible] = useState<boolean>(false);
 
   const handleSearchChange = (text: string) => {
     setSearchQuery(text);
@@ -30,11 +32,20 @@ export default function HomePage() {
     setIsSearchActive(false);
   };
 
+  const toggleSideMenu = () => {
+    setSideMenuVisible(!isSideMenuVisible);
+  };
+
+  const handleLogout = () => {
+    console.log("Logged out!");
+    // Add logout logic here, e.g., navigating to the login screen or clearing user data.
+  };
+
   return (
     <TouchableWithoutFeedback onPress={handleTouchablePress}>
       <View style={{ flex: 1 }}>
         <DefaultTopBar
-          leftComponent={<MaterialIcons name="menu" size={24} />}
+          leftComponent={<MaterialIcons name="menu" size={24} onPress={toggleSideMenu}/>}
           children={<Text style={styles.topText}>My Cars</Text>}
           body={
             <>
@@ -56,6 +67,14 @@ export default function HomePage() {
             <MaterialIcons name="search" size={24} onPress={toggleSearchBar} />
           }
         />
+        
+        {/* SideMenu */}
+        {isSideMenuVisible && (
+          <SideMenu
+            onLogout={handleLogout}
+            onClose={toggleSideMenu} // Close when the side menu overlay is clicked
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );
