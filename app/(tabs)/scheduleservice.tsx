@@ -26,7 +26,7 @@ export default function ScheduleInspectionTab() {
   return (
     <DefaultTopBar
       leftComponent={
-        <AntDesign name="left" size={24} onPress={navigateToServices} />
+        <AntDesign name="left" size={24} onPress={navigateToServices} style={styles.backButton} />
       }
       children={<Text style={styles.topText}>Schedule Service</Text>}
       body={<ScheduleService car={car} />}
@@ -37,5 +37,8 @@ export default function ScheduleInspectionTab() {
 const styles = StyleSheet.create({
   topText: {
     fontSize: 25,
+  },
+  backButton: {
+    color: "#007aff",
   },
 });
