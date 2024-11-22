@@ -81,11 +81,11 @@ const EditCar: React.FC = () => {
                         onChangeText={(text) => setCar({ ...car, plate: text })}
                     />
                     <View style={styles.buttonContainer}>
-                        <Pressable style={styles.saveButton} onPress={handleSave}>
-                            <Text style={styles.buttonText}>Save</Text>
-                        </Pressable>
                         <Pressable style={styles.deleteButton} onPress={handleDelete}>
                             <Text style={styles.buttonText}>Delete</Text>
+                        </Pressable>
+                        <Pressable style={styles.saveButton} onPress={handleSave}>
+                            <Text style={styles.buttonText}>Save</Text>
                         </Pressable>
                     </View>
                 </View>
@@ -131,27 +131,41 @@ const styles = StyleSheet.create({
     },
     saveButton: {
         flex: 1,
-        backgroundColor: '#4CAF50',
         padding: 12,
-        borderRadius: 5,
         alignItems: 'center',
-        marginRight: 10,
+        backgroundColor: "rgba(33,150,243,1.00)",
+        paddingVertical: 10,
+        borderRadius: 2,
+        marginBottom: 20,
+        borderColor: "black",
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
     },
     deleteButton: {
         flex: 1,
-        backgroundColor: '#F44336',
         padding: 12,
-        borderRadius: 5,
         alignItems: 'center',
+        marginRight: 10,
+        backgroundColor: "red",
+        paddingVertical: 10,
+        borderRadius: 2,
+        marginBottom: 20,
+        borderColor: "black",
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
     },
     button: {
-      backgroundColor: 'rgba(33,150,243,1.00)',
-      padding: 10,
-      borderRadius: 2,
-      display: 'flex',
-      justifyContent: 'center',
-      flexDirection: 'row',
-      marginBottom: 20
+        backgroundColor: 'rgba(33,150,243,1.00)',
+        padding: 10,
+        borderRadius: 2,
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        marginBottom: 20
     },
     buttonText: {
         color: '#fff',

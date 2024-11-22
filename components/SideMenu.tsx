@@ -1,3 +1,4 @@
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
   View,
@@ -47,38 +48,57 @@ const SideMenu = ({
 
       {/* Animated Side Menu */}
       <Animated.View
-        style={[styles.menu, { transform: [{ translateX: slideAnimation }] }]}
+        style={[styles.menu, { transform: [{ translateX: slideAnimation }], marginTop: insets.top }]}
       >
-        <SafeAreaView style={[styles.safeArea, { paddingTop: insets.top }]}>
-          <Text style={styles.menuHeader}>Menu</Text>
+        <SafeAreaView style={styles.safeArea}>
+          {/* Close Icon */}
+          <View style={styles.menuHeader}>
+            <Text style={styles.menuTitle}>Menu</Text>
+            <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
+              <MaterialIcons name="arrow-back" size={30} color="black" />
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              closeMenu();
-              ToastAndroid.show("Profile not Implemented", ToastAndroid.LONG);
-            }}
-          >
-            <Text style={styles.menuText}>Profile</Text>
-          </TouchableOpacity>
+          {/* Menu Items */}
+          <View style={styles.menuContent}>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                closeMenu();
+                ToastAndroid.show("Profile not Implemented", ToastAndroid.LONG);
+              }}
+            >
+              <Text style={styles.menuText}>Profile</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => {
-              closeMenu();
-              ToastAndroid.show("Settings not Implemented", ToastAndroid.LONG);
-            }}
-          >
-            <Text style={styles.menuText}>Settings</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                closeMenu();
+                ToastAndroid.show("Settings not Implemented", ToastAndroid.LONG);
+              }}
+            >
+              <Text style={styles.menuText}>Settings</Text>
+            </TouchableOpacity>
+          </View>
 
+          {/* Logout Button */}
           <TouchableOpacity
-            style={styles.menuItem}
+            style={[
+              styles.logoutButton,
+              { flexDirection: "row", alignItems: "center" },
+            ]}
             onPress={() => {
               closeMenu();
               onLogout();
             }}
           >
+            <MaterialIcons
+              name="logout"
+              size={24}
+              color="red"
+              style={{ marginRight: 8 }}
+            />
             <Text style={[styles.menuText, styles.logoutText]}>Logout</Text>
           </TouchableOpacity>
         </SafeAreaView>
@@ -102,7 +122,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    width: Dimensions.get("window").width * 0.75,
+    width: Dimensions.get("window").width * 0.70,
     backgroundColor: "rgba(230, 230, 230, 1)",
     zIndex: 2,
     shadowColor: "#000",
@@ -116,9 +136,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   menuHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 16,
+  },
+  menuTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 16,
+  },
+  closeButton: {
+    padding: 8,
+  },
+  menuContent: {
+    flex: 1, // Pushes the logout button to the bottom
   },
   menuItem: {
     paddingVertical: 12,
@@ -126,6 +158,11 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 18,
     color: "#333",
+  },
+  logoutButton: {
+    paddingVertical: 12,
+    alignSelf: "flex-start", // Aligns to the left
+    marginBottom: 16, // Adds spacing from the bottom
   },
   logoutText: {
     color: "red",

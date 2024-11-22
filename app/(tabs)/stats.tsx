@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   image: {
-    width: 130,
-    height: 170,
+    width: 120,
+    height: 157,
     borderRadius: 10,
   },
   containerGraph: {
@@ -216,6 +216,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
+        justifyContent: 'center',
+        marginTop: 10
   },
   containerImport: {
     width: "100%",
