@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Text, StyleSheet } from "react-native";
 import { DefaultTopBar } from "@/components/DefaultTopBar";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router"; // Use the expo-router hook for navigation
 import TyreService from "@/components/TyreService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -26,17 +26,8 @@ export default function TyreServiceTab() {
     });
   }, []);
 
-  const navigateToCar = (car: Car) => {
-    router.push({
-      pathname: "/car",
-      params: {
-        imageURL: "",
-        brand: car.brand,
-        model: car.model,
-        year: car.year.toString(),
-        plate: car.plate,
-      },
-    });
+  const navigateToCar = () => {
+    router.back();
   };
 
   return (
@@ -44,11 +35,7 @@ export default function TyreServiceTab() {
       {car && (
         <DefaultTopBar
           leftComponent={
-            <MaterialIcons
-              name="arrow-left"
-              size={24}
-              onPress={() => navigateToCar(car)}
-            />
+            <AntDesign name="left" size={24} onPress={navigateToCar} />
           }
           children={<Text style={styles.topText}>Tyre Service</Text>}
           body={<TyreService car={car} />}
