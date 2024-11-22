@@ -61,7 +61,7 @@ const SideMenu = ({
           <View style={styles.menuHeader}>
             <Text style={styles.menuTitle}>Menu</Text>
             <TouchableOpacity style={styles.closeButton} onPress={closeMenu}>
-              <MaterialIcons name="arrow-back" size={30} color="black" />
+              <MaterialIcons name="arrow-back" size={30} color="black" style={styles.icon} />
             </TouchableOpacity>
           </View>
 
@@ -160,6 +160,9 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     padding: 8,
+  },
+  icon: {
+    color: "#007aff",
   },
   menuContent: {
     flex: 1, // Pushes the logout button to the bottom

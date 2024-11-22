@@ -34,7 +34,7 @@ const Stats = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <SafeAreaView style={styles.topBar}>
         <AntDesign
           name="left"
@@ -43,7 +43,7 @@ const Stats = () => {
           onPress={navigateToCarPage}
         />
         <Text style={styles.topTextBar}>
-          {car.brand} {car.model} {car.plate}
+          {car.model} ({car.plate})
         </Text>
       </SafeAreaView>
 
@@ -216,8 +216,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-        justifyContent: 'center',
-        marginTop: 10
+    justifyContent: 'center',
+    marginTop: 10
   },
   containerImport: {
     width: "100%",
