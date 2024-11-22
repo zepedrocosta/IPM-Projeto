@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         padding: 22,
+        color: "#007aff",
     },
     trackRecordContainer: {
         width: "100%",
@@ -194,10 +195,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     imageContainer: {
-        backgroundColor: 'white',
         width: 'auto',
         padding: 5,
-        borderRadius: 10
     },
     image: {
         height: 180,

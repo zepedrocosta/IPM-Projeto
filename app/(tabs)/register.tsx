@@ -1,23 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, Button, TextInput, StyleSheet, Pressable } from "react-native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import {
+  View,
+  Text,
+  ToastAndroid,
+  TextInput,
+  StyleSheet,
+  Pressable,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useRouter } from "expo-router";
 import { httpPost } from "@/utils/http";
-
-// TypeScript type definition that specifies the structure of the navigatio stack. Each key represents a screen name, and the value represents the screen exports.
-// Home: undefined; -> indicates that the Home screen exists and doesn't require any parameters to navigate to it
-// This type helps TypeScript understand what screens are available inn the navigation stack and ensures type safety when navigating
-type RootStackParamList = {
-  Home: undefined;
-  Register: undefined; //might have to say NoLogin() or such
-};
-
-type RegisterScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList, // stack of available screens
-  "Register" // specifies that this navigation prop is specifically for the Register screen
->;
 
 // This is the start of the functional component for the Register screen. We export it as the default export so that it can be imported and used elsewhere in the app.
 export default function Register() {
@@ -28,20 +21,29 @@ export default function Register() {
     confirmPassword: "",
   });
 
-  // This function will be triggered when the Register button is pressed.
-  const handleRegister = () => {
-    if (form.password === form.confirmPassword) {
-      httpPost("/users", form).then(
-        () => {
-          navigateToSignIn();
-        },
-        (err) => {
-          console.error(err);
+  const handleRegister = async () => {
+    httpPost("/users", form).then(
+      (res) => {
+        navigateToSignIn();
+      },
+      (error) => {
+        const regex403 = /403/;
+        const regex400 = /400/;
+        const regex409 = /409/;
+        if (regex403.test(error.message)) {
+          ToastAndroid.show("Passwords don't match", ToastAndroid.LONG);
+        } else if (regex400.test(error.message)) {
+          ToastAndroid.show(
+            "Invalid form, please check all fields",
+            ToastAndroid.LONG
+          );
+        } else if (regex409.test(error.message)) {
+          ToastAndroid.show("User already exists", ToastAndroid.LONG);
+        } else {
+          ToastAndroid.show(error.toString(), ToastAndroid.LONG);
         }
-      );
-    } else {
-      console.log("Passwords do not match");
-    }
+      }
+    );
   };
 
   const router = useRouter(); // Use the router hook for navigation
@@ -93,7 +95,9 @@ export default function Register() {
         <Pressable style={styles.button} onPress={() => handleRegister()}>
           <Text style={styles.buttonText}>Register</Text>
         </Pressable>
-        <Text style={styles.buttonRegister} onPress={() => navigateToSignIn()}>Sign In</Text>
+        <Text style={styles.buttonRegister} onPress={() => navigateToSignIn()}>
+          Sign In
+        </Text>
       </View>
     </View>
   );
@@ -102,24 +106,24 @@ export default function Register() {
 const styles = StyleSheet.create({
   signInTitle: {
     fontSize: 25,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   container: {
-    height: '85%',
-    width: '100%',
+    height: "85%",
+    width: "100%",
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
   },
   forgotPassword: {
-    textDecorationStyle: 'solid',
-    textDecorationLine: 'underline',
+    textDecorationStyle: "solid",
+    textDecorationLine: "underline",
   },
   insideContainer: {
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
-    width: '100%',
+    width: "100%",
   },
   title: {
     fontSize: 24,
@@ -145,20 +149,20 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    backgroundColor: 'rgba(33,150,243,1.00)',
+    backgroundColor: "rgba(33,150,243,1.00)",
     paddingVertical: 10,
     borderRadius: 2,
-    display: 'flex',
+    display: "flex",
     width: "80%",
-    justifyContent: 'center',
-    flexDirection: 'row',
-    marginBottom: 20
+    justifyContent: "center",
+    flexDirection: "row",
+    marginBottom: 20,
   },
   buttonText: {
     fontSize: 20,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
   },
   buttonRegister: {
     paddingVertical: 10,
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     width: "80%",
     marginBottom: 20,
     fontSize: 20,
-    color: 'black',
-    textAlign: 'center',
+    color: "black",
+    textAlign: "center",
   },
 });

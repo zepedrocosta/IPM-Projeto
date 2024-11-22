@@ -36,18 +36,35 @@ export default function TrackHistory() {
         }
     };
 
-    const deleteTrackRecord = async (index: number) => {
-        try {
-            const key = `${car.model}-${car.plate}`;
-            const updatedRecords = trackRecords.filter((_, i) => i !== index);
-            setTrackRecords(updatedRecords);
-            await AsyncStorage.setItem(key, JSON.stringify(updatedRecords));
-            Alert.alert("Record Deleted", "Your track record has been successfully deleted.");
-        } catch (error) {
-            console.error("Error deleting track record:", error);
-            Alert.alert("Error", "Failed to delete your track record.");
-        }
-    };
+    const deleteTrackRecord = (index: number) => {
+        Alert.alert(
+          "Delete Record",
+          "Are you sure you want to delete this track record?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+            {
+              text: "Delete",
+              style: "destructive",
+              onPress: async () => {
+                try {
+                  const key = `${car.model}-${car.plate}`;
+                  const updatedRecords = trackRecords.filter((_, i) => i !== index);
+                  setTrackRecords(updatedRecords);
+                  await AsyncStorage.setItem(key, JSON.stringify(updatedRecords));
+                  Alert.alert("Record Deleted", "Your track record has been successfully deleted.");
+                } catch (error) {
+                  console.error("Error deleting track record:", error);
+                  Alert.alert("Error", "Failed to delete your track record.");
+                }
+              },
+            },
+          ],
+          { cancelable: true } // Dismiss the alert by tapping outside
+        );
+      };
 
     useEffect(() => {
         fetchTrackRecords(); // Fetch track records when the component mounts
@@ -111,8 +128,8 @@ export default function TrackHistory() {
                             <MaterialIcons name="info" size={24} style={styles.infoIcon}
                                 onPress={() => navigateToTrackRecordDetails(record)} />
                             <View style={styles.recordDetails}>
-                                <Text style={styles.recordName}>{parseFloat(record.maxSpeed).toFixed(1)} Km/h</Text>
-                                <Text style={styles.recordDate}>{record.totalTime} s</Text>
+                                <Text style={styles.recordName}>{record.name}</Text>
+                                <Text style={styles.recordDate}>{parseFloat(record.maxSpeed).toFixed(1)} Km/h</Text>
                             </View>
                             <TouchableOpacity
                                 onPress={() => deleteTrackRecord(index)}
@@ -144,8 +161,6 @@ const styles = StyleSheet.create({
         width: "100%",
         alignItems: "center",
         flexDirection: "row",
-        borderBottomColor: "gray",
-        borderBottomWidth: 1,
         marginBottom: 15,
     },
     topTextBar: {
@@ -162,6 +177,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         padding: 22,
+        color: "#007aff",
     },
     trackRecordList: {
         width: "100%",

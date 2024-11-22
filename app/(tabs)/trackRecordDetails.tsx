@@ -1,12 +1,12 @@
 import { AntDesign } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TrackRecordDetails = () => {
     const params = useLocalSearchParams();
-    
+
     const [car, setCar] = useState({
         imageURL: params.url.toString(),
         brand: params.brand.toString(),
@@ -14,7 +14,7 @@ const TrackRecordDetails = () => {
         year: params.year.toString(),
         plate: params.plate.toString(),
     });
-    
+
     const [record, setRecord] = useState({
         totalTime: params.totalTime.toString(),
         totalMilliseconds: params.totalMilliseconds.toString(),
@@ -28,10 +28,9 @@ const TrackRecordDetails = () => {
         const secs = seconds % 60;
         return `${minutes}:${secs < 10 ? "0" + secs : secs}.${Math.floor(milliseconds / 100)}`;
     };
-    
 
     const router = useRouter();
-    
+
     const navigateToCarPage = () => {
         router.push({
             pathname: "/(tabs)/trackHistory",
@@ -45,6 +44,10 @@ const TrackRecordDetails = () => {
         });
     };
 
+    const handleImportRecord = () => {
+        Alert.alert("Imported", "Record was successfully imported.");
+    };
+
     return (
         <ScrollView style={styles.container}>
             <SafeAreaView style={styles.topBar}>
@@ -54,18 +57,34 @@ const TrackRecordDetails = () => {
 
             <Text style={styles.header}>Track Record Details</Text>
 
-            <Text style={styles.detailText}>Max Speed: {record.maxSpeed} Km/h</Text>
-            <Text style={styles.detailText}>Avg Speed: {record.averageSpeed} Km/h</Text>
+            <Text style={styles.detailText}>Max Speed: {parseFloat(record.maxSpeed).toFixed(1)} Km/h</Text>
+            <Text style={styles.detailText}>Avg Speed: {parseFloat(record.averageSpeed).toFixed(1)} Km/h</Text>
             <Text style={styles.detailText}>Total Time: {record.totalTime}.{record.totalMilliseconds} s</Text>
 
             <Text style={styles.subHeader}>Lap Times:</Text>
-            {record.lapTimes.length > 0 ? (
-                record.lapTimes.map((lap, index) => (
-                    <Text key={index} style={styles.lapText}>Lap {index + 1}: {lap}</Text>
-                ))
-            ) : (
-                <Text style={styles.noLapsText}>No lap times available.</Text>
-            )}
+            <Text style={styles.lapText}>Lap 1: 7s</Text>
+            <Text style={styles.lapText}>Lap 2: 11s</Text>
+            <Text style={styles.lapText}>Lap 3: 6s</Text>
+
+            <Text style={styles.subHeader}>Speed graph</Text>
+            <View style={styles.containerGraph}>
+                <View style={styles.containerImage}>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.verticalText}>Speed</Text>
+                    </View>
+                    <Image
+                        source={require("../../assets/images/graph.png")}
+                        style={styles.image}
+                    />
+                </View>
+                <Text style={styles.noLapsText}>Time</Text>
+            </View>
+
+            <View style={styles.containerImport}>
+                <TouchableOpacity style={styles.button} onPress={handleImportRecord}>
+                    <Text style={styles.buttonText}>Import</Text>
+                </TouchableOpacity>
+            </View>
         </ScrollView>
     );
 };
@@ -84,6 +103,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         padding: 22,
+        color: "#007aff",
     },
     topTextBar: {
         fontSize: 23,
@@ -110,6 +130,53 @@ const styles = StyleSheet.create({
     noLapsText: {
         fontSize: 16,
         color: "gray",
+    },
+    containerImage: {
+        flexDirection: 'row', // Arrange image and text horizontally
+        alignItems: 'center', // Center vertically
+        justifyContent: 'flex-start',
+    },
+    textContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: -30
+    },
+    verticalText: {
+        fontSize: 16,
+        writingDirection: 'ltr',
+        transform: [{ rotate: '90deg' }],
+        marginBottom: 20,
+        color: "gray",
+    },
+    image: {
+        width: 300,
+        height: 250,
+    },
+    containerGraph: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    containerImport: {
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: 20
+    },
+    button: {
+        backgroundColor: "#3399ff",
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        width: "45%",
+        alignItems: "center",
+        justifyContent: 'center',
+        margin: 10
+    },
+    buttonText: {
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "bold",
     },
 });
 

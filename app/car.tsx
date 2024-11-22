@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
 import { Button, Pressable, StyleSheet, View, Text, ScrollView, Image } from 'react-native';
@@ -46,6 +46,19 @@ const Car: React.FC = () => {
         router.push('/main');
     };
 
+    const handleEdit = () => {
+        router.push({
+            pathname: '/(tabs)/edit',
+            params: {
+                url: car.url,
+                brand: car.brand,
+                model: car.model,
+                year: car.year,
+                plate: car.plate,
+            },
+        });
+    };
+
     const navigateToLocation = (car: Car) => {
         router.push({
             pathname: '/location',
@@ -59,8 +72,17 @@ const Car: React.FC = () => {
         });
     };
 
-    const navigateToStats = () => { // TODO: Stats page
-        router.push('/main');
+    const navigateToStats = () => { 
+        router.push({
+            pathname: '/(tabs)/stats',
+            params: {
+                url: car.url,
+                brand: car.brand,
+                model: car.model,
+                year: car.year,
+                plate: car.plate,
+            },
+        });
     };
 
     const navigateToTrackRecords = () => {
@@ -92,7 +114,10 @@ const Car: React.FC = () => {
     return (
         <SafeAreaView>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-                <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
+                <View style={styles.topView}>
+                    <AntDesign name="left" size={24} style={styles.backButton} onPress={navigateToMain} />
+                    <MaterialIcons name="edit" size={24} style={styles.editButton} onPress={handleEdit} />
+                </View>
                 <View style={styles.carInfoContainer}>
                     <Image source={{ uri: car.url }} style={styles.image} />
                     <View style={styles.carBrand}><Text style={styles.carBrandText}>{car.brand} {car.model}</Text></View>
@@ -131,6 +156,18 @@ const Car: React.FC = () => {
 export default Car;
 
 const styles = StyleSheet.create({
+    carMain: {
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        marginTop: 20,
+    },
+    topView: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        flexDirection: 'row'
+    },
     carInfoContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -145,6 +182,9 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
         color: '#333',
+    },
+    carBrandModel: {
+        marginBottom: 8,
     },
     carPlate: {
         padding: 8,
@@ -168,9 +208,9 @@ const styles = StyleSheet.create({
     image: {
         borderRadius: 15,
         height: 160,
-        width: '100%',  // Ensures that the image fills the width
+        width: '100%',
         maxWidth: 390,
-        resizeMode: 'cover',  // This can help scale the image
+        resizeMode: 'cover',
     },
     carButton: {
         padding: 15,
@@ -207,6 +247,11 @@ const styles = StyleSheet.create({
     },
     backButton: {
         padding: 22,
+        color: "#007aff",
+    },
+    editButton: {
+        padding: 22,
+        color: "#005bb5",
     },
     container: {
         flex: 1,

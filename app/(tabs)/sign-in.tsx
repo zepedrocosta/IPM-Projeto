@@ -96,7 +96,7 @@ export default function SignIn() {
       </View>
 
       <View style={styles.insideContainer}>
-        <Pressable style={styles.button} onPress={() => handleSignIn()}>
+        <Pressable style={styles.button} onPress={() => navigateToMain()}>
           <Text style={styles.buttonText}>Sign In</Text>
         </Pressable>
         <Text style={styles.buttonRegister} onPress={() => navigateToRegister()}>Register</Text>

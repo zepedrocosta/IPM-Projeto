@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Modal, TextInput } from "react-native";
 
 import { Car } from "@/types/car";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -17,6 +17,9 @@ export default function TrackRecord({ car }: TrackRecordProps) {
   const [averageSpeed, setAverageSpeed] = useState(0);
   const [maxSpeed, setMaxSpeed] = useState(0);
   const [isRacing, setIsRacing] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [recordName, setRecordName] = useState("");
+
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const speedIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -76,8 +79,19 @@ export default function TrackRecord({ car }: TrackRecordProps) {
     setLapMilliseconds(0);
   };
 
-  const handleEndTrackRecord = async () => {
+  const handleEndTrackRecord = () => {
+    setIsRacing(false);
+    setModalVisible(true); // Show the modal for input
+  };
+
+  const saveRecord = async () => {
+    if (!recordName.trim()) {
+      Alert.alert("Error", "Record name is required.");
+      return;
+    }
+
     const record = {
+      name: recordName.trim(),
       totalTime,
       totalMilliseconds,
       lapTimes,
@@ -94,15 +108,13 @@ export default function TrackRecord({ car }: TrackRecordProps) {
       records.push(record);
 
       await AsyncStorage.setItem(key, JSON.stringify(records));
-      console.log('Record saved to AsyncStorage:', record);
+      console.log("Record saved to AsyncStorage:", record);
       Alert.alert("Record Saved", "Your track record has been successfully saved.");
     } catch (error) {
-      console.error('Failed to save record to AsyncStorage:', error);
+      console.error("Failed to save record to AsyncStorage:", error);
       Alert.alert("Error", "Failed to save your track record.");
     }
 
-    // Reset everything
-    setIsRacing(false);
     setTotalTime(0);
     setTotalMilliseconds(0);
     setLapTime(0);
@@ -110,6 +122,9 @@ export default function TrackRecord({ car }: TrackRecordProps) {
     setLapTimes([]);
     setAverageSpeed(0);
     setMaxSpeed(0);
+
+    setRecordName("");
+    setModalVisible(false);
 
     // Clear intervals
     if (intervalRef.current) {
@@ -119,6 +134,7 @@ export default function TrackRecord({ car }: TrackRecordProps) {
       clearInterval(speedIntervalRef.current);
     }
   };
+
 
   const formatTime = (seconds: number, milliseconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -139,6 +155,9 @@ export default function TrackRecord({ car }: TrackRecordProps) {
             Lap {index + 1}: {formatTime(lap, 0)}
           </Text>
         ))}
+        {lapTimes.length == 0 &&
+          <Text style={styles.lapItem}>No laps yet.</Text>
+        }
       </ScrollView>
 
       <Text style={styles.speedText}>Avg Speed: {averageSpeed.toFixed(1)} Km/h</Text>
@@ -160,6 +179,28 @@ export default function TrackRecord({ car }: TrackRecordProps) {
           </>
         )}
       </View>
+
+      <Modal visible={isModalVisible} transparent animationType="slide">
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Enter Record Name</Text>
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Record Name"
+              value={recordName}
+              onChangeText={setRecordName}
+            />
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalButton} onPress={() => setModalVisible(false)}>
+                <Text style={styles.modalButtonText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButton} onPress={saveRecord}>
+                <Text style={styles.modalButtonText}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -189,7 +230,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   lapList: {
-    height: 100,
+    maxHeight: 100,
   },
   lapItem: {
     fontSize: 16,
@@ -220,4 +261,50 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: "80%",
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalInput: {
+    width: "100%",
+    height: 40,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 20,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+  modalButton: {
+    flex: 1,
+    paddingVertical: 10,
+    marginHorizontal: 5,
+    backgroundColor: "#3399ff",
+    borderRadius: 5,
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
 });
