@@ -101,7 +101,6 @@ export default function TrackHistory() {
   };
 
   const navigateToTrackRecordDetails = (record: any) => {
-    console.log(2);
     router.push({
       pathname: "/(tabs)/trackRecordDetails",
       params: {
