@@ -13,8 +13,12 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native DatePicker
 import * as DocumentPicker from "expo-document-picker";
 import ReminderModal from "./ReminderModal";
+import * as FileSystem from "expo-file-system";
+import { httpPost } from "@/utils/http";
+import { Car } from "@/types/car";
 
 interface AddDocumentModalProps {
+  car: Car;
   visible: boolean;
   onClose: () => void;
   onConfirm: (document: {
@@ -26,11 +30,13 @@ interface AddDocumentModalProps {
 }
 
 export default function AddDocumentModal({
+  car,
   visible,
   onClose,
   onConfirm,
 }: AddDocumentModalProps) {
   const [file, setFile] = useState<any | null>(null); // File object
+  const [file64, setFile64] = useState<string>("");
   const [category, setCategory] = useState("");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [date, setDate] = useState<Date | null>(null); // Union type, hold a null value but still have the type Date defined
@@ -62,8 +68,13 @@ export default function AddDocumentModal({
         result.assets?.[0]?.name.includes(".pdf")
       ) {
         // Add feedback, if the file selected is not supported, tell the user
-        console.log("accepted");
-        setFile(result.assets[0]); //THIS IS RESULTING IN A NULL, BECAUSE WE'RE NOT PASSING THE INFO YET??
+        const fileUri = result.assets[0].uri;
+        const base64 = await FileSystem.readAsStringAsync(fileUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+        console.log("Base64 string: ", base64);
+        setFile(result.assets[0]);
+        setFile64(base64);
       } else {
         console.log("invalid file selected");
       }
@@ -86,19 +97,31 @@ export default function AddDocumentModal({
 
   const handleAddDocument = () => {
     const newDocument = {
-      content: file,
+      content: file64,
       type: category,
       dueDate: expirableDocuments.includes(category)
         ? date?.toISOString().split(".")[0]
         : null,
-    }; //#document picker result:  {"assets": [{"mimeType": "application/pdf", "name": "IPM7_Human_24_25.pdf", "size": 2046918, "uri": "file:///data/user/0/host.exp.exponent/cache/DocumentPicker/b74d3399-fabc-489c-8ae8-260913ed9f34.pdf"}], "canceled": false}
-    console.log("handleAddDocument: ", newDocument);
-    //onConfirm(newDocument); // Pass the document data to parent
-    /*onClose();
-    setFile(null);
-    setDate(null);
-    setCategory("");
-    setShowReminderModal(true);*/
+    };
+
+    httpPost(`/cars/${car.plate}/documents`, newDocument).then(
+      (response: any) => {
+        console.log("Document added");
+        onConfirm({
+          file: file,
+          category: category,
+          date: date,
+        });
+        onClose();
+        setFile(null);
+        setDate(null);
+        setCategory("");
+        setShowReminderModal(true);
+      },
+      (error) => {
+        console.log("Error adding document: ", error);
+      }
+    );
   };
 
   return (

@@ -79,6 +79,7 @@ export default function DocumentsList({ car }: { car: Car }) {
       </View>
 
       <AddDocumentModal
+        car={car}
         visible={isAddDocumentModalVisible}
         onClose={() => setAddDocumentModalVisible(false)}
         onConfirm={() => handleAddDocument}
