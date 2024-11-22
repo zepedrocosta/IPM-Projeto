@@ -124,14 +124,14 @@ export default function DocumentsList({ car }: { car: Car }) {
             <Text>{document.filename}</Text>
             <View style={styles.iconsContainer}>
               <TouchableOpacity onPress={() => handleDownload(document)}>
-                <MaterialIcons name="cloud-download" size={20} color="green" />
+                <MaterialIcons name="cloud-download" size={24} color="#007aff" />
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{ marginLeft: 15 }}
+                style={{ marginLeft: 20 }}
                 onPress={() => handleDeleteDocument(document)}
               >
-                <MaterialIcons name="delete" size={20} color="red" />
+                <MaterialIcons name="delete" size={24} color="red" />
               </TouchableOpacity>
             </View>
           </View>
