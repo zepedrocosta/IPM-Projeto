@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Modal,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePickerModal from "react-native-modal-datetime-picker"; // Native DatePicker
@@ -94,6 +95,14 @@ export default function AddDocumentModal({
   };
 
   const handleAddDocument = () => {
+    if (category === "" || file === null) {
+      ToastAndroid.show(
+        "Please select a category and a file.",
+        ToastAndroid.SHORT
+      );
+      return;
+    }
+
     setCategoryName(category);
     console.log(category);
     const newDocument = {
