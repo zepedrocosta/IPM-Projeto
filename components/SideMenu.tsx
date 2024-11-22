@@ -6,8 +6,12 @@ import {
   StyleSheet,
   Dimensions,
   Animated,
+  ToastAndroid,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const SideMenu = ({
   onLogout,
@@ -52,7 +56,7 @@ const SideMenu = ({
             style={styles.menuItem}
             onPress={() => {
               closeMenu();
-              console.log("Navigate to Profile");
+              ToastAndroid.show("Profile not Implemented", ToastAndroid.LONG);
             }}
           >
             <Text style={styles.menuText}>Profile</Text>
@@ -62,7 +66,7 @@ const SideMenu = ({
             style={styles.menuItem}
             onPress={() => {
               closeMenu();
-              console.log("Navigate to Settings");
+              ToastAndroid.show("Settings not Implemented", ToastAndroid.LONG);
             }}
           >
             <Text style={styles.menuText}>Settings</Text>
@@ -99,7 +103,7 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     width: Dimensions.get("window").width * 0.75,
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(230, 230, 230, 1)",
     zIndex: 2,
     shadowColor: "#000",
     shadowOpacity: 0.2,

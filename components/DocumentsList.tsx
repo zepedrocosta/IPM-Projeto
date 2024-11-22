@@ -80,35 +80,37 @@ export default function DocumentsList({ car }: { car: Car }) {
     );
   }
 
-    // Function to handle document deletion with confirmation
-    const handleDeleteDocument = (doc: Document) => {
-      Alert.alert(
-        "Confirm Delete",
-        "Are you sure you want to delete this document?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "Delete",
-            onPress: () => {
-                httpDelete("/cars/" + car.plate + "/documents/" + doc.filename).then(
-                    (response: any) => {
-                        console.log("Document deleted: ", doc.filename);
-                        setDocuments(documents.filter((d) => d.filename !== doc.filename));
-                    },
-                    (error) => {
-                        console.log("Error deleting document: ", error);
-                    }
+  // Function to handle document deletion with confirmation
+  const handleDeleteDocument = (doc: Document) => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this document?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          onPress: () => {
+            httpDelete(
+              "/cars/" + car.plate + "/documents/" + doc.filename
+            ).then(
+              (response: any) => {
+                setDocuments(
+                  documents.filter((d) => d.filename !== doc.filename)
                 );
-                console.log("deleted");
-            },
-            style: "destructive",
+              },
+              (error) => {
+                console.log("Error deleting document: ", error);
+              }
+            );
           },
-        ]
-      );
-    };
+          style: "destructive",
+        },
+      ]
+    );
+  };
 
   /** Just missing the document header above the page with the arrow to go a page back */
   return (
@@ -125,8 +127,11 @@ export default function DocumentsList({ car }: { car: Car }) {
                 <MaterialIcons name="cloud-download" size={20} color="green" />
               </TouchableOpacity>
 
-              <TouchableOpacity style={{ marginLeft: 15 }}>
-                <MaterialIcons name="delete" size={20} color="red" onClick={handleDeleteDocument(document)} />
+              <TouchableOpacity
+                style={{ marginLeft: 15 }}
+                onPress={() => handleDeleteDocument(document)}
+              >
+                <MaterialIcons name="delete" size={20} color="red" />
               </TouchableOpacity>
             </View>
           </View>
@@ -148,10 +153,8 @@ export default function DocumentsList({ car }: { car: Car }) {
         <MaterialIcons name="add" size={24} color="white" />
       </TouchableOpacity>
     </View>
-
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
