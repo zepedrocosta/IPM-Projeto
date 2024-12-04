@@ -83,7 +83,7 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
               onValueChange={(itemValue) => setCategory(itemValue)}
               style={styles.inputBox}
             >
-              <Picker.Item label="Select Category" value="" />
+              <Picker.Item label="Select Category" value="" enabled={false} />
               <Picker.Item label="Oil Change" value="OIL_CHANGE" />
               <Picker.Item label="Brake Change" value="BRAKE_CHANGE" />
               <Picker.Item label="Inspection" value="INSPECTION" />
