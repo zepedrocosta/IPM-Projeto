@@ -1,8 +1,10 @@
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View, Text, TextInput, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Pressable, StyleSheet, View, Text, TextInput, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as FileSystem from "expo-file-system";
 
 type Car = {
     url: string;
@@ -14,6 +16,19 @@ type Car = {
 
 const EditCar: React.FC = () => {
     const params = useLocalSearchParams();
+    AsyncStorage.setItem("car", JSON.stringify(params));
+    const [image, setImage] = useState<string>(
+        "https://as1.ftcdn.net/v2/jpg/04/62/93/66/1000_F_462936689_BpEEcxfgMuYPfTaIAOC1tCDurmsno7Sp.jpg"
+    );
+
+    useEffect(() => {
+        const cachePath = `${FileSystem.cacheDirectory}${params.plate}.png`;
+        FileSystem.getInfoAsync(cachePath).then((fileInfo) => {
+            if (fileInfo.exists) {
+                setImage(cachePath);
+            }
+        });
+    }, []);
 
     const [car, setCar] = useState<Car>({
         url: params.url.toString(),
@@ -50,6 +65,7 @@ const EditCar: React.FC = () => {
                 </View>
                 <View style={styles.container}>
                     <Text style={styles.title}>Edit Car Details</Text>
+                    <Image source={{ uri: image }} style={{ height: 160, width: 220, marginBottom: 10 }} />
                     <Pressable style={styles.button}>
                         <Text style={styles.buttonText}>
                             Change car picture
