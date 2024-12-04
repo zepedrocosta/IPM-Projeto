@@ -1,3 +1,4 @@
+import Car from '@/app/car';
 import * as Notifications from 'expo-notifications';
 
 // Request Notification Permissions
@@ -14,14 +15,14 @@ export async function requestNotificationPermission(): Promise<boolean> {
 }
 
 // Schedule a Notification
-export async function scheduleOneMinuteReminder(documentCategory: string) {
+export async function scheduleOneMinuteReminder(documentCategory: string, car: Car) {
   const hasPermission = await requestNotificationPermission();
   if (!hasPermission) return;
 
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Reminder",
-      body: `Your ${documentCategory} is about to expire soon!`,
+      body: `Your ${documentCategory} for your ${car.brand} ${car.model} is about to expire soon!`,
       sound: true,
     },
     trigger: {

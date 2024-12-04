@@ -111,6 +111,7 @@ export default function AddDocumentModal({
       dueDate: expirableDocuments.includes(category)
         ? date?.toISOString().split(".")[0]
         : null,
+      car: car
     };
 
     httpPost(`/cars/${car.plate}/documents`, newDocument).then(
@@ -211,6 +212,7 @@ export default function AddDocumentModal({
         onClose={handleReminderCancel} // When user cancels reminder
         onSetReminder={handleReminderSet} // When user sets a reminder
         category={categoryName}
+        car = {car}
       />
     </>
   );
