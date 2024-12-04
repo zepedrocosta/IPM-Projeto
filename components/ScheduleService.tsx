@@ -108,6 +108,7 @@ export default function ScheduleServicePage({ car }: { car: Car }) {
                 mode="datetime"
                 onConfirm={handleDateConfirm}
                 onCancel={hideDatePicker}
+                minimumDate={new Date()}
               />
             </View>
           </View>

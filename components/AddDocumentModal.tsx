@@ -149,7 +149,7 @@ export default function AddDocumentModal({
                 onValueChange={(itemValue) => setCategory(itemValue)}
                 style={styles.picker}
               >
-                <Picker.Item label="Select Category" value="" />
+                <Picker.Item label="Select Category" value="" enabled={false} />
                 <Picker.Item label="Insurance" value="Insurance" />
                 <Picker.Item label="Registration" value="Registration" />
                 <Picker.Item label="Inspection" value="Inspection" />
@@ -189,6 +189,7 @@ export default function AddDocumentModal({
                     mode="date"
                     onConfirm={handleDateConfirm}
                     onCancel={hideDatePicker}
+                    minimumDate={new Date()}
                   />
                 </View>
               </View>
