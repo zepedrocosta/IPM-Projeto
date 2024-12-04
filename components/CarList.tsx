@@ -142,13 +142,33 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
 
   const handleAddCar = () => {
     Keyboard.dismiss();
+    if (newCar.year !== "" && parseInt(newCar.year) < 1885) {
+      ToastAndroid.show("Year must be greater than 1885", ToastAndroid.LONG);
+    } else if (newCar.year !== "" && parseInt(newCar.year) > 2200) {
+      ToastAndroid.show("Year must be less than 2200", ToastAndroid.LONG);
+    } else if (
+      newCar.plate.length > 0 &&
+      !/^[A-Za-z0-9]{2}-[A-Za-z0-9]{2}-[A-Za-z0-9]{2}$/.test(newCar.plate)
+    ) {
+      ToastAndroid.show("Invalid plate format", ToastAndroid.LONG);
+    } else {
+      addCar();
+    }
+  };
+
+  const addCar = () => {
     setLoadingAddCar(true);
-    httpPost("/cars", { ...newCar, year: parseInt(newCar.year) }).then(
+    httpPost("/cars", {
+      ...newCar,
+      year: parseInt(newCar.year),
+      plate: newCar.plate.toUpperCase(),
+    }).then(
       (res: any) => {
         setCarList([
           ...carList,
           {
             ...newCar,
+            plate: newCar.plate.toUpperCase(),
           },
         ]);
         setNewCar(initalNewCar);
@@ -165,7 +185,7 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
           );
         } else if (regex400.test(error.message)) {
           ToastAndroid.show(
-            "Invalid data. Please check the fields and try again",
+            "Please fill all fields before submitting",
             ToastAndroid.LONG
           );
         } else {
@@ -259,26 +279,33 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
             </View>
 
             <TextInput
-              placeholder="Model"
+              placeholder="Model*"
               value={newCar.model}
               onChangeText={(value) => setNewCar({ ...newCar, model: value })}
               style={styles.formInput}
             />
             <TextInput
               keyboardType="numeric"
-              placeholder="Year"
+              placeholder="Year*"
               value={newCar.year}
               onChangeText={(value) => setNewCar({ ...newCar, year: value })}
               style={styles.formInput}
             />
             <TextInput
-              placeholder="Plate (XX-XX-XX)"
+              placeholder="Plate*"
               value={newCar.plate}
-              onChangeText={(value) =>
-                setNewCar({ ...newCar, plate: value.toUpperCase() })
-              }
+              onChangeText={(value) => setNewCar({ ...newCar, plate: value })}
               style={styles.formInput}
             />
+            {newCar.plate.length > 0 &&
+              !/^[A-Za-z0-9]{2}-[A-Za-z0-9]{2}-[A-Za-z0-9]{2}$/.test(
+                newCar.plate
+              ) && (
+                <View style={styles.validationContainer}>
+                  <Text style={styles.textHelp}>Plate format must be: </Text>
+                  <Text style={styles.textWeak}>XX-XX-XX</Text>
+                </View>
+              )}
             <View
               style={{
                 display: "flex",
@@ -532,6 +559,20 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: "center",
     justifyContent: "center",
+  },
+  validationContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: "80%",
+    marginBottom: 12,
+  },
+  textHelp: {
+    fontSize: 16,
+    color: "gray",
+  },
+  textWeak: {
+    fontSize: 16,
+    color: "black",
   },
 });
 

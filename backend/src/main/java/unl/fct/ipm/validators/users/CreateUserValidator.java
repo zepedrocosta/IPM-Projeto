@@ -27,8 +27,8 @@ public class CreateUserValidator implements Validator {
         if (errors.hasErrors())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        if (user.getNickname().contains("-") || user.getNickname().contains(" "))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        if (user.getNickname().contains(" "))
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE);
 
         if (user.getNickname().trim().equals("system") || users.existsByEmail(user.getEmail().trim()) || users.existsByNickname(user.getNickname().trim()))
             throw new ResponseStatusException(HttpStatus.CONFLICT);

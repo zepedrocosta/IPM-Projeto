@@ -29,12 +29,18 @@ export default function Register() {
       (error) => {
         const regex403 = /403/;
         const regex400 = /400/;
+        const regex406 = /406/;
         const regex409 = /409/;
         if (regex403.test(error.message)) {
           ToastAndroid.show("Passwords don't match", ToastAndroid.LONG);
         } else if (regex400.test(error.message)) {
           ToastAndroid.show(
-            "Invalid form, please check all fields",
+            "Please fill all fields correctly before submitting",
+            ToastAndroid.LONG
+          );
+        } else if (regex406.test(error.message)) {
+          ToastAndroid.show(
+            "Username must not contain spaces",
             ToastAndroid.LONG
           );
         } else if (regex409.test(error.message)) {
@@ -53,8 +59,10 @@ export default function Register() {
   };
 
   const checkEmailValidity = () => {
-    const containsAt = form.email.includes("@");
-    const containsDot = form.email.includes(".");
+    //const containsAt = form.email.includes("@");
+    //const containsDot = form.email.includes(".");
+    let containsAt = /^[^\s@]+@+$/.test(form.email);
+    let containsDot = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email);
     return { containsAt, containsDot };
   };
 
@@ -72,7 +80,7 @@ export default function Register() {
       <View style={styles.insideContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder="Email*"
           value={form.email}
           onChangeText={(value) => setForm({ ...form, email: value })}
           keyboardType="email-address"
@@ -80,18 +88,21 @@ export default function Register() {
         {form.email.length > 0 &&
           (!emailValidity.containsAt || !emailValidity.containsDot) && (
             <View style={styles.validationContainer}>
-              <Text style={styles.textHelp}>Missing characters: </Text>
+              <Text style={styles.textHelp}>Missing: </Text>
               {!emailValidity.containsAt && (
-                <Text style={styles.textHelp}> @ </Text>
+                <Text style={styles.textHelp}>@</Text>
+              )}
+              {!emailValidity.containsAt && !emailValidity.containsDot && (
+                <Text style={styles.textHelp}> & </Text>
               )}
               {!emailValidity.containsDot && (
-                <Text style={styles.textHelp}> . </Text>
+                <Text style={styles.textHelp}>domain (eg .com)</Text>
               )}
             </View>
           )}
         <TextInput
           style={styles.input}
-          placeholder="Username"
+          placeholder="Username*"
           value={form.nickname}
           onChangeText={(value) => setForm({ ...form, nickname: value })}
         />
@@ -102,9 +113,16 @@ export default function Register() {
             </Text>
           </View>
         )}
+        {form.nickname.split(" ").length > 1 && (
+          <View style={styles.validationContainer}>
+            <Text style={styles.textHelp}>
+              Username must not contain spaces
+            </Text>
+          </View>
+        )}
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder="Password*"
           value={form.password}
           onChangeText={(value) => setForm({ ...form, password: value })}
           secureTextEntry // replaces the password text with dots for added security
@@ -122,7 +140,7 @@ export default function Register() {
         )}
         <TextInput
           style={styles.input}
-          placeholder="Confirm Password"
+          placeholder="Confirm Password*"
           value={form.confirmPassword}
           onChangeText={(value) => setForm({ ...form, confirmPassword: value })}
           secureTextEntry // replaces the password text with dots for added security
