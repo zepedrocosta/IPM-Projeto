@@ -271,7 +271,13 @@ const CarList: React.FC<CarListProps> = ({ searchQuery }) => {
                 }
                 style={styles.formInput}
               >
-                <Picker.Item label="Select a brand" value="" />
+                {newCar.brand === "" && (
+                  <Picker.Item
+                    label="Select a brand*"
+                    value=""
+                    enabled={false}
+                  />
+                )}
                 {brands.map((brand) => (
                   <Picker.Item key={brand} label={brand} value={brand} />
                 ))}
